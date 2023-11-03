@@ -7,3 +7,5 @@
 ## valtterivimpari: Valtteri Vimpari
 
 ## nooruuw: Noora Ylitalo
+
+### Arvosanatavoite: 4
