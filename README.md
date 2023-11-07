@@ -1,5 +1,7 @@
 # Elokuvasovellus
 
+### Arvosanatavoite: 4
+
 ## Ropsu01: Roope Nahkala
 
 ## tompih: Tomi Pihlajamaa
@@ -12,4 +14,3 @@
 
 ![ER-Kaavio](https://github.com/TVT22-10/Elokuvasovellus/blob/main/diagrams/er-kaavio.png)
 
-### Arvosanatavoite: 4
