@@ -1,18 +1,37 @@
-const express = require('express');
-const userController = require('../controllers/userController');
-const router = express.Router();
+const router = require('express').Router();
+const multer = require('multer'); // Import multer for handling file uploads
+const upload = multer({dest: 'upload/'}); // Initialize the multer middleware
+const bcrypt = require('bcrypt');
 
-router.get('/users', userController.getUsers);
+const { addUser, getUsers } = require('../postgre/User');
 
-router.get('/users/:id', userController.getUser);
+router.get('/', async (req, res) => {
 
-router.put('/users/:id', userController.updateUser);
+    try {
+        res.json(await getUsers());
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 
-router.delete('/users/:id', userController.deleteUser);
+});
 
-router.post('/register', userController.register);
+//user root post mapping. supports urlencoded and multer
+router.post('/register', upload.none(), async (req, res) => {
+    const fname = req.body.fname;
+    const lname = req.body.lname;
+    const uname = req.body.uname;
+    let pw = req.body.pw;
 
-router.post('/login', userController.login);
 
+    pw = await bcrypt.hash(pw, 10);
+
+
+    try {
+        await addUser(fname, lname, uname, pw);
+        res.end();
+    } catch (error) {
+        res.json({ error: error.message }).status(500);
+    }
+});
 
 module.exports = router;
