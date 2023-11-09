@@ -2,8 +2,9 @@ const router = require('express').Router();
 const multer = require('multer'); // Import multer for handling file uploads
 const upload = multer({dest: 'upload/'}); // Initialize the multer middleware
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const { addUser, getUsers } = require('../postgre/User');
+const { addUser, getUsers, checkUser } = require('../postgre/User');
 
 router.get('/', async (req, res) => {
 
@@ -32,6 +33,27 @@ router.post('/register', upload.none(), async (req, res) => {
     } catch (error) {
         res.json({ error: error.message }).status(500);
     }
+});
+
+router.post('/login', upload.none(), async (req, res) => {
+
+    const uname = req.body.uname;
+    let pw = req.body.pw;
+
+   const pwHash = await checkUser(uname);
+
+   if(pwHash){
+       const isCorrect = await bcrypt.compare(pw, pwHash);
+       if(isCorrect){
+        const token = jwt.sign({username: uname}, process.env.JWT_SECRET_KEY);
+        res.status(200).json({jwtToken:token})
+       }else{
+        res.status(401).json({error: 'Incorrect password'});
+       }
+       }else{
+           res.status(401).json({error: 'Customer not found'});
+       }
+
 });
 
 module.exports = router;
