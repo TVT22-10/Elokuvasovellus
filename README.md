@@ -17,3 +17,7 @@
 
 ## UI suunnitelma
 ![UI-suunnitelma](https://github.com/TVT22-10/Elokuvasovellus/blob/main/diagrams/UI-suunnitelma.png)
+
+### Muistilista 
+
+npm install express pg dotenv npm install bcrypt npm install jsonwebtoken npm install cors npm install react-router-dom

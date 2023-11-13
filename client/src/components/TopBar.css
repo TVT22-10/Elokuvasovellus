@@ -1,0 +1,30 @@
+.top-bar {
+    display: flex;
+    justify-content: space-between; /* Aligns items to the start and end of the container */
+    align-items: center; /* Centers items vertically */
+    padding: 5px 20px;
+    border-bottom: 1px solid #ccc; /* Thin line for separation */
+  }
+  
+  
+  .login-link {
+    top: 20px;
+    right: 20px;
+    size: 1px;
+  }
+  
+  .login-link a {
+    text-decoration: none;
+    color: #fff; /* Bootstrap primary color, change as needed */
+    background-color: #007bff;
+    padding: 5px 10px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    font-size: 1.2rem;
+  }
+  
+  .login-link a:hover {
+    background-color: #fff;
+    color: #007bff;
+  }
+  
