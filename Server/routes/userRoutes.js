@@ -4,7 +4,7 @@ const upload = multer({dest: 'upload/'}); // Initialize the multer middleware
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const { addUser, getUsers, checkUser } = require('../postgre/User');
+const { addUser, getUsers, checkUser, getUserDetails } = require('../postgre/User');
 
 router.get('/', async (req, res) => {
 
@@ -46,8 +46,11 @@ router.post('/login', upload.none(), async (req, res) => {
    if(pwHash){
        const isCorrect = await bcrypt.compare(pw, pwHash);
        if(isCorrect){
+        
+        const userDetails = await getUserDetails(uname);
+        console.log(userDetails); // Log the userDetails
         const token = jwt.sign({username: uname}, process.env.JWT_SECRET_KEY);
-        res.status(200).json({jwtToken:token})
+        res.status(200).json({ jwtToken: token, userData: userDetails }); // Include userDetails in the response
        }else{
         res.status(401).json({error: 'Incorrect password'});
        }
@@ -58,14 +61,21 @@ router.post('/login', upload.none(), async (req, res) => {
 });
 //mappaus jolla käyttäjä voi hakea tietoa itsestään
 //Authorization: Bearer token
+
 router.get('/private', async (req, res) => {    
-    const token = req.headers.authorization?.split(' ')[1];   //? null turvallisuusoperaattori
+    const token = req.headers.authorization?.split(' ')[1];
 
     try {
-        const username = jwt.verify(token, process.env.JWT_SECRET_KEY).username;
-        res.status(200).json({private: 'This is private data for ' + username + ' only'});
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const userDetails = await getUserDetails(decodedToken.username);
+
+        // Include user details directly in the response
+        res.status(200).json({
+            private: 'This is private data for ' + decodedToken.username + ' only',
+            ...userDetails // Spread user details into the response
+        });
     } catch (error) {
-        res.status(403).json({error: 'Access forbidden'})
+        res.status(403).json({error: 'Access forbidden'});
     }
 });
 

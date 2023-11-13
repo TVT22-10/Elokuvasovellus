@@ -21,3 +21,11 @@
 ### Muistilista 
 
 npm install express pg dotenv npm install bcrypt npm install jsonwebtoken npm install cors npm install react-router-dom
+
+CREATE TABLE customer (
+    username VARCHAR(50) PRIMARY KEY,
+    fname VARCHAR(100),
+    lname VARCHAR(100),
+    pw VARCHAR(100),
+    creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

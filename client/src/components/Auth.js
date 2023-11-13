@@ -16,14 +16,27 @@ function Login() {
     );
   }
 
-  function UserInfo(){
+  function UserInfo() {
+    useEffect(() => {
+        console.log("UserData updated:", userData.value);
+    }, [userData.value]);
+    // Temporarily display the raw creation_time value
+    const rawCreationTime = userData.value?.creation_time || 'No creation time';
 
-    return(
-      <div>
-        {jwtToken.value ? <h1>{userData.value?.private}</h1> : <h1>You are guest</h1>}
-      </div>
-    )
-  }
+    return (
+        <div>
+            {jwtToken.value ? (
+                <>
+                    <h1>{userData.value?.private}</h1>
+                    <p>Account Created On: {rawCreationTime}</p>
+                </>
+            ) : (
+                <h1>You are a guest</h1>
+            )}
+        </div>
+    );
+}
+  
 
   function LoginForm() {
     const [uname, setUname] = useState('');
@@ -31,18 +44,21 @@ function Login() {
   
     function login() {
       axios.post('http://localhost:3001/User/login', { uname, pw })
-        .then(resp => {
-          if (resp.data && resp.data.jwtToken) {
-            jwtToken.value = resp.data.jwtToken;
-          } else {
-            // Handle the case where jwtToken is not in the response
-            console.log('JWT Token not found in response');
-          }
-        })
-        .catch(error => {
-          console.log(error.response ? error.response.data : error);
-        });
-    }
+    .then(resp => {
+      console.log(resp.data);
+      if (resp.data && resp.data.jwtToken) {
+        jwtToken.value = resp.data.jwtToken;
+        // Assuming resp.data.userData contains user data including creation_time
+        userData.value = resp.data.userData;
+      } else {
+        // Handle the case where jwtToken is not in the response
+        console.log('JWT Token not found in response');
+      }
+    })
+    .catch(error => {
+      console.log(error.response ? error.response.data : error);
+    });
+}
   
     return (
       <div>
