@@ -31,6 +31,7 @@ router.post('/register', upload.none(), async (req, res) => {
         await addUser(fname, lname, uname, pw);
         res.end();
     } catch (error) {
+        console.log(error);
         res.json({ error: error.message }).status(500);
     }
 });
@@ -54,6 +55,18 @@ router.post('/login', upload.none(), async (req, res) => {
            res.status(401).json({error: 'Customer not found'});
        }
 
+});
+//mappaus jolla käyttäjä voi hakea tietoa itsestään
+//Authorization: Bearer token
+router.get('/private', async (req, res) => {    
+    const token = req.headers.authorization?.split(' ')[1];   //? null turvallisuusoperaattori
+
+    try {
+        const username = jwt.verify(token, process.env.JWT_SECRET_KEY).username;
+        res.status(200).json({private: 'This is private data for ' + username + ' only'});
+    } catch (error) {
+        res.status(403).json({error: 'Access forbidden'})
+    }
 });
 
 module.exports = router;
