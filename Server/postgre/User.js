@@ -3,7 +3,7 @@ const pgPool = require('./connection');
 
 const sql = {
   INSERT_USER: 'INSERT INTO customer VALUES ($1, $2, $3, $4)',
-  GET_USERS: 'SELECT fname, lname, username FROM customer',
+  GET_USERS: 'SELECT fname, lname, username, creation_time FROM customer',
   GET_PW: 'SELECT pw FROM customer WHERE username = $1'
 };
 
@@ -28,4 +28,15 @@ async function checkUser(username){
   }
 
 }
-module.exports = {addUser, getUsers, checkUser};
+async function getUserDetails(username) {
+  const result = await pgPool.query('SELECT fname, lname, username, creation_time FROM customer WHERE username = $1', [username]);
+  console.log(result.rows); // Log the result
+  if (result.rows.length > 0) {
+    return result.rows[0];
+  } else {
+    return null;
+  }
+}
+
+
+module.exports = { addUser, getUsers, checkUser, getUserDetails };

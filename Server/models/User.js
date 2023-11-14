@@ -4,24 +4,31 @@ const db = pgp(config.databaseURL);
 
 const User = {
   findAll: async () => {
-    return await db.any('SELECT * FROM users');
+    return await db.any('SELECT username, fname, lname, creation_time FROM customer');
   },
   
   findById: async (id) => {
-    return await db.oneOrNone('SELECT * FROM users WHERE user_id = $1', id);
+    // Update this if 'user_id' is not the correct column name
+    return await db.oneOrNone('SELECT username, fname, lname, creation_time FROM customer WHERE user_id = $1', id);
   },
   create: async (username, password) => {
-    return await db.one('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *', [username, password]);
+    // Assuming 'pw' is the column for password
+    return await db.one('INSERT INTO customer (username, pw) VALUES ($1, $2) RETURNING username, fname, lname, creation_time', [username, password]);
   },
   findByUsername: async (username) => {
-    return await db.oneOrNone('SELECT * FROM users WHERE username = $1', username);
+    return await db.oneOrNone('SELECT username, fname, lname, creation_time FROM customer WHERE username = $1', username);
   },
   update: async (id, user) => {
-    return await db.oneOrNone('UPDATE users SET username = $1, password = $2 WHERE user_id = $3 RETURNING *', [user.username, user.password, id]);
+    // Adjust this query based on your table structure and requirements
+    return await db.oneOrNone('UPDATE customer SET username = $1, pw = $2 WHERE user_id = $3 RETURNING username, fname, lname, creation_time', [user.username, user.password, id]);
   },
   delete: async (id) => {
-    return await db.oneOrNone('DELETE FROM users WHERE user_id = $1 RETURNING *', id);
-  }
+    // Update this if 'user_id' is not the correct column name
+    return await db.oneOrNone('DELETE FROM customer WHERE user_id = $1 RETURNING username, fname, lname, creation_time', id);
+  },
+  getUserDetails: async (username) => {
+    return await db.oneOrNone('SELECT fname, lname, username, creation_time FROM customer WHERE username = $1', username);
+  },
 };
 
 module.exports = User;
