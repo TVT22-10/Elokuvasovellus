@@ -1,3 +1,4 @@
+
 import React from 'react';
 import PopularMovies from '../../moviecomponents/PopularMovies';
 
@@ -11,3 +12,4 @@ function HomePage() {
 }
 
 export default HomePage;
+
