@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './my_profile.css'; // This uses CSS modules.
 import avatar from "./avatar.png";
-
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 function Profile() {
     const [currentView, setCurrentView] = useState('default');
@@ -10,9 +10,9 @@ function Profile() {
         setCurrentView(view);
     };
     return (
-        <body>
+            <div className="profile-page">
             <div className="container">
-                <div className="top-bar">
+                {/*<div className="top-bar">
                     <h1>Elokuvakerho</h1>
                     <nav>
                         <p>Etsi</p>
@@ -20,22 +20,22 @@ function Profile() {
                         <p>Ryhmät</p>
                         <p>Profiili</p>
                     </nav>
-                </div>
+                </div> */}
                 <hr className="separator"></hr>
                 <div className="profile">
                     <img src={avatar} alt="Avatar" class="avatar" />
-                    <div className="profile-text">
+                    <div className="username">
                         <h2>Username</h2>
                         <div className="share-button">
                             <button id="edit">Share the view</button>
                         </div>
                     </div>
-                </div>
-                <div className="edit-button">
+                    <div className="edit-button">
                     <button id="edit">Profile Settings</button>
                 </div>
+                </div>
             </div>
-            <hr class="separator"></hr>
+            
 
 
             <div className="profile-buttons">
@@ -66,7 +66,7 @@ function Profile() {
             )}
           </div>
         </div>
-    </body>
+      </div>
   );
 }
 
