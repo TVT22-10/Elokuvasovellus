@@ -1,12 +1,11 @@
-
 import React from 'react';
+import PopularMovies from '../../moviecomponents/PopularMovies';
 
 function HomePage() {
   return (
-    <div style={{ /* add any necessary styles here */ }}>
-      <h1>Welcome to My App!</h1>
-      <p>This is a brief description of my app.</p>
-      <button>Go to Another Page</button>
+    <div style={{ padding: '0 20px' }}> {/* Adds padding to left and right */}
+      <h1>Popular movies</h1>
+      <PopularMovies />
     </div>
   );
 }
