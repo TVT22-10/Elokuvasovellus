@@ -20,15 +20,36 @@ function Login() {
     useEffect(() => {
         console.log("UserData updated:", userData.value);
     }, [userData.value]);
-    // Temporarily display the raw creation_time value
-    const rawCreationTime = userData.value?.creation_time || 'No creation time';
+
+    const formatCreationTime = (timestamp) => {
+        if (!timestamp) {
+            return 'No creation time';
+        }
+        
+        console.log("Raw Creation Time:", timestamp);
+
+        let date;
+        if (typeof timestamp === 'number') {
+            // Assuming timestamp is in seconds
+            date = new Date(timestamp * 1000);
+        } else if (typeof timestamp === 'string') {
+            // If the timestamp is in a string format, like ISO 8601
+            date = new Date(timestamp);
+        } else {
+            return 'Invalid Format';
+        }
+
+        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+    };
+
+    const formattedCreationTime = formatCreationTime(userData.value?.creation_time);
 
     return (
         <div>
             {jwtToken.value ? (
                 <>
                     <h1>{userData.value?.private}</h1>
-                    <p>Account Created On: {rawCreationTime}</p>
+                    <p>Account Created On: {formattedCreationTime}</p>
                 </>
             ) : (
                 <h1>You are a guest</h1>
@@ -36,6 +57,8 @@ function Login() {
         </div>
     );
 }
+
+
   
 
   function LoginForm() {
