@@ -8,7 +8,6 @@ function Profile() {
   return (
     <div className="profile-page">
       <div className="container">
-        <hr className="separator"></hr>
         <div className="profile-container">
           <div className="profile-image">
             <img src={avatar} alt="Avatar" className="avatar" />
