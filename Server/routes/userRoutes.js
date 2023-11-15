@@ -37,28 +37,30 @@ router.post('/register', upload.none(), async (req, res) => {
 });
 
 router.post('/login', upload.none(), async (req, res) => {
-
     const uname = req.body.uname;
     let pw = req.body.pw;
 
-   const pwHash = await checkUser(uname);
+    const pwHash = await checkUser(uname);
 
-   if(pwHash){
-       const isCorrect = await bcrypt.compare(pw, pwHash);
-       if(isCorrect){
-        
-        const userDetails = await getUserDetails(uname);
-        console.log(userDetails); // Log the userDetails
-        const token = jwt.sign({username: uname}, process.env.JWT_SECRET_KEY);
-        res.status(200).json({ jwtToken: token, userData: userDetails }); // Include userDetails in the response
-       }else{
-        res.status(401).json({error: 'Incorrect password'});
-       }
-       }else{
-           res.status(401).json({error: 'Customer not found'});
-       }
+    if (pwHash) {
+        const isCorrect = await bcrypt.compare(pw, pwHash);
+        if (isCorrect) {
+            const userDetails = await getUserDetails(uname);
+            
+            const tokenExpirationTime = '1h';
 
+            // Sign the token with an expiration time
+            const token = jwt.sign({ username: uname }, process.env.JWT_SECRET_KEY, { expiresIn: tokenExpirationTime });
+            
+            res.status(200).json({ jwtToken: token, userData: userDetails });
+        } else {
+            res.status(401).json({ error: 'Incorrect password' });
+        }
+    } else {
+        res.status(401).json({ error: 'Customer not found' });
+    }
 });
+
 //mappaus jolla käyttäjä voi hakea tietoa itsestään
 //Authorization: Bearer token
 
