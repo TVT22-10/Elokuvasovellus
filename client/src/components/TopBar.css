@@ -2,48 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-<<<<<<< HEAD
   padding: 0px 20px;
   border-bottom: 5px solid #007bff;
   background-color: black;
   color: #007bff;
-
-
 }
 
-  
-  
-  .login-link {
-    top: 20px;
-    right: 20px;
-    size: 1px;
-  }
-  
-  .login-link a {
-    text-decoration: none;
-    color: #000000; /* Bootstrap primary color, change as needed */
-    background-color: #007bff;
-    padding: 5px 10px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    font-size: 1.2rem;
-  }
-  
-  .login-link a:hover {
-    background-color: #fff;
-    color: #007bff;
-  }
-  
-=======
-  padding: 5px 20px;
-  border-bottom: 5px solid #007bff;
-  background-color: black;
-  color: #007bff;
-}
 
 .button-container {
   display: flex;
-  gap: 30px;
+  gap: 20px;
 }
 
 .profile-link a,
@@ -89,4 +57,3 @@
   background-color: #fff;
   color: #007bff;
 }
->>>>>>> 491f5fc005ff6289fb3ed874f98b7fc392b35952
