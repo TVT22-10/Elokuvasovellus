@@ -5,6 +5,10 @@ import { Register } from './components/Register';
 import HomePage from './pages/start/start'; // Import HomePage
 import MovieDetail from './moviecomponents/MovieDetail'; // Adjust the path as per your directory structure
 import Profile from "./pages/profile/my_profile/my_profile";
+import CreateGroup from './pages/groups/create_group/create_group';
+import EditGroup from './pages/groups/edit_group/edit_group';
+import BrowseAll from './pages/browse/browse_all/browse_all';
+import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 
 
 function App() {
@@ -17,6 +21,11 @@ function App() {
         <Route path="/Auth" element={<Login />} /> {/* Login page */}
         <Route path="/register" element={<Register />} /> {/* Registration page */}
         <Route path="/profile" element={<Profile />} /> {/* Profile page */}
+        <Route path="/create_group" element={<CreateGroup />} /> {/* Profile page */}
+        <Route path="/edit_group" element={<EditGroup />} /> {/* Profile page */}
+        <Route path="/register" element={<Register />} /> {/* Profile page */}
+        <Route path="/browse_all" element={<BrowseAll />} /> {/* Profile page */}
+        <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Profile page */}
       </Routes>
     </Router>
   );
