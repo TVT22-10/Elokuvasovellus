@@ -1,24 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './my_profile.css'; // This uses CSS modules.
 import avatar from "./avatar.png";
+import { jwtToken, userData } from "../../../components/Signals";
+
 
 function Profile() {
   const [activeTab, setActiveTab] = useState('favourites'); // State for active tab
+  const [username, setUsername] = useState(''); // State for the username
+  const [creationDate, setCreationDate] = useState('');
+
+  // Function to generate a shareable link based on the current view
+  const generateShareableLink = () => {
+    const currentLink = `${window.location.origin}/profile?tab=${activeTab}`;
+    
+    // Copying the generated link to the clipboard
+    navigator.clipboard.writeText(currentLink)
+      .then(() => {
+        alert('Link copied to clipboard!');
+      })
+      .catch((error) => {
+        console.error('Unable to copy link: ', error);
+      });
+  };
+
+    useEffect(() => {
+      if (userData.value && userData.value.username) {
+        setUsername(userData.value.username);
+      }
+      if (userData.value && userData.value.creation_time) {
+        const formattedCreationDate = formatCreationDate(userData.value.creation_time);
+        setCreationDate(formattedCreationDate);
+      }
+    }, [userData.value]); 
+    // Seuraa userData-tilan muutoksia
+  console.log(userData.value);
+  
+  const formatCreationDate = (timestamp) => {
+    if (!timestamp) {
+      return 'No creation time';
+    }
+    
+    let date;
+    if (typeof timestamp === 'number') {
+      date = new Date(timestamp * 1000);
+    } else if (typeof timestamp === 'string') {
+      date = new Date(timestamp);
+    } else {
+      return 'Invalid Format';
+    }
+
+    return date.toLocaleDateString();
+  };
 
   return (
     <div className="profile-page">
       <div className="container">
-        <hr className="separator"></hr>
         <div className="profile-container">
           <div className="profile-image">
             <img src={avatar} alt="Avatar" className="avatar" />
           </div>
           <div className="profile">
             <div className="username">
-              <h2>Username here</h2>
+              <h2>{username}</h2>
+              <p>Account Created On: {creationDate}</p>
             </div>
             <div className="share-button">
-              <button id="edit">Share the view</button>
+              <button id="edit" onClick={generateShareableLink}>Share the view</button>
             </div>
             <div className="edit-button">
               <button id="edit">Profile Settings</button>

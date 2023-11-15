@@ -5,6 +5,7 @@ import { Register } from './components/Register';
 import HomePage from './pages/start/start'; // Import HomePage
 import MovieDetail from './moviecomponents/MovieDetail'; // Adjust the path as per your directory structure
 import Profile from "./pages/profile/my_profile/my_profile";
+import EditProfile from "./pages/profile/edit_profile/edit_profile";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/Auth" element={<Login />} /> {/* Login page */}
         <Route path="/register" element={<Register />} /> {/* Registration page */}
         <Route path="/profile" element={<Profile />} /> {/* Profile page */}
+        <Route path="/profile" element={<EditProfile />} /> {/* Edit profile page */}
       </Routes>
     </Router>
   );
