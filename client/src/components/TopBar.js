@@ -6,7 +6,7 @@ import './TopBar.css'; // Import css files
 function TopBar() {
   return (
     <div className="top-bar">
-      <h1>Elokuvakerho</h1>
+      <h1 style ={{ fontSize:'25px'}}>Elokuvakerho</h1>
       <div className="login-link">
         <Link to="/Auth">Login</Link> {/* Link to the login page */}
       </div>

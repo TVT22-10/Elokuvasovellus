@@ -1,0 +1,27 @@
+.movie-detail-container {
+    position: relative;
+    height: 100vh; /* Adjust height as needed */
+  }
+  
+  .movie-background {
+    background-size: cover;
+    background-position: top center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    z-index: -1; /* Places the background behind the content */
+  }
+  
+  .movie-content {
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .movie-detail-poster {
+    width: 300px;
+    margin: 20px;
+  }
+  
