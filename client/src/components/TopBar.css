@@ -43,7 +43,8 @@
   transform: scaleX(1);
 }
 
-.login-link a {
+.login-link a,
+.logout-link a {
   text-decoration: none;
   color: #fff;
   background-color: #007bff;
@@ -53,7 +54,8 @@
   font-size: 1.2rem;
 }
 
-.login-link a:hover {
+.login-link a:hover,
+.logout-link a:hover {
   background-color: #fff;
   color: #007bff;
 }
