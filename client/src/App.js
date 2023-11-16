@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import TopBar from './components/TopBar';
 import { Login } from './components/Auth';
 import { Register } from './components/Register';
-import HomePage from './pages/start/start'; // Import HomePage
-import MovieDetail from './moviecomponents/MovieDetail'; // Adjust the path as per your directory structure
+import HomePage from './pages/start/start'; 
+import MovieDetail from './moviecomponents/MovieDetail'; 
 import Profile from "./pages/profile/my_profile/my_profile";
 import CreateGroup from './pages/groups/create_group/create_group';
 import EditGroup from './pages/groups/edit_group/edit_group';
