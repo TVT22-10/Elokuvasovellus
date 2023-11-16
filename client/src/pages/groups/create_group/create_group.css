@@ -1,10 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-}
+/* 
 
 .top-bar {
     color: white;
@@ -21,11 +15,6 @@ body {
     width: 100%;
 }
 
-h1 {
-    margin: 0px;
-    color: rgb(0, 132, 255);
-
-}
 
 nav {
     display: flex;
@@ -55,7 +44,7 @@ h3 {
 }
 h4 {
     color: white;
-    margin-right: 10px; /* Adjust the margin-right value to move it to the right */
+    margin-right: 10px; 
     margin-top: 100px;
     margin-left: 100px;
     font-size: 1.5em;
@@ -68,15 +57,14 @@ h4 {
 }
 
 input {
-    width: 300px; /* Set a specific width for the search bar */
+    width: 300px; 
     margin-top: 75px;
     height: 20px;
     margin-left: 20px;
 }
 
-/* Center the search bar horizontally */
 .search-container {
     display: flex;
     justify-content: center;
     margin-top: 100px;
-}
+} */
