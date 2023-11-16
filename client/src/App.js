@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import TopBar from './components/TopBar';
 import { Login } from './components/Auth';
+import { AuthProvider } from './components/Contexts'; // Adjust the path if necessary
 import { Register } from './components/Register';
 import HomePage from './pages/start/start'; // Import HomePage
 import MovieDetail from './moviecomponents/MovieDetail'; // Adjust the path as per your directory structure
@@ -10,9 +11,29 @@ import EditGroup from './pages/groups/edit_group/edit_group';
 import BrowseAll from './pages/browse/browse_all/browse_all';
 import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 
+import React, { useContext, useEffect } from 'react';
+
+import { AuthContext } from './components/Contexts'; // Adjust the path as necessary
+
+function RepeatingLogComponent() {
+  const { isLoggedIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log('User is logged in:', isLoggedIn);
+    }, 2000); // Log every 2 seconds
+
+    return () => clearInterval(intervalId); // Clear interval on unmount
+  }, [isLoggedIn]);
+
+  return null; // This component does not render anything
+}
 
 function App() {
   return (
+    <AuthProvider> {/* Wrap everything within AuthProvider */}
+          <RepeatingLogComponent /> {/* Add this line */}
+
     <Router>
       <TopBar /> {/* Render TopBar on all pages */}
       <Routes>
@@ -28,6 +49,8 @@ function App() {
         <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Profile page */}
       </Routes>
     </Router>
+    </AuthProvider>
+
   );
 }
 

@@ -1,22 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import { LoginContext } from "./Contexts";
+import { AuthContext } from './Contexts';
 import { jwtToken, userData } from "./Signals";
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
-function Login() {
-
-    return (
-      <div>
-        <UserInfo/>
-        { jwtToken.value.length === 0 ? <LoginForm/> : 
-          <button onClick={() => jwtToken.value = ''}>Logout</button>}
-      </div>
-    );
-  }
 
   function UserInfo() {
+    const { isLoggedIn } = useContext(AuthContext); // Use isLoggedIn
     useEffect(() => {
         console.log("UserData updated:", userData.value);
     }, [userData.value]);
@@ -26,7 +18,6 @@ function Login() {
             return 'No creation time';
         }
         
-        console.log("Raw Creation Time:", timestamp);
 
         let date;
         if (typeof timestamp === 'number') {
@@ -45,18 +36,19 @@ function Login() {
     const formattedCreationTime = formatCreationTime(userData.value?.creation_time);
 
     return (
-        <div>
-            {jwtToken.value ? (
-                <>
-                    <h1>{userData.value?.private}</h1>
-                    <p>Account Created On: {formattedCreationTime}</p>
-                </>
-            ) : (
-                <h1>You are a guest</h1>
-            )}
-        </div>
+      <div>
+        {isLoggedIn ? ( // Check if the user is logged in
+          <>
+            <h1>{userData.value?.private}</h1>
+            <p>Account Created On: {formattedCreationTime}</p>
+          </>
+        ) : (
+          <h1>You are a guest</h1>
+        )}
+      </div>
     );
-}
+  }
+
 
 
   
@@ -64,34 +56,50 @@ function Login() {
   function LoginForm() {
     const [uname, setUname] = useState('');
     const [pw, setPw] = useState('');
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
   
-    function login() {
+    function handleLogin() {
       axios.post('http://localhost:3001/User/login', { uname, pw })
-    .then(resp => {
-      console.log(resp.data);
-      if (resp.data && resp.data.jwtToken) {
-        jwtToken.value = resp.data.jwtToken;
-        // Assuming resp.data.userData contains user data including creation_time
-        userData.value = resp.data.userData;
-      } else {
-        // Handle the case where jwtToken is not in the response
-        console.log('JWT Token not found in response');
-      }
-    })
-    .catch(error => {
-      console.log(error.response ? error.response.data : error);
-    });
-}
+        .then(resp => {
+          if (resp.data && resp.data.jwtToken) {
+            jwtToken.value = resp.data.jwtToken;
+            userData.value = resp.data.userData;
+            login(); // Call login from context
+            navigate('/'); // Redirect to home page
+          } else {
+            console.log('JWT Token not found in response');
+          }
+        })
+        .catch(error => {
+          console.log(error.response ? error.response.data : error);
+        });
+    }
   
     return (
       <div>
         <input value={uname} onChange={e => setUname(e.target.value)} />
         <input type="password" value={pw} onChange={e => setPw(e.target.value)} />
-        <button onClick={login}>Login</button>
+        <button onClick={handleLogin}>Login</button>
         <p>No account? <Link to="/register">Create a new account</Link>.</p>
       </div>
     );
   }
   
+  function Login() {
+    const { isLoggedIn, logout } = useContext(AuthContext);
+   // Log when isLoggedIn changes
+   useEffect(() => {
+    console.log('User is logged in:', isLoggedIn);
+  }, [isLoggedIn]);
+
+    return (
+      <div>
+        <UserInfo/>
+        { !isLoggedIn ? <LoginForm/> : 
+          <button onClick={logout}>Logout</button>}
+      </div>
+    );
+  }
 
 export {Login};
