@@ -12,6 +12,7 @@
     border-radius: 50%;
     overflow: hidden;
     margin-bottom: 20px;
+    margin-top: 40px;
   }
   
   .profile-picture img {
@@ -54,3 +55,9 @@
     background-color: #ddd;
   }
   
+.username-section h2{
+    margin-top: 20px;
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    font-weight: 400;
+}

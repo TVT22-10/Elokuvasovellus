@@ -1,46 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import avatar from './avatar.png';
 import './edit_profile.css'; // Ota huomioon CSS-tiedosto
-import { jwtToken, userData } from "../../../components/Signals";
+import { userData } from "../../../components/Signals";
+import axios from 'axios';
 
-function EditProfile() {
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
+function Edit_Profile() {
+
+  const [fname, setFname] = useState(userData.value?.firstName || '');
+  const [lname, setLname] = useState(userData.value?.lastName || '');
   const [profilePic, setProfilePic] = useState(null);
   const [username, setUsername] = useState(''); // State for the username
-  const [creationDate, setCreationDate] = useState('');
-    
+  const [changesSaved, setChangesSaved] = useState(false); // State to track if changes are saved
+
   useEffect(() => {
-        if (userData.value && userData.value.username) {
-          setUsername(userData.value.username);
-        }
-        if (userData.value && userData.value.creation_time) {
-          const formattedCreationDate = formatCreationDate(userData.value.creation_time);
-          setCreationDate(formattedCreationDate);
-        }
-      }, [userData.value]); 
-      // Seuraa userData-tilan muutoksia
-    console.log(userData.value);  
+    if (userData.value && userData.value.username) {
+      setUsername(userData.value.username);
+      setFname(userData.value.firstName || ''); // Set initial value for first name
+      setLname(userData.value.lastName || ''); // Set initial value for last name 
+    }
+  }, [userData.value]);
 
+  console.log(userData.value);
 
-    const formatCreationDate = (timestamp) => {
-        if (!timestamp) {
-          return 'No creation time';
-        }
-        
-        let date;
-        if (typeof timestamp === 'number') {
-          date = new Date(timestamp * 1000);
-        } else if (typeof timestamp === 'string') {
-          date = new Date(timestamp);
-        } else {
-          return 'Invalid Format';
-        }
-    
-        return date.toLocaleDateString();
-      };
-
-
+  
   const handleFnameChange = (e) => {
     setFname(e.target.value);
   };
@@ -50,35 +32,69 @@ function EditProfile() {
   };
 
   const handleProfilePicChange = (e) => {
-    // Käsittelijä profiilikuvan muokkaamiseksi
-    // Täällä voit käyttää esim. FileReaderia tiedoston lataamiseen ja asettamiseen stateen
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        setProfilePic(event.target.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleProfileUpdate = () => {
     // Käsittele profiilin päivitys täällä (esim. axios.put() -pyynnöllä)
-  };
+    console.log('Updated First Name:', fname);
+    console.log('Updated Last Name:', lname);
 
-  const handleDeleteProfile = () => {
-    // Käsittele profiilin poisto täällä (esim. axios.delete() -pyynnöllä)
-    // Muista varmistaa käyttäjän toiminta ennen profiilin poistamista
-  };
+    setTimeout(() => {
+        setChangesSaved(false);
+      }, 3000);
+
+      const updatedUserData = {
+        firstName: fname,
+        lastName: lname,
+      };
+  
+      axios.put('http://localhost:3001/User/Edit_Profile', updatedUserData)
+    .then(response => {
+      console.log('Profile updated:', response.data);
+      setChangesSaved(true); // Merkitse muutokset tallennetuiksi
+    })
+    .catch(error => {
+      console.error('Error updating profile:', error);
+      // Käsittely virhetilanteessa
+    });
+
+
+    };
+
+   
+    const handleDeleteProfile = () => {
+      // Käsittele profiilin poisto täällä (esim. axios.delete() -pyynnöllä)
+    };
+
 
   return (
-    
     <div className="edit-profile">
       <div className="profile-picture">
         <img src={profilePic || avatar} alt="Profile" />
         <input type="file" accept="image/*" onChange={handleProfilePicChange} />
       </div>
+      <div className="username-section">
+        <h2>{username}</h2>
+      </div>
       <div className="name-inputs">
-        <input type="text" value={fname} onChange={handleFnameChange} placeholder="First Name" />
-        <input type="text" value={lname} onChange={handleLnameChange} placeholder="Last Name" />
+      <input type="text" value={fname} onChange={handleFnameChange} placeholder={userData.value ? userData.value.fname : "First Name"} />
+      <input type="text" value={lname} onChange={handleLnameChange} placeholder={userData.value ? userData.value.lname : "Last Name"} />
+  
       </div>
       <button onClick={handleProfileUpdate}>Save Changes</button>
       <button onClick={handleDeleteProfile}>Delete Profile</button>
-        <h1>Edit Profile</h1>
+      {changesSaved && <p>Changes have been saved!</p>}
     </div>
-    
   );
-  }
-export default EditProfile;
+}
+export default Edit_Profile;
