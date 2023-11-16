@@ -7,11 +7,6 @@
   background-color: black;
   color: #007bff;
 }
-h1{
-  font-size: 25px;
-  padding: 0px;
-}
-
 
 .button-container {
   display: flex;
