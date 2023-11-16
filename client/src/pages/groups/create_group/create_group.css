@@ -1,11 +1,3 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-}
-
 .top-bar {
     color: white;
     padding: 10px;
