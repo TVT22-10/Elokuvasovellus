@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
     res.json(person);
 });
 
-app.get('/test-tmdb', async (req, res) => {
+app.get('/popular-tmdb', async (req, res) => {
     try {
       const response = await axios.get(`${process.env.TMDB_BASE_URL}movie/popular`, {
         params: {
@@ -61,6 +61,34 @@ app.get('/test-tmdb', async (req, res) => {
         res.status(500).json({ message: "Error fetching movie details from TMDB", error: error.message });
     }
 });
+
+app.get('/movies/:movieId/cast', async (req, res) => {
+  try {
+      const { movieId } = req.params;
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}movie/${movieId}/credits`, {
+          params: {
+              api_key: process.env.TMDB_KEY
+          }
+      });
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching cast information from TMDB", error: error.message });
+  }
+});
+
+app.get('/top-rated-tmdb', async (req, res) => {
+  try {
+    const response = await axios.get(`${process.env.TMDB_BASE_URL}movie/top_rated`, {
+      params: {
+        api_key: process.env.TMDB_KEY
+      }
+    });
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching data from TMDB", error: error.message });
+  }
+});
+
 
 
   

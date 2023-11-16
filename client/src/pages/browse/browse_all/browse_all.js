@@ -1,7 +1,7 @@
 import React from 'react';
-import './browse_everything.css'; // Adjust the path to your stylesheet
+import './browse_all.css'; // Adjust the path to your stylesheet
 
-const MyComponent = () => {
+function BrowseReviews() {
   return (
     <>
       <div className="top-bar">
@@ -20,6 +20,6 @@ const MyComponent = () => {
       </div>
     </>
   );
-};
+}
 
-export default MyComponent;
+export default BrowseReviews;

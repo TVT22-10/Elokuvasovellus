@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
-import './PopularMovies.css';
+import './MovieStyles.css';
 
 function PopularMovies() {
   const [movies, setMovies] = useState([]);
@@ -8,7 +8,7 @@ function PopularMovies() {
   const navigate = useNavigate(); // useNavigate hook
 
   useEffect(() => {
-    fetch('http://localhost:3001/test-tmdb')
+    fetch('http://localhost:3001/popular-tmdb')
       .then(response => response.json())
       .then(data => setMovies(data.results))
       .catch(error => console.error('Error fetching data:', error));
