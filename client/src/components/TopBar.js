@@ -16,7 +16,11 @@ function TopBar() {
 
   return (
     <div className="top-bar">
-      <h1 style={{ fontSize: '25px' }}>Elokuvakerho</h1>
+    <div className="topbartitle">
+    <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <h1>Elokuvakerho</h1>
+    </Link>
+  </div>
       <div className="button-container">
         {/* Always visible: Search and Browse Buttons */}
         <div className="custom-button">
