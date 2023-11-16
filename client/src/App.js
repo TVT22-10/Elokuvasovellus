@@ -11,6 +11,7 @@ import BrowseAll from './pages/browse/browse_all/browse_all';
 import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 
 
+
 function App() {
   return (
     <Router>
@@ -20,7 +21,7 @@ function App() {
         <Route path="/movies/:movieId" element={<MovieDetail />} />
         <Route path="/Auth" element={<Login />} /> {/* Login page */}
         <Route path="/register" element={<Register />} /> {/* Registration page */}
-        <Route path="/profile" element={<Profile />} /> {/* Profile page */}
+        <Route path="/Profile" element={<Profile />} /> {/* Profile page */}
         <Route path="/create_group" element={<CreateGroup />} /> {/* Profile page */}
         <Route path="/edit_group" element={<EditGroup />} /> {/* Profile page */}
         <Route path="/register" element={<Register />} /> {/* Profile page */}
