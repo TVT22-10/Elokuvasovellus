@@ -8,6 +8,12 @@
   color: #007bff;
 }
 
+.topbartitle {
+  font-size: 15px;
+}
+
+/* Additional styles if needed */
+
 
 .button-container {
   display: flex;
@@ -58,4 +64,10 @@
 .logout-link a:hover {
   background-color: #fff;
   color: #007bff;
+}
+
+@media (max-width: 768px) {
+  .topbartitle {
+    font-size: 10px;
+  }
 }
