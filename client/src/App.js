@@ -10,6 +10,7 @@ import CreateGroup from './pages/groups/create_group/create_group';
 import EditGroup from './pages/groups/edit_group/edit_group';
 import BrowseAll from './pages/browse/browse_all/browse_all';
 import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
+import SearchPage from './pages/search/search';
 
 import React, { useContext, useEffect } from 'react';
 
@@ -44,6 +45,7 @@ function App() {
         <Route path="/profile" element={<Profile />} /> {/* Profile page */}
         <Route path="/create_group" element={<CreateGroup />} /> {/* Profile page */}
         <Route path="/edit_group" element={<EditGroup />} /> {/* Profile page */}
+        <Route path="/search" element={<SearchPage />} /> {/* Add this line */}
         <Route path="/register" element={<Register />} /> {/* Profile page */}
         <Route path="/browse_all" element={<BrowseAll />} /> {/* Profile page */}
         <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Profile page */}
