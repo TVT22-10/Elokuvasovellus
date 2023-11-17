@@ -12,8 +12,14 @@ function Edit_Profile() {
   const [profilePic, setProfilePic] = useState(null);
   const [username, setUsername] = useState(''); // State for the username
   const [changesSaved, setChangesSaved] = useState(false); // State to track if changes are saved
+  const [post, setPost] = useState({
+    fname: '',
+    lname: '',
+})
 
   useEffect(() => {
+    axios.get('http://localhost:3001/User/Edit_Profile').then(res => console.log(res.data))
+   
     if (userData.value && userData.value.username) {
       setUsername(userData.value.username);
       setFname(userData.value.firstName || ''); // Set initial value for first name
@@ -23,77 +29,91 @@ function Edit_Profile() {
 
   console.log(userData.value);
 
-  
-  const handleFnameChange = (e) => {
-    setFname(e.target.value);
-  };
+    const handleInput = (event) => {
+        setPost({...post, [event.target.name]: event.target.value})
 
-  const handleLnameChange = (e) => {
-    setLname(e.target.value);
-  };
-
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        setProfilePic(event.target.result);
-      };
-
-      reader.readAsDataURL(file);
     }
-  };
 
-  const handleProfileUpdate = () => {
-    // Käsittele profiilin päivitys täällä (esim. axios.put() -pyynnöllä)
-    console.log('Updated First Name:', fname);
-    console.log('Updated Last Name:', lname);
+    function handleSubmit(event) {
+        event.preventDefault()
+        axios.put('http://localhost:3001/User/Edit_Profile', {post})
+        .then (res => console.log(res.data))
+        .catch(err => console.log(err))
+    }
+//   const handleFnameChange = (e) => {
+//     setFname(e.target.value);
+//   };
 
-    setTimeout(() => {
-        setChangesSaved(false);
-      }, 3000);
+//   const handleLnameChange = (e) => {
+//     setLname(e.target.value);
+//   };
 
-      const updatedUserData = {
-        firstName: fname,
-        lastName: lname,
-      };
+//   const handleProfilePicChange = (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       const reader = new FileReader();
+
+//       reader.onload = (event) => {
+//         setProfilePic(event.target.result);
+//       };
+
+//       reader.readAsDataURL(file);
+//     }
+//   };
+
+//   const handleProfileUpdate = () => {
+//     // Käsittele profiilin päivitys täällä (esim. axios.put() -pyynnöllä)
+//     console.log('Updated First Name:', fname);
+//     console.log('Updated Last Name:', lname);
+
+//     setTimeout(() => {
+//         setChangesSaved(false);
+//       }, 3000);
+
+//       const updatedUserData = {
+//         firstName: fname,
+//         lastName: lname,
+//       };
   
-      axios.put('http://localhost:3001/User/Edit_Profile', updatedUserData)
-    .then(response => {
-      console.log('Profile updated:', response.data);
-      setChangesSaved(true); // Merkitse muutokset tallennetuiksi
-    })
-    .catch(error => {
-      console.error('Error updating profile:', error);
-      // Käsittely virhetilanteessa
-    });
+    //   axios.put('http://localhost:3001/User/Edit_Profile', updatedUserData)
+    // .then(response => {
+    //   console.log('Profile updated:', response.data);
+    //   setChangesSaved(true); // Merkitse muutokset tallennetuiksi
+    // })
+    // .catch(error => {
+    //   console.error('Error updating profile:', error);
+    //   // Käsittely virhetilanteessa
+    // });
 
 
-    };
+    // };
 
    
-    const handleDeleteProfile = () => {
-      // Käsittele profiilin poisto täällä (esim. axios.delete() -pyynnöllä)
-    };
+    // const handleDeleteProfile = () => {
+    //   // Käsittele profiilin poisto täällä (esim. axios.delete() -pyynnöllä)
+    // };
 
 
   return (
     <div className="edit-profile">
       <div className="profile-picture">
         <img src={profilePic || avatar} alt="Profile" />
-        <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+        <input type="file" accept="image/*" />
       </div>
       <div className="username-section">
         <h2>{username}</h2>
       </div>
-      <div className="name-inputs">
-      <input type="text" value={fname} onChange={handleFnameChange} placeholder={userData.value ? userData.value.fname : "First Name"} />
-      <input type="text" value={lname} onChange={handleLnameChange} placeholder={userData.value ? userData.value.lname : "Last Name"} />
-      </div>
-      <button onClick={handleProfileUpdate}>Save Changes</button>
-      <button onClick={handleDeleteProfile}>Delete Profile</button>
-      {changesSaved && <p>Changes have been saved!</p>}
+      {/* <div className="name-inputs"> */}
+      {/* Firstname: <input type="text" value={fname} onChange={handleFnameChange} placeholder={userData.value ? userData.value.fname : "First Name"} />
+      Lastname:<input type="text" value={lname} onChange={handleLnameChange} placeholder={userData.value ? userData.value.lname : "Last Name"} /> */}
+      <form onSubmit={handleSubmit}>
+      Firstname: <input type="text" onChange={handleInput} name="fname"></input><br/><br />
+      Lastname: <input type="text" onChange={handleInput} name="lname"></input><br/><br />
+      {/* <button onClick={handleProfileUpdate}>Save Changes</button> */}
+      <button classname='btn btn-primary'>Save Changes</button>   
+      {/*<button onClick={handleDeleteProfile}>Delete Profile</button>*/}
+      {/*{changesSaved && <p>Changes have been saved!</p>}*/}
+        </form>
     </div>
   );
 }
