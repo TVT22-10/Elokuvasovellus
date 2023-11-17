@@ -1,19 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-}
-
-.top-bar {
-    color: white;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
+/* 
 
 .separator {
     border: 3px solid rgb(0, 132, 255);
@@ -21,10 +6,7 @@ body {
     width: 100%;
 }
 
-h1 {
-    margin: 0;
-    color: rgb(0, 132, 255);
-}
+
 
 nav {
     display: flex;
@@ -58,4 +40,5 @@ nav p {
     margin-left: 50px;
     margin-top: 235px;
     font-size: 1.5em;
-}
+} */
+

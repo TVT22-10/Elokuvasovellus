@@ -1,4 +1,6 @@
 /* Container for the entire movie section, including arrows */
+
+
 .movie-section {
     position: relative;
   }
@@ -113,8 +115,8 @@
   }
   
   .movie-rating-circle {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     margin-bottom: 5px;
     display: flex;
     justify-content: center;
@@ -123,13 +125,13 @@
   
   .rating-circle-bg {
     fill: none;
-    stroke: lightgray;
+    stroke: rgba(255, 255, 255, 0);
     stroke-width: 4;
   }
   
   .rating-circle {
     fill: none;
-    stroke: green;
+    stroke: rgb(113, 245, 113);
     stroke-width: 4;
     stroke-linecap: round;
     transform: rotate(-90deg);

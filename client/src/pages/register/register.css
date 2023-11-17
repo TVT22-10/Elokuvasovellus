@@ -1,0 +1,34 @@
+/* 
+
+.register-button {
+    padding: 10px;
+    margin: 16px; 
+    display: inline-block; 
+    cursor: pointer;
+    background-color: rgb(20, 117, 149);
+    border-radius: 14px;
+    width: 130px;
+    text-align: center;
+}
+
+div {
+    color:aliceblue;
+}
+
+p {
+    color:aliceblue;
+    font-size: 2em;
+    }
+
+    label {
+    text-align: center;
+    color:aliceblue;
+    font-size: 1.5em;
+    margin: 16px;
+}
+
+input {
+    width: 300px;
+    height: 30px; 
+    margin: 10px 0; 
+} */

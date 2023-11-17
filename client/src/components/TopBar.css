@@ -2,15 +2,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 20px;
+  padding: 0px 20px;
   border-bottom: 5px solid #007bff;
   background-color: black;
   color: #007bff;
 }
 
+.topbartitle {
+  font-size: 15px;
+}
+
+/* Additional styles if needed */
+
+
 .button-container {
   display: flex;
-  gap: 30px;
+  gap: 20px;
 }
 
 .profile-link a,
@@ -42,7 +49,8 @@
   transform: scaleX(1);
 }
 
-.login-link a {
+.login-link a,
+.logout-link a {
   text-decoration: none;
   color: #fff;
   background-color: #007bff;
@@ -52,7 +60,14 @@
   font-size: 1.2rem;
 }
 
-.login-link a:hover {
+.login-link a:hover,
+.logout-link a:hover {
   background-color: #fff;
   color: #007bff;
+}
+
+@media (max-width: 768px) {
+  .topbartitle {
+    font-size: 10px;
+  }
 }
