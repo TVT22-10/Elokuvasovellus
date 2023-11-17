@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './my_profile.css'; // This uses CSS modules.
 import avatar from "./avatar.png";
 import { jwtToken, userData } from "../../../components/Signals";
-
+import { Link } from 'react-router-dom';
 
 function Profile() {
   const [activeTab, setActiveTab] = useState('favourites'); // State for active tab
@@ -68,7 +68,9 @@ function Profile() {
               <button id="edit" onClick={generateShareableLink}>Share the view</button>
             </div>
             <div className="edit-button">
-              <button id="edit">Profile Settings</button>
+            <Link to="/edit_profile">
+          <button id="edit">Profile Settings</button>
+        </Link>
             </div>
           </div>
         </div>

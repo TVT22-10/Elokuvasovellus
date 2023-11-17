@@ -3,6 +3,7 @@ import avatar from './avatar.png';
 import './edit_profile.css'; // Ota huomioon CSS-tiedosto
 import { userData } from "../../../components/Signals";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function Edit_Profile() {
 
@@ -89,7 +90,6 @@ function Edit_Profile() {
       <div className="name-inputs">
       <input type="text" value={fname} onChange={handleFnameChange} placeholder={userData.value ? userData.value.fname : "First Name"} />
       <input type="text" value={lname} onChange={handleLnameChange} placeholder={userData.value ? userData.value.lname : "Last Name"} />
-  
       </div>
       <button onClick={handleProfileUpdate}>Save Changes</button>
       <button onClick={handleDeleteProfile}>Delete Profile</button>
