@@ -1,4 +1,6 @@
 /* Container for the entire movie section, including arrows */
+
+
 .movie-section {
     position: relative;
   }
@@ -129,7 +131,7 @@
   
   .rating-circle {
     fill: none;
-    stroke: rgb(1, 205, 1);
+    stroke: rgb(113, 245, 113);
     stroke-width: 4;
     stroke-linecap: round;
     transform: rotate(-90deg);

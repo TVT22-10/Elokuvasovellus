@@ -8,6 +8,13 @@
   color: #007bff;
 }
 
+.topbartitle {
+  font-size: 15px;
+}
+
+/* Additional styles if needed */
+
+
 .button-container {
   display: flex;
   gap: 20px;
@@ -42,7 +49,8 @@
   transform: scaleX(1);
 }
 
-.login-link a {
+.login-link a,
+.logout-link a {
   text-decoration: none;
   color: #fff;
   background-color: #007bff;
@@ -52,7 +60,14 @@
   font-size: 1.2rem;
 }
 
-.login-link a:hover {
+.login-link a:hover,
+.logout-link a:hover {
   background-color: #fff;
   color: #007bff;
+}
+
+@media (max-width: 768px) {
+  .topbartitle {
+    font-size: 10px;
+  }
 }
