@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import './MovieDetail.css';
-
+import './LoadingScreen.css';
 
 
 function MovieDetail() {
@@ -46,8 +46,22 @@ function MovieDetail() {
 
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="overlay">
+        <div className="loading-content">
+          <div className="spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
   }
+  
+  
+  
+  
+  
+  
+  
 
   if (error) {
     return <div>Error: {error}</div>;
