@@ -1,6 +1,7 @@
+
 .movie-content {
   display: flex;
-  padding: 10%;
+  padding: 200px;
   position: relative;
   z-index: 1;
   height: 90vh;

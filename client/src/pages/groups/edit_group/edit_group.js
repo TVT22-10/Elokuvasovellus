@@ -1,5 +1,5 @@
 import React from 'react';
-import './edit_group.css'; 
+import './edit_group.css'; // Import your stylesheet
 
 function EditGroup() {
   return (
@@ -14,6 +14,7 @@ function EditGroup() {
         </nav>
       </div>
       <hr className="separator" />
+
       <div className="box-container">
         <div className="box">Muokkaa ryhmää</div>
         <div className="box">Tietoja</div>

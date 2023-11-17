@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from './Contexts'; // Adjust the path as necessary
 import './TopBar.css';
 
+// Define the TopBar component
 function TopBar() {
   const { isLoggedIn, logout } = useContext(AuthContext);
 
@@ -55,4 +56,6 @@ function TopBar() {
     </div>
   );
 }
+
+// Export the TopBar component
 export default TopBar;
