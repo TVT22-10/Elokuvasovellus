@@ -14,7 +14,7 @@
 .search-movie-card {
     position: relative;
     width: 300px; /* Adjust width as needed */
-    height: auto; /* Adjust height as needed */
+    height:450px; /* Adjust height as needed */
     cursor: pointer;
     overflow: hidden; /* Ensures that nothing goes outside this container */
     
@@ -67,7 +67,6 @@
     background: none;
     height: 1.4375em;
     margin: 0px;
-    -webkit-tap-highlight-color: transparent;
     display: block;
     min-width: 0px;
     width: 100%;
@@ -87,4 +86,30 @@
     border-color: #007bff;
     border-width: 2px; /* Thicker border when focused */
     padding: 15.2px 4px; /* Slightly reduce padding to compensate for the border */
+}
+
+.load-more-container {
+    width: 100%; /* Match the width of the parent container */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center the button horizontally */
+    margin-top: 20px; /* Space above the button */
+}
+
+.load-more-button {
+    font-size: 1rem; /* Match font size */
+    padding: 16.5px 5px; /* Similar padding to search input */
+    width: calc(100% - 10px); /* Full width minus padding */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #000000; /* Light background */
+    cursor: pointer; /* Cursor pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    border: none; /* Explicitly remove border */
+    outline: none; /* Explicitly remove outline */
+    color: #007bff;
+    font-weight: bold; /* Make the text bold */
+
+}
+
+.load-more-button:hover {
+    background-color: #007bff2a; /* Slightly darker background on hover */
 }
