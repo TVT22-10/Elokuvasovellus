@@ -1,6 +1,4 @@
-/* 
-
-.top-bar {
+/* .top-bar {
     color: white;
     padding: 10px;
     display: flex;
@@ -13,7 +11,7 @@
     border: 3px solid rgb(0, 132, 255);
     margin: 0;
     width: 100%;
-}
+} */
 
 
 nav {
@@ -67,4 +65,4 @@ input {
     display: flex;
     justify-content: center;
     margin-top: 100px;
-} */
+} 
