@@ -2,6 +2,7 @@ require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const userRoutes = require('./routes/userRoutes');
+const favoriteRoutes = require('./routes/favoriteRoutes');
 const app = express();
 const axios = require('axios');
 const tmdbApi = require('./tmdb/tmdb.api'); // Adjust the path as needed
@@ -26,6 +27,9 @@ app.use(express.static('public'));
 
 // User routes
 app.use('/user', userRoutes);
+
+// Favourite routes
+app.use('/favorites', favoriteRoutes);
 
 // Root route
 app.get('/', (req, res) => {

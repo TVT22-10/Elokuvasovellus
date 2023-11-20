@@ -1,6 +1,5 @@
 const pgPool = require('./connection');
 
-
 const sql = {
   INSERT_USER: 'INSERT INTO customer VALUES ($1, $2, $3, $4)',
   GET_USERS: 'SELECT fname, lname, username, creation_time FROM customer',
@@ -42,3 +41,4 @@ async function getUserDetails(username) {
 
 
 module.exports = { addUser, getUsers, checkUser, getUserDetails };
+

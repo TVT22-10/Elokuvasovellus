@@ -1,13 +1,9 @@
-
-
 import  React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from './Contexts';
 import { jwtToken, userData } from "./Signals";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
-
 
   function UserInfo() {
     const { isLoggedIn } = useContext(AuthContext); // Use isLoggedIn
@@ -67,7 +63,7 @@ import { useNavigate } from 'react-router-dom';
           if (resp.data && resp.data.jwtToken) {
             jwtToken.value = resp.data.jwtToken;
             userData.value = resp.data.userData;
-            login(); // Call login from context
+            login(resp.data.userData); // Pass userData to the login context function
             navigate('/'); // Redirect to home page
           } else {
             console.log('JWT Token not found in response');
