@@ -145,7 +145,7 @@ function MovieDetail() {
           {/* Add to Favorites button */}
           <div className="favorite-button-container">
   {isLoggedIn && (
-    <button className="favorite-button" onClick={addToFavorites}>
+    <button className="favorite-button1" onClick={addToFavorites}>
       {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
     </button>
   )}

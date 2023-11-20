@@ -186,7 +186,7 @@ margin-right: 0; /* Remove any right margin if present */
   width: 100%; /* Ensure it takes full width */
 }
 
-.favorite-button{
+.favorite-button1{
   text-decoration: none;
   color: #fff;
   background-color: #007bff;
@@ -194,9 +194,12 @@ margin-right: 0; /* Remove any right margin if present */
   border-radius: 5px;
   font-size: 1rem;
   transition: background-color 0.3s ease; /* Add transition for background-color */
+  border: none;
+  cursor: pointer; /* Changes cursor to pointer on hover */
+
 }
 
-.favorite-button:hover{
+.favorite-button1:hover{
   background-color: #007bff81;
 }
 
