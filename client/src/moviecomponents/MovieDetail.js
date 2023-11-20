@@ -13,7 +13,6 @@ function MovieDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const castContainerRef = useRef(null);
-
   const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
@@ -80,13 +79,6 @@ function MovieDetail() {
     );
   }
   
-  
-  
-  
-  
-  
-  
-
   if (error) {
     return <div>Error: {error}</div>;
   }

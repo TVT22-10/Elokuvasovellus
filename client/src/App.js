@@ -49,6 +49,7 @@ function App() {
         <Route path="/browse_all" element={<BrowseAll />} /> {/* Browse all page */}
         <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
         <Route path="/edit_profile" element={<Edit_Profile />} /> {/* Edit profile page */}
+        <Route path="/search" element={<SearchPage />} /> {/* Search page */}
       </Routes>
     </Router>
     </AuthProvider>
