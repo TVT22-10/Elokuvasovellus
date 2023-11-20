@@ -57,7 +57,7 @@ function Edit_Profile() {
             lastName: lname,
           };
           // Send PUT request to update user data
-          await axios.put('/user/Edit_Profile', updatedUserData);
+          await axios.put('/user/profile', updatedUserData);
           // Handle success: Optional
         } catch (error) {
           console.error('Error updating profile:', error);

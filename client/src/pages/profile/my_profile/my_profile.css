@@ -59,13 +59,16 @@ nav p {
 .username {
     display: flex;
     flex-direction: column;
+    
+    
   }
   
   .username h2 {
     margin: 0;
     color: rgb(255, 255, 255);
-    font-size: 25px;
-    font-weight: 400;
+    font-size: 30px;
+    font-weight: 500;
+
   }
 
 .share-button button{
