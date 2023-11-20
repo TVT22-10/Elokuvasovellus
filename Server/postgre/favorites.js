@@ -14,11 +14,12 @@ const getFavorites = async (req, res) => {
 };
 
 const addToFavorites = async (req, res) => {
-  const { username } = req.params;
-  const { movieId } = req.body;
+  const { username } = req.params;  // Extracting username from URL parameters
+  const { movieId } = req.body; 
+
 
   try {
-    await pool.query('INSERT INTO favorites (username, movie_id) VALUES ($1, $2)', [username, movieId]);
+    await pgPool.query('INSERT INTO favorites (username, movie_id) VALUES ($1, $2)', [username, movieId]);
     res.json({ message: 'Movie added to favorites successfully' });
   } catch (error) {
     console.error('Error adding to favorites:', error);
@@ -30,7 +31,7 @@ const removeFromFavorites = async (req, res) => {
   const { username, movieId } = req.params;
 
   try {
-    await pool.query('DELETE FROM favorites WHERE username = $1 AND movie_id = $2', [username, movieId]);
+    await pgPool.query('DELETE FROM favorites WHERE username = $1 AND movie_id = $2', [username, movieId]);
     res.json({ message: 'Movie removed from favorites successfully' });
   } catch (error) {
     console.error('Error removing from favorites:', error);
@@ -38,4 +39,22 @@ const removeFromFavorites = async (req, res) => {
   }
 };
 
-module.exports = { getFavorites, addToFavorites, removeFromFavorites, };
+const checkFavorite = async (req, res) => {
+  const { username } = req.params;
+  const { movieId } = req.query; // Assuming movieId is passed as a query parameter
+
+  try {
+    const result = await pgPool.query('SELECT * FROM favorites WHERE username = $1 AND movie_id = $2', [username, movieId]);
+
+    // If the query returns a row, it means the movie is a favorite
+    const isFavorite = result.rows.length > 0;
+    
+    res.json({ isFavorite: isFavorite });
+  } catch (error) {
+    console.error('Error checking favorite status:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+module.exports = { getFavorites, addToFavorites, removeFromFavorites,checkFavorite };
