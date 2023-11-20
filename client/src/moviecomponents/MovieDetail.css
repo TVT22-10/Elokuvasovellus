@@ -1,7 +1,7 @@
 
 .movie-content {
   display: flex;
-  padding: 200px;
+  padding: 300px;
   position: relative;
   z-index: 1;
   height: 90vh;
@@ -186,6 +186,20 @@ margin-right: 0; /* Remove any right margin if present */
   width: 100%; /* Ensure it takes full width */
 }
 
+.favorite-button{
+  text-decoration: none;
+  color: #fff;
+  background-color: #007bff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease; /* Add transition for background-color */
+}
+
+.favorite-button:hover{
+  background-color: #007bff81;
+}
+
 @media (max-width: 1024px) {
   .movie-content {
     padding: 100px 20px 0 20px;
@@ -219,3 +233,4 @@ margin-right: 0; /* Remove any right margin if present */
     object-fit: contain;
   }
 }
+

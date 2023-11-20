@@ -82,7 +82,7 @@ router.get('/private', async (req, res) => {
 });
 
 // Express-reitti tiedostossa routes/userRoutes.js
-router.put('/Edit_Profile', async (req, res) => {
+router.put('/user/profile', async (req, res) => {
     const { firstName, lastName } = req.body; // Otetaan vastaan etu- ja sukunimi pyynnön rungosta
 
     // Suoritetaan päivityskysely tietokantaan

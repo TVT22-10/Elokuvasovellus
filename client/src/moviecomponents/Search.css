@@ -1,0 +1,115 @@
+.search-results-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap; /* Use flex-wrap for wrapping items */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically (if needed) */
+    gap: 8px; /* Spacing between flex items */
+    margin: 0 auto; /* Center the container */
+    padding: 18px; /* If you want some padding inside the container */
+}
+
+
+
+.search-movie-card {
+    position: relative;
+    width: 300px; /* Adjust width as needed */
+    height:450px; /* Adjust height as needed */
+    cursor: pointer;
+    overflow: hidden; /* Ensures that nothing goes outside this container */
+    
+}
+
+.search-movie-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the area nicely */
+    border-radius: 0; /* Remove border radius for no rounded corners */
+}
+
+.search-movie-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    color: white;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.search-movie-card:hover .search-movie-info {
+    opacity: 1; /* Show on hover */
+}
+
+/* Styling for the title, release date, and rating */
+.search-movie-title, .search-movie-release-date, .search-movie-rating {
+    font-size: 1rem;
+    margin: 0;
+    white-space: nowrap;      /* Prevents the text from wrapping to the next line */
+    overflow: hidden;         /* Hides overflow text */
+    text-overflow: ellipsis;  /* Adds an ellipsis to truncated text */
+    width: 180px; 
+}
+
+/* Add any additional styling as needed */
+.search-input {
+    font: inherit;
+    letter-spacing: inherit;
+    color: currentColor;
+    border: 0px;
+    box-sizing: content-box;
+    background: none;
+    height: 1.4375em;
+    margin: 0px;
+    display: block;
+    min-width: 0px;
+    width: 100%;
+    padding: 16.5px 5px;
+    /* Add any additional styles for the input field */
+    border: 1px solid #5b5b5b; /* Light grey border */
+    border-radius: 4px; /* Optional: if you want rounded corners */
+}
+
+.search-input:hover {
+    border-color: #ffff; /* Changes border color on hover */
+    /* Add any other hover styles if needed */
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #007bff;
+    border-width: 2px; /* Thicker border when focused */
+    padding: 15.2px 4px; /* Slightly reduce padding to compensate for the border */
+}
+
+.load-more-container {
+    width: 100%; /* Match the width of the parent container */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center the button horizontally */
+    margin-top: 20px; /* Space above the button */
+}
+
+.load-more-button {
+    font-size: 1rem; /* Match font size */
+    padding: 16.5px 5px; /* Similar padding to search input */
+    width: calc(100% - 10px); /* Full width minus padding */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #000000; /* Light background */
+    cursor: pointer; /* Cursor pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    border: none; /* Explicitly remove border */
+    outline: none; /* Explicitly remove outline */
+    color: #007bff;
+    font-weight: bold; /* Make the text bold */
+
+}
+
+.load-more-button:hover {
+    background-color: #007bff2a; /* Slightly darker background on hover */
+}
