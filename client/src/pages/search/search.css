@@ -1,0 +1,24 @@
+.heading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.search-movie-heading {
+    display: inline-block; /* Keeps the container tight to the text */
+    position: relative; /* Establishes a positioning context for pseudo-elements */
+    padding-bottom: 5px; /* Adds some space between text and border */
+    text-align: center;
+  }
+  
+  .search-movie-heading::after {
+    content: ''; /* Necessary for pseudo-elements */
+    display: block; /* Makes the pseudo-element behave like a block */
+    width: 50%; /* Adjust this value to control the length of the underline */
+    height: 4px; /* Height of the underline */
+    background-color: #007bff; /* Color of the underline */
+    position: absolute; /* Positions relative to the .movie-heading */
+    bottom: 0; /* Aligns at the bottom of the .movie-heading */
+    left: 0; /* Starts from the left side of the .movie-heading */
+  }

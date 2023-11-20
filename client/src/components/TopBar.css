@@ -28,6 +28,7 @@
   font-size: 1.2rem;
   position: relative;
   overflow: hidden;
+
 }
 
 .profile-link a:before,
@@ -54,20 +55,35 @@
   text-decoration: none;
   color: #fff;
   background-color: #007bff;
-  padding: 5px 10px;
-  border: 1px solid #fff;
+  padding: 10px 20px;
   border-radius: 5px;
   font-size: 1.2rem;
+  transition: background-color 0.3s ease; /* Add transition for background-color */
+
+
 }
 
 .login-link a:hover,
 .logout-link a:hover {
-  background-color: #fff;
-  color: #007bff;
+  background-color: #007bff81; /* Slightly darker background on hover */
 }
 
 @media (max-width: 768px) {
   .topbartitle {
     font-size: 10px;
   }
+}
+
+.text-white {
+  color: #fff; /* White color for 'Elokuva' */
+}
+
+.text-blue {
+  color: #007bff; /* Blue color for 'kerho', same as existing color */
+}
+
+/* ... existing styles ... */
+
+.custom-button a, .profile-link a, .login-link a, .logout-link a {
+  font-weight: 500; /* Semi-bold */
 }

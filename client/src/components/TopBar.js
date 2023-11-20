@@ -18,8 +18,8 @@ function TopBar() {
     <div className="top-bar">
     <div className="topbartitle">
     <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-      <h1>Elokuvakerho</h1>
-    </Link>
+          <h1><span className="text-white">Elokuva</span><span className="text-blue">Kerho</span></h1>
+        </Link>
   </div>
       <div className="button-container">
         {/* Always visible: Search and Browse Buttons */}
