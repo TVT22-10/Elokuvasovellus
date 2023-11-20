@@ -1,13 +1,9 @@
-
-
 import  React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from './Contexts';
 import { jwtToken, userData } from "./Signals";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
-
 
   function UserInfo() {
     const { isLoggedIn } = useContext(AuthContext); // Use isLoggedIn
