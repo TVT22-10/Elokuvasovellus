@@ -93,6 +93,50 @@ app.get('/top-rated-tmdb', async (req, res) => {
   }
 });
 
+app.get('/now-playing', async (req, res) => {
+  try {
+    const response = await axios.get(`${process.env.TMDB_BASE_URL}movie/now_playing`, {
+      params: {
+        api_key: process.env.TMDB_KEY
+      }
+    });
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching data from TMDB", error: error.message });
+  }
+});
+
+app.get('/upcoming', async (req, res) => {
+  try {
+    const response = await axios.get(`${process.env.TMDB_BASE_URL}movie/upcoming`, {
+      params: {
+        api_key: process.env.TMDB_KEY
+      }
+    });
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching data from TMDB", error: error.message });
+  }
+});
+
+app.get('/search', async (req, res) => {
+  try {
+      const query = req.query.query; // Get the search query from URL parameters
+      const page = req.query.page || 1; // Get the page number, default to 1 if not provided
+
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}search/movie`, {
+          params: {
+              api_key: process.env.TMDB_KEY,
+              query: query,
+              page: page // Pass the page parameter to the TMDB API
+          }
+      });
+
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ message: "Error searching TMDB", error: error.message });
+  }
+});
 
 
   

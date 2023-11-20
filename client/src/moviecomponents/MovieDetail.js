@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { AuthContext } from '../components/Contexts'; // Adjust the path as necessary 
 import axios from 'axios';
 import './MovieDetail.css';
+import './LoadingScreen.css';
+
 
 function MovieDetail() {
   const { movieId } = useParams();
@@ -68,8 +70,22 @@ function MovieDetail() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="overlay">
+        <div className="loading-content">
+          <div className="spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
   }
+  
+  
+  
+  
+  
+  
+  
 
   if (error) {
     return <div>Error: {error}</div>;

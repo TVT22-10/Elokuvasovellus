@@ -11,6 +11,8 @@ import EditGroup from './pages/groups/edit_group/edit_group';
 import BrowseAll from './pages/browse/browse_all/browse_all';
 import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 import Edit_Profile from './pages/profile/edit_profile/edit_profile';
+import SearchPage from './pages/search/search';
+
 import React, { useContext, useEffect } from 'react';
 
 import { AuthContext } from './components/Contexts'; // Adjust the path as necessary
@@ -42,12 +44,11 @@ function App() {
         <Route path="/Auth" element={<Login />} /> {/* Login page */}
         <Route path="/register" element={<Register />} /> {/* Registration page */}
         <Route path="/profile" element={<Profile />} /> {/* Profile page */}
-        <Route path="/edit_profile" element={<Edit_Profile />} /> {/* Profile page */}
-        <Route path="/create_group" element={<CreateGroup />} /> {/* Profile page */}
-        <Route path="/edit_group" element={<EditGroup />} /> {/* Profile page */}
-        <Route path="/register" element={<Register />} /> {/* Profile page */}
-        <Route path="/browse_all" element={<BrowseAll />} /> {/* Profile page */}
-        <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Profile page */}
+        <Route path="/create_group" element={<CreateGroup />} /> {/* Create group page */}
+        <Route path="/edit_group/:groupId" element={<EditGroup />} /> {/* Edit group page */}
+        <Route path="/browse_all" element={<BrowseAll />} /> {/* Browse all page */}
+        <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
+        <Route path="/edit_profile" element={<Edit_Profile />} /> {/* Edit profile page */}
       </Routes>
     </Router>
     </AuthProvider>
