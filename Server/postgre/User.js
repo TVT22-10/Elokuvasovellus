@@ -39,6 +39,5 @@ async function getUserDetails(username) {
 }
 
 
-
 module.exports = { addUser, getUsers, checkUser, getUserDetails };
 

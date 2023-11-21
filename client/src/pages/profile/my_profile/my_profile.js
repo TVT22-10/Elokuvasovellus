@@ -10,6 +10,7 @@ function Profile() {
   const [activeTab, setActiveTab] = useState('favourites'); // State for active tab
   const [username, setUsername] = useState(''); // State for the username
   const [creationDate, setCreationDate] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false); // State to track login
   const [favorites, setFavorites] = useState([]); // New state for favorite movies
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -33,6 +34,7 @@ function Profile() {
     if (userData.value) {
       if (userData.value.username && username !== userData.value.username) {
         setUsername(userData.value.username);
+        setLoggedIn(true);
       }
       if (userData.value.creation_time && creationDate !== formatCreationDate(userData.value.creation_time)) {
         const formattedCreationDate = formatCreationDate(userData.value.creation_time);
@@ -83,7 +85,8 @@ function Profile() {
     return date.toLocaleDateString();
   };
 
-  return (
+  
+return (
     <div className="profile-page">
       <div className="container">
         <div className="profile-container">
@@ -95,6 +98,7 @@ function Profile() {
               <h2>{username}</h2>
               <p>Account Created On: {creationDate}</p>
             </div>
+            <div className="bio-buttons">
             <div className="share-button">
               <button id="edit" onClick={generateShareableLink}>Share the view</button>
             </div>
@@ -103,6 +107,7 @@ function Profile() {
           <button id="edit">Profile Settings</button>
         </Link>
             </div>
+          </div>
           </div>
         </div>
         <div className="profile-buttons">

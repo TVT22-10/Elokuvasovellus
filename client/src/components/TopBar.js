@@ -34,7 +34,7 @@ function TopBar() {
         {isLoggedIn && (
           <>
             <div className="custom-button">
-              <Link to="/Groups">Groups</Link>
+              <Link to="/search_groups">Groups</Link>
             </div>
             <div className="profile-link">
               <Link to="/Profile">Profile</Link>

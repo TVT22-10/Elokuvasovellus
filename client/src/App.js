@@ -7,13 +7,14 @@ import HomePage from './pages/start/start'; // Import HomePage
 import MovieDetail from './moviecomponents/MovieDetail'; // Adjust the path as per your directory structure
 import Profile from "./pages/profile/my_profile/my_profile";
 import CreateGroup from './pages/groups/create_group/create_group';
+import GroupPage from './pages/groups/group_page/group_page';
 import EditGroup from './pages/groups/edit_group/edit_group';
 import BrowseAll from './pages/browse/browse_all/browse_all';
 import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 import Edit_Profile from './pages/profile/edit_profile/edit_profile';
 import SearchPage from './pages/search/search';
 import React, { useContext, useEffect } from 'react';
-
+import SearchGroups from './pages/groups/search_groups/search_groups';
 import { AuthContext } from './components/Contexts'; // Adjust the path as necessary
 
 function RepeatingLogComponent() {
@@ -49,7 +50,8 @@ function App() {
         <Route path="/browse_all" element={<BrowseAll />} /> {/* Browse all page */}
         <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
         <Route path="/search" element={<SearchPage />} /> {/* Search page */}
-
+        <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}
+        <Route path="/group_page/" element={<GroupPage />} /> {/* Group page */}
       </Routes>
     </Router>
     </AuthProvider>
