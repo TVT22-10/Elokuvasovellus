@@ -4,7 +4,7 @@ import { AuthContext } from '../components/Contexts'; // Adjust the path as nece
 import axios from 'axios';
 import './MovieDetail.css';
 import './LoadingScreen.css';
-
+import MovieReviews from '../pages/movie_review/movie_review'; 
 
 function MovieDetail() {
   const { movieId } = useParams();
@@ -60,7 +60,7 @@ function MovieDetail() {
       // Replace 'username' with the actual username of the logged-in user
       const username = 'username';
       
-      const response = await axios.post(`http://localhost:3001/favorites/${username}/add`, { movieId });
+      const response = await axios.post(`http://localhost:3001/favorites/${username}`, { movieId });
       
       console.log(response.data);
     } catch (error) {
@@ -120,7 +120,7 @@ function MovieDetail() {
 
           {/* Add to Favorites button */}
           {isLoggedIn && (
-            <button onClick={addToFavorites}>Add to Favorites</button>
+            <button className="favorite-button" onClick={addToFavorites}>Add to Favorites</button>
           )}
 
           <div className="cast-section">
@@ -143,6 +143,9 @@ function MovieDetail() {
             </div>
             <button onClick={() => scrollCast(300)} className="cast-scroll-button right-arrow">&gt;</button>
           </div>
+
+         {/* Reviews section */}
+       <MovieReviews movieId={movieId} />
         </div>
       </div>
     </div>

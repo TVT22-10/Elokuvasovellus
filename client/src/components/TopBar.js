@@ -1,36 +1,43 @@
-// Import necessary libraries, components, and context
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from './Contexts'; // Adjust the path as necessary
 import './TopBar.css';
 
-// Define the TopBar component
 function TopBar() {
   const { isLoggedIn, logout } = useContext(AuthContext);
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  
   const handleLogout = () => {
     logout();
-    // The navigation to '/' will be handled by the Link component itself
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
   };
 
   return (
     <div className="top-bar">
-    <div className="topbartitle">
-    <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <h1><span className="text-white">Elokuva</span><span className="text-blue">Kerho</span></h1>
+      <div className="topbartitle">
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <h1>
+            <span className="text-white">Elokuva</span>
+            <span className="text-blue">Kerho</span>
+          </h1>
         </Link>
-  </div>
+      </div>
       <div className="button-container">
-        {/* Always visible: Search and Browse Buttons */}
         <div className="custom-button">
           <Link to="/Search">Search</Link>
         </div>
-        <div className="custom-button">
-          <Link to="/Browse">Browse</Link>
+        <div className="browse-button" onClick={toggleDropdown}>
+          <span>Browse</span>
+          {showDropdown && (
+            <div className="dropdown-menu">
+              <Link to="/Browse_reviews">Reviews</Link>
+              <Link to="/AllMovies">All Movies</Link>
+            </div>
+          )}
         </div>
-
-        {/* Conditionally visible based on login status */}
         {isLoggedIn && (
           <>
             <div className="custom-button">
@@ -41,12 +48,10 @@ function TopBar() {
             </div>
           </>
         )}
-
-        {/* Login/Logout Button */}
         {isLoggedIn ? (
           <div className="login-link" onClick={logout}>
-          <Link to="/" onClick={handleLogout}>Logout</Link>
-        </div>
+            <Link to="/">Logout</Link>
+          </div>
         ) : (
           <div className="login-link">
             <Link to="/Auth">Login</Link>
@@ -57,5 +62,4 @@ function TopBar() {
   );
 }
 
-// Export the TopBar component
 export default TopBar;

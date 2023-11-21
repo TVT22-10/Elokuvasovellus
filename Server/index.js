@@ -6,7 +6,7 @@ const favoriteRoutes = require('./routes/favoriteRoutes');
 const app = express();
 const axios = require('axios');
 const tmdbApi = require('./tmdb/tmdb.api'); // Adjust the path as needed
-
+const reviewRoutes = require('./routes/reviewRoutes');
 
 const corsOptions = {
     origin: 'http://localhost:3000', // Or whichever origin your client is served from
@@ -17,20 +17,17 @@ const corsOptions = {
 
 // Enable CORS using the options defined above
 app.use(cors(corsOptions));
-
 // Parse request body as JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 // Static files
 app.use(express.static('public'));
-
 // User routes
 app.use('/user', userRoutes);
-
 // Favourite routes
 app.use('/favorites', favoriteRoutes);
-
+// Use the routes
+app.use('/review', reviewRoutes);
 // Root route
 app.get('/', (req, res) => {
     const person = [

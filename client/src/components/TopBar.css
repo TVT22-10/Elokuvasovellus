@@ -12,8 +12,59 @@
   font-size: 15px;
 }
 
-/* Additional styles if needed */
+.browse-button {
+  position: relative;
+}
 
+.browse-button span {
+  text-decoration: none;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 1.2rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.browse-button span:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #007bff;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.browse-button span:hover:before {
+  transform: scaleX(1);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #555;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  z-index: 1;
+}
+
+.dropdown-menu a {
+  padding: 0.25rem;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #777;
+}
 
 .button-container {
   display: flex;
