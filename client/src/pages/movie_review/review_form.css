@@ -1,0 +1,25 @@
+/* review_form.css */
+
+.review-form {
+    margin-top: 20px;
+  }
+  
+  .review-form textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    margin-bottom: 10px;
+  }
+  
+  .review-form button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .review-form button:hover {
+    background-color: #0056b3;
+  }
+  

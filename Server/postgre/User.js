@@ -39,6 +39,7 @@ async function getUserDetails(username) {
 }
 
 
+
 async function setUserAvatar(username, avatarFilename) {
   const query = 'UPDATE customer SET avatar = $1 WHERE username = $2';
   await pgPool.query(query, [avatarFilename, username]);

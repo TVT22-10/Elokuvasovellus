@@ -12,6 +12,17 @@
   width: 60%; /* Fill the width of its parent */
 }
 
+.favorite-button {
+  background-color: #28a745; /* Green background color, you can customize */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
 .background-image {
   background-size: cover;
   background-position: top center;
