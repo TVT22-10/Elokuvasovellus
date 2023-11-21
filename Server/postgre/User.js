@@ -28,9 +28,9 @@ async function checkUser(username){
   }
 
 }
+// In User.js or wherever getUserDetails is defined
 async function getUserDetails(username) {
-  const result = await pgPool.query('SELECT fname, lname, username, creation_time FROM customer WHERE username = $1', [username]);
-  console.log(result.rows); // Log the result
+  const result = await pgPool.query('SELECT fname, lname, username, creation_time, avatar FROM customer WHERE username = $1', [username]);
   if (result.rows.length > 0) {
     return result.rows[0];
   } else {
@@ -39,6 +39,11 @@ async function getUserDetails(username) {
 }
 
 
+async function setUserAvatar(username, avatarFilename) {
+  const query = 'UPDATE customer SET avatar = $1 WHERE username = $2';
+  await pgPool.query(query, [avatarFilename, username]);
+}
 
-module.exports = { addUser, getUsers, checkUser, getUserDetails };
+module.exports = { addUser, getUsers, checkUser, getUserDetails, setUserAvatar };
+
 

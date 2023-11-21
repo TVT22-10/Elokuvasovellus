@@ -7,7 +7,7 @@ const authenticateToken = require('./authMiddleware'); // Adjust the path as nee
 const pgPool = require('../postgre/connection'); // Adjust the path as needed
 
 
-const { addUser, getUsers, checkUser, getUserDetails } = require('../postgre/User');
+const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar } = require('../postgre/User');
 
 router.get('/', async (req, res) => {
 
@@ -102,5 +102,17 @@ router.put('/profile', authenticateToken, async (req, res) => {
     }
 });
 
-
+router.put('/avatar', authenticateToken, async (req, res) => {
+    const username = req.user.username; // Assuming username is stored in req.user
+    const avatarFilename = req.body.avatar;
+  
+    try {
+      await setUserAvatar(username, avatarFilename);
+      res.json({ message: 'Avatar updated successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
 module.exports = router;

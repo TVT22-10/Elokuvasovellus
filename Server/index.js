@@ -7,6 +7,9 @@ const app = express();
 const axios = require('axios');
 const tmdbApi = require('./tmdb/tmdb.api'); // Adjust the path as needed
 
+const fs = require('fs');
+const path = require('path');
+
 
 const corsOptions = {
     origin: 'http://localhost:3000', // Or whichever origin your client is served from
@@ -17,6 +20,9 @@ const corsOptions = {
 
 // Enable CORS using the options defined above
 app.use(cors(corsOptions));
+
+// Serve static files from the 'public' directory
+app.use(express.static('public'));
 
 // Parse request body as JSON
 app.use(express.json());
@@ -136,6 +142,19 @@ app.get('/search', async (req, res) => {
   } catch (error) {
       res.status(500).json({ message: "Error searching TMDB", error: error.message });
   }
+});
+
+app.get('/avatars', (req, res) => {
+  const avatarDir = path.join(__dirname, 'public/avatars'); // Adjust the path as necessary
+
+  fs.readdir(avatarDir, (err, files) => {
+      if (err) {
+          console.error(err);
+          res.status(500).send('Error fetching avatars');
+      } else {
+          res.json(files);
+      }
+  });
 });
 
 
