@@ -63,7 +63,7 @@ import { useNavigate } from 'react-router-dom';
           if (resp.data && resp.data.jwtToken) {
             jwtToken.value = resp.data.jwtToken;
             userData.value = resp.data.userData;
-            login(); // Call login from context
+            login(resp.data.userData); // Pass userData to the login context function
             navigate('/'); // Redirect to home page
           } else {
             console.log('JWT Token not found in response');

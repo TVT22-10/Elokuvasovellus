@@ -14,6 +14,12 @@ function MovieDetail() {
   const [error, setError] = useState('');
   const castContainerRef = useRef(null);
   const { isLoggedIn } = useContext(AuthContext);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { user } = useContext(AuthContext);
+  const username = user?.username;  // Safely access username
+
+
+
 
   useEffect(() => {
     // Fetch movie details
@@ -44,7 +50,17 @@ function MovieDetail() {
         setError(err.message);
         setLoading(false);
       });
-  }, [movieId]);
+      
+      if (username) {
+        axios.get(`http://localhost:3001/favorites/${username}/check`, { params: { movieId } })
+          .then(response => {
+            setIsFavorite(response.data.isFavorite);
+          })
+          .catch(err => console.error('Error checking favorite status:', err));
+      }
+    }, [movieId, username]);
+
+  
 
   const calculateRating = rating => {
     const circumference = 2 * Math.PI * 20;
@@ -56,17 +72,27 @@ function MovieDetail() {
   };
 
   const addToFavorites = async () => {
+    if (!username) return;
+    console.log('Username and MovieID:', { username, movieId }); // Log relevant information
+  
     try {
-      // Replace 'username' with the actual username of the logged-in user
-      const username = 'username';
-      
       const response = await axios.post(`http://localhost:3001/favorites/${username}`, { movieId });
       
+      let response;
+      if (isFavorite) {
+        response = await axios.delete(`http://localhost:3001/favorites/${username}/remove/${movieId}`);
+      } else {
+        response = await axios.post(`http://localhost:3001/favorites/${username}/add`, { movieId });
+      }
+      setIsFavorite(!isFavorite);
       console.log(response.data);
     } catch (error) {
-      console.error('Error adding to favorites:', error);
+      console.error('Error updating favorites:', error);
     }
   };
+  
+  
+  
 
   if (loading) {
     return (
@@ -122,6 +148,16 @@ function MovieDetail() {
           {isLoggedIn && (
             <button className="favorite-button" onClick={addToFavorites}>Add to Favorites</button>
           )}
+          <div className="favorite-button-container">
+  {isLoggedIn && (
+    <button className="favorite-button1" onClick={addToFavorites}>
+      {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+    </button>
+  )}
+</div>
+
+
+          
 
           <div className="cast-section">
             <h2 className="cast-heading">CAST</h2>
