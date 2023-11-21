@@ -40,7 +40,7 @@
     border: 1px solid #ccc;
     width: 200px;
     height: 10px;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     margin-bottom: 20px;
   }
   
@@ -58,18 +58,16 @@
     justify-content: center;
     cursor: pointer; /* Changes cursor to pointer on hover */
     margin-top: 20px;
+    padding: 10px;
 }
 .save-button button{
-    background-color: rgb(0, 132, 255);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 3px;
-    width: 80px;
-    cursor: pointer; /* Changes cursor to pointer on hover */
-
-    height: 30px;
-
+  background-color: rgb(0, 132, 255);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 90px;
+  cursor: pointer;
 }
 
 .save-button button:hover{
