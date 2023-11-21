@@ -76,6 +76,8 @@ function MovieDetail() {
     console.log('Username and MovieID:', { username, movieId }); // Log relevant information
   
     try {
+      const response = await axios.post(`http://localhost:3001/favorites/${username}`, { movieId });
+      
       let response;
       if (isFavorite) {
         response = await axios.delete(`http://localhost:3001/favorites/${username}/remove/${movieId}`);
@@ -143,6 +145,9 @@ function MovieDetail() {
           <p>{movieDetails.overview}</p>
 
           {/* Add to Favorites button */}
+          {isLoggedIn && (
+            <button className="favorite-button" onClick={addToFavorites}>Add to Favorites</button>
+          )}
           <div className="favorite-button-container">
   {isLoggedIn && (
     <button className="favorite-button1" onClick={addToFavorites}>
