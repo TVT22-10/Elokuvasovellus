@@ -8,7 +8,7 @@ function Profile() {
   const [activeTab, setActiveTab] = useState('favourites'); // State for active tab
   const [username, setUsername] = useState(''); // State for the username
   const [creationDate, setCreationDate] = useState('');
-
+  const [loggedIn, setLoggedIn] = useState(false); // State to track login status
   // Function to generate a shareable link based on the current view
   const generateShareableLink = () => {
     const currentLink = `${window.location.origin}/profile?tab=${activeTab}`;
@@ -26,6 +26,7 @@ function Profile() {
     useEffect(() => {
       if (userData.value && userData.value.username) {
         setUsername(userData.value.username);
+        setLoggedIn(true);
       }
       if (userData.value && userData.value.creation_time) {
         const formattedCreationDate = formatCreationDate(userData.value.creation_time);
@@ -51,6 +52,7 @@ function Profile() {
 
     return date.toLocaleDateString();
   };
+
 
   return (
     <div className="profile-page">

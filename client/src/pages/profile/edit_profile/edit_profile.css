@@ -32,8 +32,6 @@
   .name-inputs {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
-    
   }
   
   .name-inputs input {
@@ -42,7 +40,8 @@
     border: 1px solid #ccc;
     width: 200px;
     height: 10px;
-    
+    color: rgb(255, 255, 255);
+    margin-bottom: 20px;
   }
   
   
@@ -51,11 +50,13 @@
     color: rgb(255, 255, 255);
     font-size: 30px;
     font-weight: 400;
+    margin-bottom: 20px;
 }
 
 .save-button{
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 .save-button button{
     background-color: rgb(0, 132, 255);
@@ -64,6 +65,8 @@
     border-radius: 5px;
     padding: 3px;
     width: 80px;
+    height: 30px;
+
 }
 
 .save-button button:hover{

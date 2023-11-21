@@ -39,6 +39,8 @@ async function getUserDetails(username) {
   }
 }
 
-
+async function setName(fname, lname){
+  pgPool.query('UPDATE customer SET fname = $1, lname = $2 WHERE username = $3', [fname, lname, username]);
+}
 
 module.exports = { addUser, getUsers, checkUser, getUserDetails };
