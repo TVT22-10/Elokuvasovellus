@@ -9,7 +9,7 @@ function Profile() {
   const [activeTab, setActiveTab] = useState('favourites'); // State for active tab
   const [username, setUsername] = useState(''); // State for the username
   const [creationDate, setCreationDate] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false); // State to track login status
+  const [loggedIn, setLoggedIn] = useState(false); // State to track login
   // Function to generate a shareable link based on the current view
   const generateShareableLink = () => {
     const currentLink = `${window.location.origin}/profile?tab=${activeTab}`;
@@ -58,8 +58,8 @@ function Profile() {
     return date.toLocaleDateString();
   };
 
-
-  return (
+  
+return (
     <div className="profile-page">
       <div className="container">
         <div className="profile-container">
@@ -71,6 +71,7 @@ function Profile() {
               <h2>{username}</h2>
               <p>Account Created On: {creationDate}</p>
             </div>
+            <div className="bio-buttons">
             <div className="share-button">
               <button id="edit" onClick={generateShareableLink}>Share the view</button>
             </div>
@@ -79,6 +80,7 @@ function Profile() {
           <button id="edit">Profile Settings</button>
         </Link>
             </div>
+          </div>
           </div>
         </div>
         <div className="profile-buttons">
