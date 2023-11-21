@@ -4,6 +4,7 @@ import avatar from "./avatar.png";
 import { jwtToken, userData } from "../../../components/Signals";
 import { Link } from 'react-router-dom';
 
+
 function Profile() {
   const [activeTab, setActiveTab] = useState('favourites'); // State for active tab
   const [username, setUsername] = useState(''); // State for the username
@@ -23,18 +24,22 @@ function Profile() {
       });
   };
 
-    useEffect(() => {
-      if (userData.value && userData.value.username) {
+  useEffect(() => {
+    // Check if userData.value has the necessary properties before setting state
+    if (userData.value) {
+      if (userData.value.username && username !== userData.value.username) {
         setUsername(userData.value.username);
         setLoggedIn(true);
       }
-      if (userData.value && userData.value.creation_time) {
+      if (userData.value.creation_time && creationDate !== formatCreationDate(userData.value.creation_time)) {
         const formattedCreationDate = formatCreationDate(userData.value.creation_time);
         setCreationDate(formattedCreationDate);
       }
-    }, [userData.value]); 
+    }
+  }, [userData.value, username, creationDate]); // Include username and creationDate in the dependency array
+  
     // Seuraa userData-tilan muutoksia
-  console.log(userData.value);
+  //console.log(userData.value);
   
   const formatCreationDate = (timestamp) => {
     if (!timestamp) {

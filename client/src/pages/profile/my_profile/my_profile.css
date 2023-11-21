@@ -77,7 +77,8 @@ nav p {
     border: none;
     border-radius: 5px;
     padding: 3px;
-    cursor: pointer;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+
 }
 .share-button button:hover{
     background-color: rgb(23, 92, 148);
@@ -91,7 +92,8 @@ nav p {
     border: none;
     border-radius: 5px;
     padding: 3px;
-    cursor: pointer;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+
 }
 
 .edit-button button:hover{
@@ -107,6 +109,8 @@ nav p {
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     grid-gap: 80px;
     margin-top: 30px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+
 }
 
 .profile-buttons button{

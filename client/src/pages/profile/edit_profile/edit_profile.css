@@ -56,6 +56,7 @@
 .save-button{
     display: flex;
     justify-content: center;
+    cursor: pointer; /* Changes cursor to pointer on hover */
     margin-top: 20px;
 }
 .save-button button{
@@ -65,6 +66,8 @@
     border-radius: 5px;
     padding: 3px;
     width: 80px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+
     height: 30px;
 
 }

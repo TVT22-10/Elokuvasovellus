@@ -1,21 +1,27 @@
 import React, { createContext, useState } from 'react';
-import { jwtToken, userData } from './Signals'; // Adjust the path as necessary
+import { jwtToken } from './Signals'; // Removed unused userData import
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
 
   // Function to update the login state
-  const login = () => setIsLoggedIn(true);
+  const login = (userData) => {
+    setIsLoggedIn(true);
+    setUser(userData);  // Update user state with passed userData
+  };
+  
+
   const logout = () => {
     setIsLoggedIn(false);
+    setUser({});  // Reset user data
     jwtToken.value = ''; // Reset jwtToken
-    userData.value = {}; // Reset userData
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, user }}>
       {children}
     </AuthContext.Provider>
   );
