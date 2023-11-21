@@ -1,32 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import avatar from './avatar.png';
 import './edit_profile.css';
 import { jwtToken, userData } from "../../../components/Signals";
 import axios from 'axios';
 
 function Edit_Profile() {
-    const [fname, setFname] = useState(userData.value?.firstName || '');
-    const [lname, setLname] = useState(userData.value?.lastName || '');
-    const [profilePic, setProfilePic] = useState(null);
+    const [fname, setFname] = useState(userData.value?.fname || '');
+    const [lname, setLname] = useState(userData.value?.lname || '');
     const [changesSaved, setChangesSaved] = useState(false);
+    const [availableAvatars, setAvailableAvatars] = useState([]);
+    const [selectedAvatar, setSelectedAvatar] = useState(userData.value?.avatar || 'avatar1.png'); // Default to 'avatar1.png'
+    const [showAvatarDropdown, setShowAvatarDropdown] = useState(false); // New state for toggling avatar dropdown
 
     useEffect(() => {
         const token = jwtToken.value;
 
-        // Fetch user data when the component mounts if it's not already available
-        if (!userData.value || !userData.value.firstName || !userData.value.lastName) {
+        // Fetch user data
+        if (!userData.value || !userData.value.fname || !userData.value.lname) {
             axios.get('http://localhost:3001/user/private', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             .then(response => {
-                const { firstName, lastName } = response.data;
-                setFname(firstName || '');
-                setLname(lastName || '');
+                const { fname, lname, avatar } = response.data;
+                setFname(fname || '');
+                setLname(lname || '');
+                setSelectedAvatar(avatar || 'avatar1.png');
             })
             .catch(error => console.error('Error fetching user data:', error));
         }
+    }, []);
+
+    useEffect(() => {
+        // Fetch available avatars
+        axios.get('http://localhost:3001/avatars')
+            .then(response => {
+                setAvailableAvatars(response.data);
+            })
+            .catch(error => console.error('Error fetching avatars:', error));
     }, []);
 
     const handleInput = (event) => {
@@ -35,12 +46,22 @@ function Edit_Profile() {
         if (name === 'lname') setLname(value);
     };
 
+    const handleAvatarSelect = (avatarName) => {
+        setSelectedAvatar(avatarName);
+        setShowAvatarDropdown(false); // Hide the dropdown after selection
+    };
+
+    const toggleAvatarDropdown = () => {
+        setShowAvatarDropdown(!showAvatarDropdown); // Toggle dropdown visibility
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
             const updatedUserData = {
                 firstName: fname,
                 lastName: lname,
+                avatar: selectedAvatar
             };
             const token = jwtToken.value;
             await axios.put('http://localhost:3001/user/profile', updatedUserData, {
@@ -49,6 +70,8 @@ function Edit_Profile() {
                 }
             });
             setChangesSaved(true);
+            // Update userData in Signals
+            userData.value = {...userData.value, fname, lname, avatar: selectedAvatar};
         } catch (error) {
             console.error('Error updating profile:', error);
         }
@@ -56,10 +79,27 @@ function Edit_Profile() {
 
     return (
         <div className="edit-profile">
-            <div className="profile-picture">
-                <img src={profilePic || avatar} alt="Profile" />
-                <input type="file" accept="image/*" />
+            {/* Current Profile Picture */}
+            <div className="current-profile-picture">
+            <img src={`http://localhost:3001/avatars/${selectedAvatar}`} alt="Current Profile" className="current-avatar" />
+            <button onClick={toggleAvatarDropdown} className="change-avatar-button">Change Avatar</button>
             </div>
+
+            {showAvatarDropdown && (
+                <div className="avatar-selection">
+                    {availableAvatars.map((avatarName, index) => (
+                        <img 
+                            key={index} 
+                            src={`http://localhost:3001/avatars/${avatarName}`} 
+                            alt={`Avatar ${index}`}
+                            onClick={() => handleAvatarSelect(avatarName)}
+                            className={selectedAvatar === avatarName ? 'selected-avatar' : 'avatar-option'}
+                        />
+                    ))}
+                </div>
+            )}
+
+            {/* User Details Form */}
             <form onSubmit={handleSubmit}>
                 <div className="name-inputs">
                     First Name: 
