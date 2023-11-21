@@ -1,70 +1,38 @@
-/* 
 
-.top-bar {
-    color: white;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.separator {
-    border: 3px solid rgb(0, 132, 255);
-    margin: 0;
-    width: 100%;
-}
-
-
-nav {
-    display: flex;
-    color: white;
-}
-
-nav p {
-    margin: 0 20px;
-    cursor: pointer;
-    color: white;
-    font-size: 1em;
-    justify-content: space-between;
-}
-
-h2 {
-    color: white;
-    margin-left: 100px;
-   font-size: 2em;
-   margin-top: 200px;
-}
-
-h3 {
-    color: white;
-   margin-left: 1100px;
-   font-size: 2em;
-   margin-top: -60px;
-}
-h4 {
-    color: white;
-    margin-right: 10px; 
-    margin-top: 100px;
-    margin-left: 100px;
-    font-size: 1.5em;
-}
-
-.label-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-input {
-    width: 300px; 
-    margin-top: 75px;
-    height: 20px;
-    margin-left: 20px;
-}
-
-.search-container {
+.group_container {
     display: flex;
     justify-content: center;
-    margin-top: 100px;
-} */
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  
+  .group_container .group-name,
+  .group_container .group-description {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  
+
+  .group_container input {
+    width: 400px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-top: 5px; /* Adjust margin here */
+  }
+ 
+    .group_container textarea {
+        max-width: 400px;
+        min-width: 400px;
+        max-height: 200px;
+        min-height: 100px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin-top: 5px; /* Adjust margin here */
+    }
+    

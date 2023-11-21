@@ -3,6 +3,9 @@ const multer = require('multer'); // Import multer for handling file uploads
 const upload = multer({ dest: 'upload/' }); // Initialize the multer middleware
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const authenticateToken = require('./authMiddleware'); // Adjust the path as needed
+const pgPool = require('../postgre/connection'); // Adjust the path as needed
+
 
 const { addUser, getUsers, checkUser, getUserDetails } = require('../postgre/User');
 
@@ -82,7 +85,7 @@ router.get('/private', async (req, res) => {
 });
 
 // Express-reitti tiedostossa routes/userRoutes.js
-router.put('/Edit_Profile', async (req, res) => {
+router.put('/profile', authenticateToken, async (req, res) => {
     const { firstName, lastName } = req.body; // Otetaan vastaan etu- ja sukunimi pyynnön rungosta
 
     // Suoritetaan päivityskysely tietokantaan
@@ -91,7 +94,7 @@ router.put('/Edit_Profile', async (req, res) => {
         const query = 'UPDATE customer SET fname = $1, lname = $2 WHERE username = $3';
         // Oletetaan, että `uname` on käyttäjän yksilöivä tieto tietokannassa
         
-        await pgPool.query(query, [firstName, lastName, req.user.user_id]);
+        await pgPool.query(query, [firstName, lastName, req.user.username]);
 
         res.status(200).json({ message: 'User details updated successfully' });
     } catch (error) {

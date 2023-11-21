@@ -1,0 +1,86 @@
+.my-groups h2 {
+    color: white;
+    margin-left: 100px;
+    margin-top: 100px;
+    font-size: 2em;
+}
+
+h3 {
+    color: white;
+   margin-left: 1100px;
+   font-size: 2em;
+   margin-top: -60px;
+}
+
+.label-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.label-name h2 {
+    color: white; 
+    margin-top: 100px;
+    font-size: 2em;
+    position: relative;
+}
+
+.search-label input {
+    width: 400px; 
+    margin-top: 10px;
+    height: 20px;
+}
+
+.search-label {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.label-name h2::after {
+    content: ''; /* Add content to enable pseudo-element */
+    width: 40%; /* Extend the line to cover the width of the h2 */
+    height: 3px;
+    background-color: rgb(0, 132, 255);
+    position: absolute; /* Position the line relative to the h2 */
+    bottom: -5px; /* Position the line below the h2 text */
+    left: 0; /* Align the line to the left */
+  }
+
+  .new-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+  }
+  .new-group button{
+    background-color: rgb(0, 132, 255);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .new-group button:hover{
+    background-color: rgb(23, 92, 148);
+    color: white;
+    border: none;
+  }
+
+  .my-groups h2{
+    color: white;
+    margin-left: 50px;
+    margin-top: 100px;
+    font-size: 2em;
+    position: relative;
+  }
+
+  .my-groups h2::after {
+    content: ''; /* Add content to enable pseudo-element */
+    width: 50px; /* Extend the line to cover the width of the h2 */
+    height: 3px;
+    background-color: rgb(0, 132, 255);
+    position: absolute; /* Position the line relative to the h2 */
+    bottom: -5px; /* Position the line below the h2 text */
+    left: 0; /* Align the line to the left */
+  }
