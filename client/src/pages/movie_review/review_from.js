@@ -16,7 +16,7 @@ function ReviewForm({ movieId }) {
 
     try {
       const response = await axios.post('http://localhost:3001/review', {
-        username: userData.value.private, // Assuming the username is stored in userData.private
+        username: userData, 
         movieId,
         rating,
         reviewText,
