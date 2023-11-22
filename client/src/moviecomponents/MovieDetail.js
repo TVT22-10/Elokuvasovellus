@@ -4,7 +4,7 @@ import { AuthContext } from '../components/Contexts'; // Adjust the path as nece
 import axios from 'axios';
 import './MovieDetail.css';
 import './LoadingScreen.css';
-import MovieReviews from '../pages/movie_review/movie_review'; 
+import MovieReviews from '../pages/movie_review/movie_review';
 
 function MovieDetail() {
   const { movieId } = useParams();
@@ -17,9 +17,6 @@ function MovieDetail() {
   const [isFavorite, setIsFavorite] = useState(false);
   const { user } = useContext(AuthContext);
   const username = user?.username;  // Safely access username
-
-
-
 
   useEffect(() => {
     // Fetch movie details
@@ -50,17 +47,16 @@ function MovieDetail() {
         setError(err.message);
         setLoading(false);
       });
-      
-      if (username) {
-        axios.get(`http://localhost:3001/favorites/${username}/check`, { params: { movieId } })
-          .then(response => {
-            setIsFavorite(response.data.isFavorite);
-          })
-          .catch(err => console.error('Error checking favorite status:', err));
-      }
-    }, [movieId, username]);
 
-  
+    // Check favorite status
+    if (username) {
+      axios.get(`http://localhost:3001/favorites/${username}/check`, { params: { movieId } })
+        .then(response => {
+          setIsFavorite(response.data.isFavorite);
+        })
+        .catch(err => console.error('Error checking favorite status:', err));
+    }
+  }, [movieId, username]);
 
   const calculateRating = rating => {
     const circumference = 2 * Math.PI * 20;
@@ -74,11 +70,11 @@ function MovieDetail() {
   const addToFavorites = async () => {
     if (!username) return;
     console.log('Username and MovieID:', { username, movieId }); // Log relevant information
-  
+
     try {
       const response = await axios.post(`http://localhost:3001/favorites/${username}`, { movieId });
-      
-      let response;
+
+      // Remove the first declaration of response since it's not being used here
       if (isFavorite) {
         response = await axios.delete(`http://localhost:3001/favorites/${username}/remove/${movieId}`);
       } else {
@@ -90,9 +86,6 @@ function MovieDetail() {
       console.error('Error updating favorites:', error);
     }
   };
-  
-  
-  
 
   if (loading) {
     return (
@@ -104,7 +97,7 @@ function MovieDetail() {
       </div>
     );
   }
-  
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -145,19 +138,14 @@ function MovieDetail() {
           <p>{movieDetails.overview}</p>
 
           {/* Add to Favorites button */}
-          {isLoggedIn && (
-            <button className="favorite-button" onClick={addToFavorites}>Add to Favorites</button>
-          )}
-          <div className="favorite-button-container">
-  {isLoggedIn && (
-    <button className="favorite-button1" onClick={addToFavorites}>
-      {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-    </button>
-  )}
-</div>
-
-
           
+          <div className="favorite-button-container">
+            {isLoggedIn && (
+              <button className="favorite-button1" onClick={addToFavorites}>
+                {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              </button>
+            )}
+          </div>
 
           <div className="cast-section">
             <h2 className="cast-heading">CAST</h2>
@@ -180,8 +168,8 @@ function MovieDetail() {
             <button onClick={() => scrollCast(300)} className="cast-scroll-button right-arrow">&gt;</button>
           </div>
 
-         {/* Reviews section */}
-       <MovieReviews movieId={movieId} />
+          {/* Reviews section */}
+          <MovieReviews movieId={movieId} />
         </div>
       </div>
     </div>

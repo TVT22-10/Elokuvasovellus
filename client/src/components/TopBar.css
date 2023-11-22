@@ -12,10 +12,14 @@
   font-size: 15px;
 }
 
+.profile-link,
+.custom-button,
 .browse-button {
   position: relative;
 }
 
+.profile-link a,
+.custom-button a,
 .browse-button span {
   text-decoration: none;
   color: #fff;
@@ -26,6 +30,8 @@
   cursor: pointer;
 }
 
+.profile-link a:before,
+.custom-button a:before,
 .browse-button span:before {
   content: '';
   position: absolute;
@@ -39,6 +45,8 @@
   transition: transform 0.3s ease;
 }
 
+.profile-link a:hover:before,
+.custom-button a:hover:before,
 .browse-button span:hover:before {
   transform: scaleX(1);
 }
@@ -71,36 +79,6 @@
   gap: 20px;
 }
 
-.profile-link a,
-.custom-button a {
-  text-decoration: none;
-  color: #fff;
-  padding: 5px 10px;
-  font-size: 1.2rem;
-  position: relative;
-  overflow: hidden;
-
-}
-
-.profile-link a:before,
-.custom-button a:before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #007bff;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.profile-link a:hover:before,
-.custom-button a:hover:before {
-  transform: scaleX(1);
-}
-
 .login-link a,
 .logout-link a {
   text-decoration: none;
@@ -109,14 +87,12 @@
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 1.2rem;
-  transition: background-color 0.3s ease; /* Add transition for background-color */
-
-
+  transition: background-color 0.3s ease;
 }
 
 .login-link a:hover,
 .logout-link a:hover {
-  background-color: #007bff81; /* Slightly darker background on hover */
+  background-color: #007bff81;
 }
 
 @media (max-width: 768px) {
@@ -126,15 +102,17 @@
 }
 
 .text-white {
-  color: #fff; /* White color for 'Elokuva' */
+  color: #fff;
 }
 
 .text-blue {
-  color: #007bff; /* Blue color for 'kerho', same as existing color */
+  color: #007bff;
 }
 
-/* ... existing styles ... */
-
-.custom-button a, .profile-link a, .login-link a, .logout-link a {
-  font-weight: 500; /* Semi-bold */
+.custom-button a,
+.profile-link a,
+.login-link a,
+.logout-link a,
+.browse-button span {
+  font-weight: 500;
 }
