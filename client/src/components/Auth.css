@@ -1,0 +1,84 @@
+/* Add some basic styling to improve the look of the Auth page */
+.auth-container {
+    max-width: 400px;
+    margin: auto;
+    margin-top: 30px;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center the content */
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+    padding-top: 10px;  
+  }
+  
+  input {
+    width: 80%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    display: block; /* Ensure input fields are on new lines */
+    margin: 0 auto; /* Center the input fields */
+  }
+  
+  /* Add an individual class for the login button */
+  .login-button {
+    margin-top: 10px;
+    margin-bottom: 40px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    background-color: #45a049;
+  }
+  
+  .link {
+    color: #3498db;
+    text-decoration: none;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+  }
+  
+  .user-info {
+    margin-top: 20px;
+  }
+  
+  /* Style for the user information section */
+  .user-info h1 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .user-info p {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .guest-message {
+    font-size: 24px;
+    color: #ffffff;
+  }
+  
+  .guest-message h1 {
+    margin-top: 60px;
+    text-align: center;
+    font-size: 19px;
+    color: #ffffff;
+  }
+  
+  .error-message {
+    color: #ff0000; /* Red font color */
+    margin-top: 10px; /* Adjust margin-top as needed */
+    text-align: center;
+  }

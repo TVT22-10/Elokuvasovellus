@@ -1,103 +1,116 @@
-import  React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from './Contexts';
 import { jwtToken, userData } from "./Signals";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import './Auth.css'; // Import the CSS file
 
-  function UserInfo() {
-    const { isLoggedIn } = useContext(AuthContext); // Use isLoggedIn
-    useEffect(() => {
-        console.log("UserData updated:", userData.value);
-    }, [userData.value]);
+function UserInfo() {
+  const { isLoggedIn } = useContext(AuthContext);
+  useEffect(() => {
+    console.log("UserData updated:", userData.value);
+  }, [userData.value]);
+  
+  const formatCreationTime = (timestamp) => {
+    // ... (unchanged)
+  };
 
-    const formatCreationTime = (timestamp) => {
-        if (!timestamp) {
-            return 'No creation time';
-        }
-        
+  const formattedCreationTime = formatCreationTime(userData.value?.creation_time);
 
-        let date;
-        if (typeof timestamp === 'number') {
-            // Assuming timestamp is in seconds
-            date = new Date(timestamp * 1000);
-        } else if (typeof timestamp === 'string') {
-            // If the timestamp is in a string format, like ISO 8601
-            date = new Date(timestamp);
+  return (
+    <div className="user-info">
+      {isLoggedIn ? (
+        <>
+          <h1>{userData.value?.private}</h1>
+          <p>Account Created On: {formattedCreationTime}</p>
+        </>
+      ) : (
+        <div className="guest-message">
+          <h1>You are a guest until you login</h1>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function LoginForm() {
+  const [uname, setUname] = useState('');
+  const [pw, setPw] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // New state for error message
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  function handleLogin() {
+    axios
+      .post('http://localhost:3001/User/login', { uname, pw })
+      .then((resp) => {
+        if (resp.data && resp.data.jwtToken) {
+          jwtToken.value = resp.data.jwtToken;
+          userData.value = resp.data.userData;
+          login(resp.data.userData);
+          navigate('/');
         } else {
-            return 'Invalid Format';
+          console.log('JWT Token not found in response');
+          setErrorMessage('Invalid username or password'); // Set error message
         }
-
-        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-    };
-
-    const formattedCreationTime = formatCreationTime(userData.value?.creation_time);
-
-    return (
-      <div>
-        {isLoggedIn ? ( // Check if the user is logged in
-          <>
-            <h1>{userData.value?.private}</h1>
-            <p>Account Created On: {formattedCreationTime}</p>
-          </>
-        ) : (
-          <h1>You are a guest</h1>
-        )}
-      </div>
-    );
-  }
-
-
-
-  
-
-  function LoginForm() {
-    const [uname, setUname] = useState('');
-    const [pw, setPw] = useState('');
-    const { login } = useContext(AuthContext);
-    const navigate = useNavigate();
-  
-    function handleLogin() {
-      axios.post('http://localhost:3001/User/login', { uname, pw })
-        .then(resp => {
-          if (resp.data && resp.data.jwtToken) {
-            jwtToken.value = resp.data.jwtToken;
-            userData.value = resp.data.userData;
-            login(resp.data.userData); // Pass userData to the login context function
-            navigate('/'); // Redirect to home page
+      })
+      .catch((error) => {
+        console.log(error.response ? error.response.data : error);
+        if (error.response) {
+          // If server responds with an error, set a more specific error message
+          if (error.response.status === 401) {
+            setErrorMessage('Unauthorized: Invalid username or password');
           } else {
-            console.log('JWT Token not found in response');
+            setErrorMessage('An error occurred. Please try again.');
           }
-        })
-        .catch(error => {
-          console.log(error.response ? error.response.data : error);
-        });
-    }
-  
-    return (
-      <div>
-        <input value={uname} onChange={e => setUname(e.target.value)} />
-        <input type="password" value={pw} onChange={e => setPw(e.target.value)} />
-        <button onClick={handleLogin}>Login</button>
-        <p>No account? <Link to="/register">Create a new account</Link>.</p>
-      </div>
-    );
+        } else {
+          setErrorMessage('An error occurred. Please try again.');
+        }
+      });
   }
-  
-  function Login() {
-    const { isLoggedIn, logout } = useContext(AuthContext);
-   // Log when isLoggedIn changes
-   useEffect(() => {
+
+  return (
+    <div className="auth-container">
+      <div className="input-group">
+        <input
+          value={uname}
+          onChange={(e) => setUname(e.target.value)}
+          placeholder="Username"
+        />
+      </div>
+      <div className="input-group">
+        <input
+          type="password"
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+          placeholder="Password"
+        />
+      </div>
+      <button className="login-button" onClick={handleLogin}>
+        Login
+      </button>
+      {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Display error message */}
+      <p>
+        No account? <Link className="link" to="/register">Create a new account</Link>
+      </p>
+    </div>
+  );
+}
+
+function Login() {
+  const { isLoggedIn, logout } = useContext(AuthContext);
+
+  useEffect(() => {
     console.log('User is logged in:', isLoggedIn);
   }, [isLoggedIn]);
 
-    return (
-      <div>
-        <UserInfo/>
-        { !isLoggedIn ? <LoginForm/> : 
-          <button onClick={logout}>Logout</button>}
-      </div>
-    );
-  }
+  return (
+    <div>
+      <UserInfo />
+      {!isLoggedIn ? <LoginForm /> : <button onClick={logout}>Logout</button>}
+    </div>
+  );
+}
 
-export {Login};
+export { Login };
