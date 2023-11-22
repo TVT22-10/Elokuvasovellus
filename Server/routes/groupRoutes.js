@@ -1,19 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const { addGroup } = require('../postgre/group');
+const authenticateToken = require('./authMiddleware'); // Adjust the path as needed
 
-// POST request to add a new group
-router.post('/add', async (req, res) => {
-  try {
-    const { username, group_id, groupName, groupDescription } = req.body;
+// Import necessary functions from your controller
+const {
+    createGroup,
+    getGroupMembers,
+    sendJoinRequest,
+    viewJoinRequests,
+    handleJoinRequest,
+} = require('../postgre/group.js');
 
-    // Call the addGroup function from your pg file
-    const newGroup = await addGroup(username, group_id, groupName, groupDescription);
+// Route to create a new group
+router.post('/create', authenticateToken, createGroup);
 
-    res.status(201).json({ message: 'Group added successfully', newGroup });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// Route to get all members of a group
+router.get('/:groupId/members', getGroupMembers);
+
+router.post('/:groupId/request-join', authenticateToken, sendJoinRequest);
+
+router.get('/:groupId/requests', authenticateToken, viewJoinRequests);
+
+router.put('/:groupId/requests/:requestId', authenticateToken, handleJoinRequest);
+
+// Add more routes as needed...
 
 module.exports = router;

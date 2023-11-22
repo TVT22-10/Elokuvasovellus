@@ -31,6 +31,7 @@ app.use('/favorites', favoriteRoutes);
 app.use('/review', reviewRoutes);
 // Root route
 app.use('/groups', groupRoutes);
+//mo
 
 app.get('/', (req, res) => {
     const person = [
