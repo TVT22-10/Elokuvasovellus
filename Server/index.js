@@ -7,6 +7,7 @@ const app = express();
 const axios = require('axios');
 const tmdbApi = require('./tmdb/tmdb.api'); // Adjust the path as needed
 const reviewRoutes = require('./routes/reviewRoutes');
+const groupRoutes = require('./routes/groupRoutes');
 
 const corsOptions = {
     origin: 'http://localhost:3000', // Or whichever origin your client is served from
@@ -29,6 +30,8 @@ app.use('/favorites', favoriteRoutes);
 // Use the routes
 app.use('/review', reviewRoutes);
 // Root route
+app.use('/groups', groupRoutes);
+
 app.get('/', (req, res) => {
     const person = [
         { fname: 'John', lname: 'Doe', age: 23 }

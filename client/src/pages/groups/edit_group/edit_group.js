@@ -3,18 +3,7 @@ import './edit_group.css'; // Import your stylesheet
 
 function EditGroup() {
   return (
-    <div>
-      <div className="top-bar">
-        <h1>Elokuvakerho</h1>
-        <nav>
-          <p>Etsi</p>
-          <p>Selaa</p>
-          <p>Ryhmät</p>
-          <p>Profiili</p>
-        </nav>
-      </div>
-      <hr className="separator" />
-
+    <div className="edit-group">
       <div className="box-container">
         <div className="box">Muokkaa ryhmää</div>
         <div className="box">Tietoja</div>
