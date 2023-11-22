@@ -7,7 +7,7 @@ const authenticateToken = require('./authMiddleware'); // Adjust the path as nee
 const pgPool = require('../postgre/connection'); // Adjust the path as needed
 
 
-const { addUser, getUsers, checkUser, getUserDetails } = require('../postgre/User');
+const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar } = require('../postgre/User');
 
 router.get('/', async (req, res) => {
 
@@ -86,21 +86,32 @@ router.get('/private', async (req, res) => {
 
 // Express-reitti tiedostossa routes/userRoutes.js
 router.put('/profile', authenticateToken, async (req, res) => {
-    const { firstName, lastName } = req.body; // Otetaan vastaan etu- ja sukunimi pyynnön rungosta
+    const { firstName, lastName, avatar } = req.body; // Extract firstName, lastName, and avatar from the request body
 
-    // Suoritetaan päivityskysely tietokantaan
     try {
-        // Päivitä käyttäjän tiedot tietokantaan käyttäen PostgreSQL-kyselyä
-        const query = 'UPDATE customer SET fname = $1, lname = $2 WHERE username = $3';
-        // Oletetaan, että `uname` on käyttäjän yksilöivä tieto tietokannassa
-        
-        await pgPool.query(query, [firstName, lastName, req.user.username]);
+        // Update the user's first name, last name, and avatar in the database
+        const query = 'UPDATE customer SET fname = $1, lname = $2, avatar = $3 WHERE username = $4';
+        await pgPool.query(query, [firstName, lastName, avatar, req.user.username]);
 
-        res.status(200).json({ message: 'User details updated successfully' });
+        res.status(200).json({ message: 'Profile updated successfully' });
     } catch (error) {
+        console.error('Error updating profile:', error);
         res.status(500).json({ error: error.message });
     }
 });
 
 
+router.put('/avatar', authenticateToken, async (req, res) => {
+    const username = req.user.username; // Assuming username is stored in req.user
+    const avatarFilename = req.body.avatar;
+  
+    try {
+      await setUserAvatar(username, avatarFilename);
+      res.json({ message: 'Avatar updated successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
 module.exports = router;

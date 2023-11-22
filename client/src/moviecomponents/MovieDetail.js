@@ -4,7 +4,7 @@ import { AuthContext } from '../components/Contexts'; // Adjust the path as nece
 import axios from 'axios';
 import './MovieDetail.css';
 import './LoadingScreen.css';
-
+import MovieReviews from '../pages/movie_review/movie_review'; 
 
 function MovieDetail() {
   const { movieId } = useParams();
@@ -75,7 +75,7 @@ function MovieDetail() {
     if (!username) return;
     console.log('Username and MovieID:', { username, movieId }); // Log relevant information
   
-    try {
+    try {      
       let response;
       if (isFavorite) {
         response = await axios.delete(`http://localhost:3001/favorites/${username}/remove/${movieId}`);
@@ -174,6 +174,9 @@ function MovieDetail() {
             </div>
             <button onClick={() => scrollCast(300)} className="cast-scroll-button right-arrow">&gt;</button>
           </div>
+
+         {/* Reviews section */}
+       <MovieReviews movieId={movieId} />
         </div>
       </div>
     </div>
