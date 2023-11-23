@@ -1,63 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './browse_reviews.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
 
 function BrowseReviews() {
   const [reviews, setReviews] = useState([]);
+  const [movies, setMovies] = useState({});
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Initialize useNavigate
 
+
+  const navigateToMovie = (movieId) => {
+    navigate(`/movies/${movieId}`);
+};
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/review');
-        const reviewsData = response.data;
-
-        // Fetch movie images for each review
-        const reviewsWithImages = await Promise.all(
-          reviewsData.map(async (review) => {
-            const movieImageUrl = await getMovieImageUrl(review.movie_id);
-            return { ...review, movieImageUrl };
-          })
-        );
-
-        setReviews(reviewsWithImages);
+    axios.get(`http://localhost:3001/review`)
+      .then(response => {
+        setReviews(response.data);
+        // Extract unique movie IDs from reviews
+        const movieIds = [...new Set(response.data.map(review => review.movie_id))];
+        // Fetch movie details for each ID
+        return Promise.all(movieIds.map(id => axios.get(`http://localhost:3001/movies/${id}`)));
+      })
+      .then(responses => {
+        // Combine movie details into an object keyed by movie ID
+        const movieDetails = {};
+        responses.forEach(response => {
+          movieDetails[response.data.id] = response.data;
+        });
+        setMovies(movieDetails);
         setLoading(false);
-      } catch (error) {
+      })
+      .catch(error => {
         console.error('Error fetching reviews:', error);
         setLoading(false);
-      }
-    };
-
-    fetchReviews();
-  }, []);
-
-  const getMovieImageUrl = async (movieId) => {
-    try {
-      const response = await axios.get(`http://localhost:3001/movies/${movieId}/image`);
-      return response.data.imageUrl;
-    } catch (error) {
-      console.error(`Error fetching image for movie ${movieId}:`, error);
-      return ''; // Return an empty string or a default image URL
-    }
-  };
+      });
+  }, []); // Empty dependency array means this effect runs once on mount
 
   return (
     <div className="browse-reviews">
-      <h1>Browse Reviews</h1>
       {loading ? (
         <p>Loading reviews...</p>
       ) : (
         <div className="reviews-list">
-          {reviews.map((review) => (
+          {reviews.map(review => (
             <div key={review.review_id} className="review-item">
               <h3>{review.username}</h3>
-              {review.movieImageUrl && (
-                <img
-                  src={review.movieImageUrl}
-                  alt={`Movie ${review.movie_id} Image`}
-                  className="movie-image"
-                />
-              )}
+              <p>Movie ID: {review.movie_id}</p>
               <p>Rating: {review.rating}</p>
               <p>Review Text: {review.review_text}</p>
               <p>Review Date: {new Date(review.review_date).toLocaleDateString()}{' '}

@@ -71,6 +71,7 @@ function MovieDetail() {
     if (!username) return;
     console.log('Username and MovieID:', { username, movieId }); // Log relevant information
 
+    let response;
   
     try {      
       if (isFavorite) {
