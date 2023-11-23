@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const reviewRoutes = require('./routes/reviewRoutes');
+const groupRoutes = require('./routes/groupRoutes');
 
 
 const corsOptions = {
@@ -40,6 +41,9 @@ app.use('/favorites', favoriteRoutes);
 // Use the routes
 app.use('/review', reviewRoutes);
 // Root route
+app.use('/groups', groupRoutes);
+//mo
+
 app.get('/', (req, res) => {
     const person = [
         { fname: 'John', lname: 'Doe', age: 23 }
