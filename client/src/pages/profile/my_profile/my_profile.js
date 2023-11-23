@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Make sure to import axios
 import './my_profile.css'; // This uses CSS modules.
-import avatar from "./avatar.png";
 import { jwtToken, userData } from "../../../components/Signals";
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -13,6 +12,7 @@ function Profile() {
   const [loggedIn, setLoggedIn] = useState(false); // State to track login
   const [favorites, setFavorites] = useState([]); // New state for favorite movies
   const navigate = useNavigate(); // Initialize useNavigate
+  const [userAvatar, setUserAvatar] = useState('');
 
 
   // Function to generate a shareable link based on the current view
@@ -31,6 +31,8 @@ function Profile() {
 
   useEffect(() => {
     // Check if userData.value has the necessary properties before setting state
+    console.log('userData.value:', userData.value);
+
     if (userData.value) {
       if (userData.value.username && username !== userData.value.username) {
         setUsername(userData.value.username);
@@ -39,6 +41,12 @@ function Profile() {
       if (userData.value.creation_time && creationDate !== formatCreationDate(userData.value.creation_time)) {
         const formattedCreationDate = formatCreationDate(userData.value.creation_time);
         setCreationDate(formattedCreationDate);
+      }
+      if (userData.value && userData.value.avatar) {
+        setUserAvatar(`http://localhost:3001/avatars/${userData.value.avatar}`);
+      } else {
+        // Set a default avatar if the user hasn't chosen one
+        setUserAvatar('http://localhost:3001/avatars/avatar1.png');
       }
     }
   }, [userData.value, username, creationDate]); // Include username and creationDate in the dependency array
@@ -91,7 +99,7 @@ return (
       <div className="container">
         <div className="profile-container">
           <div className="profile-image">
-            <img src={avatar} alt="Avatar" className="avatar" />
+          <img src={userAvatar} alt="User Avatar" className="avatar" />
           </div>
           <div className="profile">
             <div className="username">
