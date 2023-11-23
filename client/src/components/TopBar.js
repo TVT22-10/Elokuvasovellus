@@ -7,7 +7,7 @@ import './TopBar.css';
 function TopBar() {
   return (
     <div className="top-bar">
-      <h1>Elokuvakerho</h1>
+      <h1 style ={{ fontSize:'25px'}}>Elokuvakerho</h1>
       <div className="button-container">
         {/* Search Button */}
         <div className="custom-button">

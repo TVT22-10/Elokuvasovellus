@@ -2,15 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 20px;
+  padding: 0px 20px;
   border-bottom: 5px solid #007bff;
   background-color: black;
   color: #007bff;
 }
 
+
 .button-container {
   display: flex;
-  gap: 30px;
+  gap: 20px;
 }
 
 .profile-link a,
