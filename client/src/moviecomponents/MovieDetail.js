@@ -71,7 +71,7 @@ function MovieDetail() {
     if (!username) return;
     console.log('Username and MovieID:', { username, movieId }); // Log relevant information
 
-  
+  let response;
     try {      
       if (isFavorite) {
         response = await axios.delete(`http://localhost:3001/favorites/${username}/remove/${movieId}`);
