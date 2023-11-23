@@ -51,7 +51,7 @@ function App() {
         <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
         <Route path="/search" element={<SearchPage />} /> {/* Search page */}
         <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}
-        <Route path="/group_page/" element={<GroupPage />} /> {/* Group page */}
+        <Route path="/groups/:groupId" element={<GroupPage/>} />
       </Routes>
     </Router>
     </AuthProvider>
