@@ -1,42 +1,65 @@
-// Import necessary libraries and components
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from './Contexts'; // Adjust the path as necessary
 import './TopBar.css';
 
-// Define the TopBar component
 function TopBar() {
+  const { isLoggedIn, logout } = useContext(AuthContext);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
   return (
     <div className="top-bar">
-      <h1 style ={{ fontSize:'25px'}}>Elokuvakerho</h1>
+      <div className="topbartitle">
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <h1>
+            <span className="text-white">Elokuva</span>
+            <span className="text-blue">Kerho</span>
+          </h1>
+        </Link>
+      </div>
       <div className="button-container">
-        {/* Search Button */}
         <div className="custom-button">
           <Link to="/Search">Search</Link>
         </div>
-
-        {/* Browse Button */}
-        <div className="custom-button">
-          <Link to="/Browse">Browse</Link>
+        <div className="browse-button" onClick={toggleDropdown}>
+          <span>Browse</span>
+          {showDropdown && (
+            <div className="dropdown-menu">
+              <Link to="/Browse_reviews">Reviews</Link>
+              <Link to="/AllMovies">All Movies</Link>
+            </div>
+          )}
         </div>
-
-        {/* Groups Button */}
-        <div className="custom-button">
-          <Link to="/Groups">Groups</Link>
-        </div>
-
-        {/* Profile Button */}
-        <div className="profile-link">
-          <Link to="/Profile">Profile</Link>
-        </div>
-
-        {/* Login Button */}
-        <div className="login-link">
-          <Link to="/Auth">Login</Link>
-        </div>
+        {isLoggedIn && (
+          <>
+            <div className="custom-button">
+              <Link to="/search_groups">Groups</Link>
+            </div>
+            <div className="profile-link">
+              <Link to="/Profile">Profile</Link>
+            </div>
+          </>
+        )}
+        {isLoggedIn ? (
+          <div className="login-link" onClick={logout}>
+            <Link to="/">Logout</Link>
+          </div>
+        ) : (
+          <div className="login-link">
+            <Link to="/Auth">Login</Link>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-// Export the TopBar component
 export default TopBar;

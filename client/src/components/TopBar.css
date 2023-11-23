@@ -8,24 +8,31 @@
   color: #007bff;
 }
 
+.topbartitle {
+  font-size: 15px;
+}
 
-.button-container {
-  display: flex;
-  gap: 20px;
+.profile-link,
+.custom-button,
+.browse-button {
+  position: relative;
 }
 
 .profile-link a,
-.custom-button a {
+.custom-button a,
+.browse-button span {
   text-decoration: none;
   color: #fff;
   padding: 5px 10px;
   font-size: 1.2rem;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .profile-link a:before,
-.custom-button a:before {
+.custom-button a:before,
+.browse-button span:before {
   content: '';
   position: absolute;
   bottom: 0;
@@ -39,21 +46,73 @@
 }
 
 .profile-link a:hover:before,
-.custom-button a:hover:before {
+.custom-button a:hover:before,
+.browse-button span:hover:before {
   transform: scaleX(1);
 }
 
-.login-link a {
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #555;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  z-index: 1;
+}
+
+.dropdown-menu a {
+  padding: 0.25rem;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #777;
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+}
+
+.login-link a,
+.logout-link a {
   text-decoration: none;
   color: #fff;
   background-color: #007bff;
-  padding: 5px 10px;
-  border: 1px solid #fff;
+  padding: 10px 20px;
   border-radius: 5px;
   font-size: 1.2rem;
+  transition: background-color 0.3s ease;
 }
 
-.login-link a:hover {
-  background-color: #fff;
+.login-link a:hover,
+.logout-link a:hover {
+  background-color: #007bff81;
+}
+
+@media (max-width: 768px) {
+  .topbartitle {
+    font-size: 10px;
+  }
+}
+
+.text-white {
+  color: #fff;
+}
+
+.text-blue {
   color: #007bff;
+}
+
+.custom-button a,
+.profile-link a,
+.login-link a,
+.logout-link a,
+.browse-button span {
+  font-weight: 500;
 }

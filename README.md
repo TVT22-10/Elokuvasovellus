@@ -26,6 +26,10 @@
 - npm install jsonwebtoken
 - npm install cors
 - npm install react-router-dom
+- npm install react-icons'
+
+"start": "react-scripts --openssl-legacy-provider start"
+
 
 CREATE TABLE customer (
     username VARCHAR(50) PRIMARY KEY,

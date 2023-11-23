@@ -1,15 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import './Cast.css';
-
+import { AuthContext } from '../components/Contexts'; // Adjust the path as necessary 
+import axios from 'axios';
+import './MovieDetail.css';
+import './LoadingScreen.css';
+import MovieReviews from '../pages/movie_review/movie_review';
 
 function MovieDetail() {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState({});
-  const [cast, setCast] = useState([]); // Add this line to define cast and setCast
+  const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const castContainerRef = useRef(null);
+  const { isLoggedIn } = useContext(AuthContext);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { user } = useContext(AuthContext);
+  const username = user?.username;  // Safely access username
 
   useEffect(() => {
     // Fetch movie details
@@ -33,7 +40,7 @@ function MovieDetail() {
         return response.json();
       })
       .then(castData => {
-        setCast(castData.cast); // Assuming the data has a 'cast' array
+        setCast(castData.cast);
         setLoading(false);
       })
       .catch(err => {
@@ -41,157 +48,129 @@ function MovieDetail() {
         setLoading(false);
       });
 
-  }, [movieId]);
+    // Check favorite status
+    if (username) {
+      axios.get(`http://localhost:3001/favorites/${username}/check`, { params: { movieId } })
+        .then(response => {
+          setIsFavorite(response.data.isFavorite);
+        })
+        .catch(err => console.error('Error checking favorite status:', err));
+    }
+  }, [movieId, username]);
 
+  const calculateRating = rating => {
+    const circumference = 2 * Math.PI * 20;
+    return (rating / 10) * circumference;
+  };
+
+  const scrollCast = scrollOffset => {
+    castContainerRef.current.scrollLeft += scrollOffset;
+  };
+
+  const addToFavorites = async () => {
+    if (!username) return;
+    console.log('Username and MovieID:', { username, movieId }); // Log relevant information
+
+    let response;
+  
+    try {      
+      if (isFavorite) {
+        response = await axios.delete(`http://localhost:3001/favorites/${username}/remove/${movieId}`);
+      } else {
+        response = await axios.post(`http://localhost:3001/favorites/${username}/add`, { movieId });
+      }
+      setIsFavorite(!isFavorite);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error updating favorites:', error);
+    }
+  };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="overlay">
+        <div className="loading-content">
+          <div className="spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-  const movieContentStyle = {
-    display: 'flex',
-    padding: '150px 100px 0 100px', // Padding on top, right, bottom (0), and left
-    position: 'relative',
-    zIndex: 1,
-    height: '90vh' // Adjust the height as needed
-  };
-
-  const moviePosterStyle = {
-    maxWidth: '780px', // Sets the maximum width
-    padding: '0 20px 0 0', // Padding on top, right, bottom, left (0)
-    height: 'auto', // Adjusts the height automatically to maintain aspect ratio
-    marginRight: '20px', // Space between poster and details
-    objectFit: 'contain' // Maintains the aspect ratio of the image
-  };
-  
-  const calculateRating = (rating) => {
-    const circumference = 2 * Math.PI * 20; // Assuming the radius of the circle is 20
-    return (rating / 10) * circumference; // Convert to length of the circle's stroke
-  };
-
-  const scrollCast = (scrollOffset) => {
-    castContainerRef.current.scrollLeft += scrollOffset;
-  };
-  
-
   return (
-    <div style={{ position: 'relative', height: '100vh' }}>
-  {/* Pseudo-element for gradient */}
-  <div style={{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '70%',
-    backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0) 100%)`,
-    zIndex: 1, // Ensure this is above the background image
-  }}></div>
+    <div className="relative-container">
+      <div className="gradient-overlay"></div>
 
-  {/* Background image */}
-  <div style={{
-    backgroundImage: `url(https://image.tmdb.org/t/p/original${movieDetails.backdrop_path})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'top center',
-    backgroundAttachment: 'fixed',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '70%',
-    zIndex: -1,
-  }}></div>
-  
-      {/* Movie details content on top of the background */}
-      <div style={movieContentStyle}>
-        {/* Movie poster */}
-        <img 
-          src={`https://image.tmdb.org/t/p/w780${movieDetails.poster_path}`} 
-          alt={movieDetails.title} 
-          style={moviePosterStyle}
-        />
-        <div>
-        <h1 style={{ fontSize: '66px', margin: '0 0 10px 0' }}>{movieDetails.title}</h1> {/* Reset margin for h1 */}        
-        <p style={{ fontSize: '33px' }}>
-         {movieDetails.release_date.split('-')[0]}
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-{/* Rating Circle */}
-    <div className="movie-rating-circle">
-      <svg width="60" height="60" viewBox="0 0 44 44">
-        <circle 
-          className="rating-circle-bg" 
-          cx="22" cy="22" r="20" 
-        />
-        <circle 
-          className="rating-circle" 
-          cx="22" cy="22" r="20" 
-          strokeDasharray={`${calculateRating(movieDetails.vote_average)} 999`}
-        />
-        <text 
-          x="50%" 
-          y="50%" 
-          dy=".3em" /* Adjust this value as needed */
-          textAnchor="middle"
-          className="rating-text"
-        >
-          {movieDetails.vote_average.toFixed(1)}
-        </text>
-      </svg>
-    </div>
-    {/* Genres */}
-    <div style={{ display: 'flex', flexWrap: 'wrap', marginLeft: '20px' }}>
-  {movieDetails.genres && movieDetails.genres.map((genre, index) => (
-    <span key={index} style={{
-      background: '#007bff', // Light grey background; adjust as needed
-      borderRadius: '20px', // Rounded corners
-      padding: '5px 10px', // Padding inside the box
-      marginRight: '10px', // Space between boxes
-      marginBottom: '10px', // Space below each box, for when they wrap
-      fontSize: '14px', // Smaller font size; adjust as needed
-      height: '20px', // Fixed height for the box
+      <div className="background-image" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movieDetails.backdrop_path})` }}></div>
 
-    }}>
-      {genre.name}
-    </span>
-    
-  ))}
-</div>  
+      <div className="movie-content">
+        <img src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`} alt={movieDetails.title} className="movie-poster" />
 
-        </div>      
-    <p>{movieDetails.overview}</p>
-          {/* Cast section */}
-<div className="cast-section">
-<h2 className="cast-heading">CAST</h2> {/* Heading for the cast section */}
+        <div className="movie-detail-content">
+          <h1 className="detail-title">{movieDetails.title}</h1>
+          <p className="detail-release-date">{movieDetails.release_date.split('-')[0]}</p>
 
-  <button onClick={() => scrollCast(-300)} className="cast-scroll-button left-arrow">&lt;</button>
-  <div ref={castContainerRef} className="cast-container">
-    {cast.map(member => (
-      <div key={member.id} className="cast-member">
-        <div className="cast-poster-wrapper">
-          {member.profile_path && (
-            <img 
-              src={`https://image.tmdb.org/t/p/w200${member.profile_path}`} 
-              alt={member.name} 
-              className="cast-poster"
-            />
-          )}
-          <div className="cast-info">
-            <p className="cast-name">{member.name}</p>
+          <div className="detail-flex-container">
+            <div className="movie-rating-circle">
+              <svg width="60" height="60" viewBox="0 0 44 44">
+                <circle className="rating-circle-bg" cx="22" cy="22" r="20" />
+                <circle className="rating-circle" cx="22" cy="22" r="20" strokeDasharray={`${calculateRating(movieDetails.vote_average)} 999`} />
+                <text x="50%" y="50%" dy=".3em" textAnchor="middle" className="rating-text">
+                  {movieDetails.vote_average.toFixed(1)}
+                </text>
+              </svg>
+            </div>
+
+            <div className="genres-container">
+              {movieDetails.genres && movieDetails.genres.map((genre, index) => (
+                <span key={index} className="genre-tag">
+                  {genre.name}
+                </span>
+              ))}
+            </div>
           </div>
+
+          <p>{movieDetails.overview}</p>
+
+          {/* Add to Favorites button */}          
+          <div className="favorite-button-container">
+            {isLoggedIn && (
+              <button className="favorite-button1" onClick={addToFavorites}>
+                {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              </button>
+            )}
+          </div>
+
+          <div className="cast-section">
+            <h2 className="cast-heading">CAST</h2>
+
+            <button onClick={() => scrollCast(-300)} className="cast-scroll-button left-arrow">&lt;</button>
+            <div ref={castContainerRef} className="cast-container">
+              {cast.map(member => (
+                <div key={member.id} className="cast-member">
+                  <div className="cast-poster-wrapper">
+                    {member.profile_path && (
+                      <img src={`https://image.tmdb.org/t/p/w200${member.profile_path}`} alt={member.name} className="cast-poster" />
+                    )}
+                    <div className="cast-info">
+                      <p className="cast-name">{member.name}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => scrollCast(300)} className="cast-scroll-button right-arrow">&gt;</button>
+          </div>
+
+          {/* Reviews section */}
+          <MovieReviews movieId={movieId} />
         </div>
       </div>
-    ))}
-  </div>
-  <button onClick={() => scrollCast(300)} className="cast-scroll-button right-arrow">&gt;</button>
-</div>
-
     </div>
-  </div>
-</div>
   );
 }
 

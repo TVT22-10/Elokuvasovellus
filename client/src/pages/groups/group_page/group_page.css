@@ -1,0 +1,161 @@
+/* .container{
+    background-color: rgb(0, 0, 0);
+}
+/*
+.top-bar {
+    color: rgb(255, 250, 250);
+    background-color: rgb(0, 0, 0);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.separator {
+    border: 3px solid rgb(0, 132, 255);
+    margin: 0;
+    width: 100%;
+}
+
+h1 {
+    margin: 0;
+    color: rgb(0, 132, 255);
+    font-family: Newsreader;
+} 
+
+
+nav {
+    display: flex;
+    color: white;
+}
+
+nav p {
+    margin: 0 20px;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    font-size: 1em;
+    justify-content: space-between;
+}
+*/
+
+.group-container {
+    display: flex;
+    justify-content: space;
+    align-items: center;
+}
+
+.group-image img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 20px;
+}
+
+.group-profile {
+    display: flex;
+    flex-direction: column;
+}
+.groupName {
+    display: flex;
+    flex-direction: column;
+    
+    
+  }
+  
+  .groupName h2 {
+    margin: 0;
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    font-weight: 500;
+  }
+
+.editGroup-button button{
+    background-color: rgb(0, 132, 255);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.editGroup-button button:hover{
+    background-color: rgb(23, 92, 148);
+    color: white;
+    border: none;
+}
+
+
+.group-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-gap: 80px;
+    margin-top: 30px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+
+}
+
+.group-buttons button{
+
+    border-radius: 5px;
+    border: none;
+    padding: 3px;
+    cursor: pointer;
+    width: 150px;
+    height: 30px;
+    
+}
+
+.group-container{
+    margin-bottom: 50px;
+}
+
+
+.group-buttons{
+    color:rgb(255, 255, 255);
+    display: flex;
+    margin: 40px 0 40px;
+}
+
+.view-change{
+    margin-right: 50px;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+}
+
+.view-change::after{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 3px;
+    background-color: rgb(0, 132, 255);
+    bottom: -8px;
+    left: 0;
+    transition: 0.5s;
+}
+
+.view-change.active-link::after{
+    width: 40px;
+}
+
+.group-content {
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    text-align: center;
+}
+
+.profile-content.active-tab {
+    display: block;
+}
+
+.hidden {
+    display: none;
+  }

@@ -1,0 +1,54 @@
+/* review_form.css */
+
+.review-form {
+    margin-top: 20px;
+  }
+  
+  .star-rating {
+    display: flex;
+  }
+  
+  .review-form h2{
+    font-size: 24px;
+    border-bottom: 4px solid #007bff; /* Replace #007bff with your desired color */
+     display: inline-block; /* Makes the border only as wide as the text */
+  }
+/* review_form.css */
+
+.star-rating button {
+    background: transparent !important; /* Use !important to ensure the style is applied */
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  
+  .star-rating button .star-icon {
+    font-size: 2rem;
+    color: #ccc; /* Outline color for unfilled stars */
+  }
+  
+  .star-rating button:hover .star-icon,
+  .star-rating button.filled .star-icon {
+    color: #f8d825; /* Filled star color */
+  }
+  
+  .review-form textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    margin-bottom: 10px;
+  }
+  
+  .review-form button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .review-form button:hover {
+    background-color: #0056b3;
+  }
+  

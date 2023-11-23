@@ -1,14 +1,19 @@
 import React from 'react';
 import PopularMovies from '../../moviecomponents/PopularMovies';
 import TopRatedMovies from '../../moviecomponents/TopRatedMovies'; // Import the new component
+import Upcoming from '../../moviecomponents/Upcoming'; // Import the new component
 
+import './start.css';
 function HomePage() {
   return (
-    <div style={{ padding: '0 20px' }}>
-      <h1>Popular Movies</h1>
+    <div style={{ padding: '50px 80px 50px 80px' }}>
+      <h1 className="movie-heading">Popular Movies</h1>
       <PopularMovies />
-      <h1>Top Rated Movies</h1> {/* New Section Title */}
+      <h1 className="movie-heading">Top Rated Movies</h1> {/* New Section Title */}
       <TopRatedMovies /> {/* New Component for Top Rated Movies */}
+      <h1 className="movie-heading">Upcoming</h1> {/* New Section Title */}
+      <Upcoming /> {/* New Component for Top Rated Movies */}
+
     </div>
   );
 }
