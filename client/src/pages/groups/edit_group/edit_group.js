@@ -1,5 +1,5 @@
 import React from 'react';
-import './edit_group.css'; // Import your stylesheet
+import './edit_group.css';
 
 function EditGroup() {
   return (
