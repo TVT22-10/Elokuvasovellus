@@ -28,7 +28,15 @@ async function getGroupMembers(req, res) {
     const { groupId } = req.params;
 
     try {
-        const query = 'SELECT * FROM group_members WHERE group_id = $1;';
+        const query = `
+            SELECT gm.username, c.avatar, gm.joined_date,
+            CASE WHEN gm.username = (SELECT creator_username FROM groups WHERE group_id = gm.group_id) THEN 0 ELSE 1 END as is_owner
+            FROM group_members gm
+            JOIN customer c ON gm.username = c.username
+            WHERE gm.group_id = $1
+            ORDER BY is_owner, gm.joined_date;
+
+        `;
         const result = await pgPool.query(query, [groupId]);
         res.status(200).json(result.rows);
     } catch (error) {

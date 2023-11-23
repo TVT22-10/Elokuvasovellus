@@ -52,6 +52,10 @@ function GroupPage() {
         }
     }, [groupId]);
 
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+    };
 
     return (
         <div className="Group-page">
@@ -65,12 +69,10 @@ function GroupPage() {
                         {loading && <p>Loading...</p>}
                         {error && <p>Error loading group details.</p>}
                         {groupData && !loading && !error && <h2>{groupData.groupname}</h2>}
-                        {/* Other details */}
+         <p>Created On: {groupData ? formatDate(groupData.created_at) : ''}</p>
+
                     </div>
                     <div className="bio-buttons">
-                        <div className="share-button">
-                            {/* <button id="edit" onClick={generateShareableLink}>Share the view</button>*/}
-                        </div>
                         <div className="editGroup-button">
                             <Link to="/edit_group">
                                 <button id="editGroup">Group settings</button>
@@ -95,11 +97,16 @@ function GroupPage() {
                 </div>
                 <div className={`content ${activeTab !== 'group members' && 'hidden'}`} id="group members">
     {groupMembers.length > 0 ? (
-        <ul>
+        <div className="members-list">
             {groupMembers.map((member, index) => (
-                <li key={index}>{member.username}</li> // Adjust according to your data structure
+                <div className="member-item" key={index}>
+                    <img src={`http://localhost:3001/avatars/${member.avatar}`} alt={`${member.username}'s avatar`} className="member-avatar" />
+                    <span className="member-name">{member.username}</span>
+                    {groupData && member.username === groupData.creator_username && <span className="owner-tag">Owner</span>}
+                    <span className="member-joined-date">{formatDate(member.joined_date)}</span>
+                </div>
             ))}
-        </ul>
+        </div>
     ) : (
         <p>No members found.</p>
     )}
