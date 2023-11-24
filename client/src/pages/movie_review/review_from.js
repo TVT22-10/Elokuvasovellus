@@ -1,22 +1,26 @@
-// Import necessary dependencies
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import './review_form.css'; // Import the new CSS file
-import { AuthContext } from '../../components/Contexts'; // Adjust the path based on your project structure
+import { FaStar } from 'react-icons/fa';
+import './review_form.css';
+import { AuthContext } from '../../components/Contexts';
 
 function ReviewForm({ movieId }) {
-  // Access isLoggedIn from AuthContext
-  const { userData } = useContext(AuthContext); // Add this line
-
-  const [rating, setRating] = useState('');
+  const { user } = useContext(AuthContext);
+  const username = user?.username;
+  const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
+
+  const handleStarClick = (index) => {
+    // If the last star is clicked, set rating to 10; otherwise, use the index
+    setRating(index === 9 ? 10 : index + 1);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.post('http://localhost:3001/review', {
-        username: userData, 
+        username: username,
         movieId,
         rating,
         reviewText,
@@ -32,17 +36,21 @@ function ReviewForm({ movieId }) {
 
   return (
     <div className="review-form">
-      <h2>Add Your Review</h2>
+      <h2>ADD YOUR REVIEW</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          Rating:
-          <input
-            type="number"
-            min="1"
-            max="10"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
-          />
+          <div className="star-rating">
+            {[...Array(10)].map((_, index) => (
+              <button
+              key={index}
+              type="button"
+              onClick={() => handleStarClick(index)}
+              className={index < rating ? 'filled' : ''}
+            >
+              <FaStar className="star-icon" />
+            </button>
+            ))}
+          </div>
         </label>
         <label>
           Review:

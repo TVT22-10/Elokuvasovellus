@@ -34,22 +34,24 @@ function App() {
     <AuthProvider>
       <RepeatingLogComponent />
 
-      <Router>
-        <TopBar />  {/*Render TopBar on all pages */}
-        <Routes>
-          <Route path="/" element={<HomePage />} /> {/* HomePage as the default route */}
-          <Route path="/movies/:movieId" element={<MovieDetail />} />
-          <Route path="/Auth" element={<Login />} /> {/* Login page */}
-          <Route path="/register" element={<Register />} /> {/* Registration page */}
-          <Route path="/profile" element={<Profile />} /> {/* Profile page */}
-          <Route path="/edit_profile" element={<Edit_Profile />} /> {/* Profile page */}
-          <Route path="/create_group" element={<CreateGroup />} /> {/* Create group page */}
-          <Route path="/edit_group/:groupId" element={<EditGroup />} /> {/* Edit group page */}
-          <Route path="/browse_all" element={<BrowseAll />} /> {/* Browse all page */}
-          <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
-          <Route path="/search" element={<SearchPage />} /> {/* Search page */}
-        </Routes>
-      </Router>
+          <Router>
+       <TopBar />  {/*Render TopBar on all pages */}
+      <Routes>
+      <Route path="/" element={<HomePage />} /> {/* HomePage as the default route */}
+        <Route path="/movies/:movieId" element={<MovieDetail />} />
+        <Route path="/Auth" element={<Login />} /> {/* Login page */}
+        <Route path="/register" element={<Register />} /> {/* Registration page */}
+        <Route path="/profile" element={<Profile />} /> {/* Profile page */}
+        <Route path="/edit_profile" element={<Edit_Profile />} /> {/* Profile page */}
+        <Route path="/create_group" element={<CreateGroup />} /> {/* Create group page */}
+        <Route path="/edit_group/:groupId" element={<EditGroup />} /> {/* Edit group page */}
+        <Route path="/browse_all" element={<BrowseAll />} /> {/* Browse all page */}
+        <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
+        <Route path="/search" element={<SearchPage />} /> {/* Search page */}
+        <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}
+        <Route path="/group_page/" element={<GroupPage />} /> {/* Group page */}
+      </Routes>
+    </Router>
     </AuthProvider>
   );
 }
