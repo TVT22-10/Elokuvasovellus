@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './search_groups.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 
 function SearchGroups() {
+  const [userGroups, setUserGroups] = useState([]);
+
+  useEffect(() => {
+    const fetchUserGroups = async () => {
+      try {
+        // Replace 'currentUsername' with the actual logged-in user's username
+        const response = await axios.get(`http://localhost:3001/api/user/currentUsername/groups`);
+        setUserGroups(response.data);
+      } catch (error) {
+        console.error('Error fetching user groups:', error);
+      }
+    };
+
+    fetchUserGroups();
+  }, []);
+
   return (
     <div className="groups">
       <div className="label-name">
@@ -19,8 +36,18 @@ function SearchGroups() {
     </div>
       <div className="my-groups">
       <h2>My groups:</h2>
+        {userGroups.length > 0 ? (
+          userGroups.map(group => (
+            <div key={group.group_id}>
+              <Link to={`/groups/group_page/${group.group_id}`}>
+                {group.groupname}
+              </Link>
+            </div>
+          ))
+        ) : (
+          <p>You are not a member of any groups.</p>
+        )}
       </div>
-  
     </div>
   );
 }

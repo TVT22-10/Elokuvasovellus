@@ -34,6 +34,24 @@ router.get('/:groupId/details', authenticateToken, async (req, res) => {
     }
 });
 
+router.get('/user/:username/groups', authenticateToken, async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const query = `
+            SELECT g.* 
+            FROM groups g
+            JOIN group_members gm ON g.group_id = gm.group_id
+            WHERE gm.username = $1;
+        `;
+        const result = await pgPool.query(query, [username]);
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error fetching user groups:', error);
+        res.status(500).json({ message: 'Error fetching user groups' });
+    }
+});
+
 router.post('/:groupId/request-join', authenticateToken, sendJoinRequest);
 
 router.get('/:groupId/requests', authenticateToken, viewJoinRequests);
