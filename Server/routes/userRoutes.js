@@ -7,7 +7,7 @@ const authenticateToken = require('./authMiddleware'); // Adjust the path as nee
 const pgPool = require('../postgre/connection'); // Adjust the path as needed
 
 
-const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar } = require('../postgre/User');
+const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups } = require('../postgre/User');
 
 router.get('/', async (req, res) => {
 
@@ -99,6 +99,20 @@ router.put('/profile', authenticateToken, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+// Add this to your routes file
+router.get('/groups', authenticateToken, async (req, res) => {
+    const username = req.user.username; // Extracting username from the token
+
+    try {
+        const userGroups = await getUserGroups(username);
+        res.status(200).json(userGroups);
+    } catch (error) {
+        console.error('Error fetching user groups:', error);
+        res.status(500).json({ message: 'Error fetching user groups' });
+    }
+});
+
 
 
 router.put('/avatar', authenticateToken, async (req, res) => {

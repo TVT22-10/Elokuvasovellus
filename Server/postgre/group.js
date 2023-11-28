@@ -133,6 +133,17 @@ async function getGroupDetails(groupId) {
     }
 }
 
+async function getAllGroups() {
+    try {
+        const query = 'SELECT * FROM groups;';
+        const result = await pgPool.query(query);
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching all groups:', error);
+        throw error; // You can also handle the error here as per your error handling strategy
+    }
+}
+
 
 // Export your functions to use them in your routes
 module.exports = {
@@ -142,4 +153,5 @@ module.exports = {
     viewJoinRequests,
     handleJoinRequest,
     getGroupDetails,
+    getAllGroups,
 };
