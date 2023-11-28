@@ -26,7 +26,9 @@
 - npm install jsonwebtoken
 - npm install cors
 - npm install react-router-dom
-- npm install react-icons'
+- npm install react-icons
+- npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+
 
 "start": "react-scripts --openssl-legacy-provider start"
 
