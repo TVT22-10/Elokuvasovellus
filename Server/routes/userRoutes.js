@@ -7,7 +7,10 @@ const authenticateToken = require('./authMiddleware'); // Adjust the path as nee
 const pgPool = require('../postgre/connection'); // Adjust the path as needed
 
 
-const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar } = require('../postgre/User');
+
+
+
+const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser } = require('../postgre/User');
 
 router.get('/', async (req, res) => {
 
@@ -100,6 +103,20 @@ router.put('/profile', authenticateToken, async (req, res) => {
     }
 });
 
+// Add this to your routes file
+router.get('/groups', authenticateToken, async (req, res) => {
+    const username = req.user.username; // Extracting username from the token
+
+    try {
+        const userGroups = await getUserGroups(username);
+        res.status(200).json(userGroups);
+    } catch (error) {
+        console.error('Error fetching user groups:', error);
+        res.status(500).json({ message: 'Error fetching user groups' });
+    }
+});
+
+
 
 router.put('/avatar', authenticateToken, async (req, res) => {
     const username = req.user.username; // Assuming username is stored in req.user
@@ -114,4 +131,23 @@ router.put('/avatar', authenticateToken, async (req, res) => {
     }
   });
   
+  router.delete('/delete/:username', authenticateToken, async (req, res) => {
+    const { username } = req.params; // Extract the username from the URL parameter
+
+    try {
+        const deletionResult = await deleteUser(username); // Call the deleteUser function defined in User.js
+        
+        // Check the response from deleteUser function
+        if (deletionResult.success) {
+          res.status(200).json({ message: 'User deleted successfully' });
+        } else {
+          res.status(500).json({ error: 'Error deleting user' });
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ error: 'Error deleting user' });
+      }
+    });
+
+
 module.exports = router;
