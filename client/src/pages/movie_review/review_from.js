@@ -9,10 +9,12 @@ function ReviewForm({ movieId }) {
   const username = user?.username;
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
+  const [selectedStar, setSelectedStar] = useState(-1);
 
   const handleStarClick = (index) => {
     // If the last star is clicked, set rating to 10; otherwise, use the index
     setRating(index === 9 ? 10 : index + 1);
+    setSelectedStar(index);
   };
 
   const handleSubmit = async (e) => {
@@ -42,24 +44,26 @@ function ReviewForm({ movieId }) {
           <div className="star-rating">
             {[...Array(10)].map((_, index) => (
               <button
-              key={index}
-              type="button"
-              onClick={() => handleStarClick(index)}
-              className={index < rating ? 'filled' : ''}
-            >
-              <FaStar className="star-icon" />
-            </button>
+                key={index}
+                type="button"
+                onClick={() => handleStarClick(index)}
+                className={index <= selectedStar ? 'filled' : ''}
+              >
+                <FaStar className="star-icon" />
+              </button>
             ))}
           </div>
         </label>
         <label>
           Review:
           <textarea
+            className='review-textfield'
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
+            placeholder="Add your review text here"
           />
         </label>
-        <button type="submit">Submit Review</button>
+        <button type="submit" className="submit-button">Submit Review</button>
       </form>
     </div>
   );
