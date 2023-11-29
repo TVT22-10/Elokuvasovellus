@@ -38,6 +38,22 @@ async function getUserDetails(username) {
   }
 }
 
+async function getUserGroups(username) {
+  const query = `
+    SELECT g.group_id, g.groupname, g.creator_username
+    FROM groups g
+    JOIN group_members gm ON g.group_id = gm.group_id
+    WHERE gm.username = $1;
+  `;
+
+  const result = await pgPool.query(query, [username]);
+  return result.rows.map(group => ({
+    ...group,
+    is_owner: group.creator_username === username
+  }));
+}
+
+
 
 
 async function setUserAvatar(username, avatarFilename) {
@@ -65,12 +81,6 @@ async function deleteUser(username) {
 }
 }
 
+module.exports = { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser };
 
-module.exports = {
-  addUser,
-  getUsers,
-  checkUser,
-  getUserDetails,
-  setUserAvatar,
-  deleteUser
-};
+
