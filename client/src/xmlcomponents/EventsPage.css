@@ -1,0 +1,40 @@
+/* EventsPage.css */
+.events-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .events-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .event-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    margin-bottom: 20px;
+  }
+  
+  .event-item:last-child {
+    border-bottom: none;
+  }
+  
+  .event-title {
+    font-size: 1.5em;
+    color: #007bff;
+  }
+  
+  .event-details {
+    font-size: 1.1em;
+    color: #000000;
+    margin: 10px 0;
+  }
+  
+  .event-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  

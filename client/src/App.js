@@ -19,6 +19,7 @@ import SearchPage from './pages/search/search';
 import SearchGroups from './pages/groups/search_groups/search_groups';
 import TheatreAreasPage from './xmlcomponents/TheatreAreas';
 import NewsPage from './xmlcomponents/News';
+import EventsPage from './xmlcomponents/Events';
 
 
 function RepeatingLogComponent() {
@@ -58,6 +59,7 @@ function App() {
           <Route path="/groups/:groupId" element={<GroupPage/>} />
           <Route path="/theatre_areas" element={<TheatreAreasPage />} />
           <Route path="/news" element={<NewsPage />} />
+          <Route path="/events" element={<EventsPage />} />
 
           {/* <Route path="/xml2" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/ScheduleDates/" topLevelProperty="ScheduleDates" nestedProperty="ScheduleDate" />} />
           <Route path="/xml3" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/Schedule/" topLevelProperty="Schedule" nestedProperty="Shows" />} />
