@@ -17,7 +17,9 @@ import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 import Edit_Profile from './pages/profile/edit_profile/edit_profile';
 import SearchPage from './pages/search/search';
 import SearchGroups from './pages/groups/search_groups/search_groups';
-import XmlPage from './xmlcomponents/XmlPage';
+import TheatreAreasPage from './xmlcomponents/TheatreAreas';
+import NewsPage from './xmlcomponents/News';
+
 
 function RepeatingLogComponent() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -53,13 +55,13 @@ function App() {
           <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
           <Route path="/search" element={<SearchPage />} /> {/* Search page */}
           <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}
-          <Route path="/groups/:groupId/" element={<GroupPage />} /> {/* Group page */}
+          <Route path="/group_page/" element={<GroupPage />} /> {/* Group page */}
           <Route path="/xml1" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/TheatreAreas/" topLevelProperty="TheatreAreas" nestedProperty="TheatreArea" />} />
           <Route path="/xml2" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/ScheduleDates/" topLevelProperty="ScheduleDates" nestedProperty="ScheduleDate" />} />
           <Route path="/xml3" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/Schedule/" topLevelProperty="Schedule" nestedProperty="Shows" />} />
           <Route path="/xml4" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/Events/" topLevelProperty="Events" nestedProperty="Event" />} />
           <Route path="/xml5" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/News/" topLevelProperty="News" nestedProperty="NewsArticle" />} />
-          <Route path="/xml6" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/NewsCategories/" topLevelProperty="NewsCategories" nestedProperty="NewsArticleCategory" />} />
+          <Route path="/xml6" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/NewsCategories/" topLevelProperty="NewsCategories" nestedProperty="NewsArticleCategory" />} /> */}
         </Routes>
       </Router>
 

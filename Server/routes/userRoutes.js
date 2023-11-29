@@ -7,6 +7,9 @@ const authenticateToken = require('./authMiddleware'); // Adjust the path as nee
 const pgPool = require('../postgre/connection'); // Adjust the path as needed
 
 
+
+
+
 const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser } = require('../postgre/User');
 
 router.get('/', async (req, res) => {

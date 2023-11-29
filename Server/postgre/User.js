@@ -82,5 +82,3 @@ async function deleteUser(username) {
 }
 
 module.exports = { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser };
-
-
