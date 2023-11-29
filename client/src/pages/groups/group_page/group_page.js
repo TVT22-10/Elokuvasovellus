@@ -29,6 +29,19 @@ function GroupPage() {
         }
     };
 
+    const fetchGroupMembers = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/groups/${groupId}/members`, {
+                headers: {
+                    Authorization: `Bearer ${jwtToken.value}`,
+                },
+            });
+            setGroupMembers(response.data);
+        } catch (error) {
+            console.error('Error fetching group members:', error);
+        }
+    };
+
     useEffect(() => {
         const fetchGroupDetails = async () => {
             try {
@@ -50,18 +63,7 @@ function GroupPage() {
             }
         };
 
-        const fetchGroupMembers = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3001/groups/${groupId}/members`, {
-                    headers: {
-                        Authorization: `Bearer ${jwtToken.value}`,
-                    },
-                });
-                setGroupMembers(response.data);
-            } catch (error) {
-                console.error('Error fetching group members:', error);
-            }
-        };
+
 
         if (groupId) {
             fetchGroupDetails();
@@ -99,7 +101,19 @@ function GroupPage() {
         }
     };
     
-
+    const handleRemoveMember = async (username) => {
+        try {
+            await axios.delete(`http://localhost:3001/groups/${groupId}/members/${username}`, {
+                headers: { Authorization: `Bearer ${jwtToken.value}` },
+            });
+            // After successful removal, update the UI or fetch members again
+            fetchGroupMembers();
+        } catch (error) {
+            console.error('Error removing member:', error);
+            // Handle error scenarios if needed
+        }
+    };
+    
 
     return (
         <div className="Group-page">
@@ -158,6 +172,8 @@ function GroupPage() {
                                     <span className="member-name">{member.username}</span>
                                     {groupData && member.username === groupData.creator_username && <span className="owner-tag">Owner</span>}
                                     <span className="member-joined-date">{formatDate(member.joined_date)}</span>
+                                    <button onClick={() => handleRemoveMember(member.username)}>Delete Member</button>
+
                                 </div>
                             ))}
                         </div>

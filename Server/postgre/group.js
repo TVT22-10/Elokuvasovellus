@@ -144,6 +144,37 @@ async function getAllGroups() {
     }
 }
 
+// ... (existing imports and code)
+
+async function removeGroupMember(req, res) {
+    const { groupId, username } = req.params; // memberId is the ID of the member to be removed
+    const ownerUsername = req.user.username; // Assuming username is stored in req.user
+
+    try {
+        // Verify if the user is the owner of the group
+        const ownerCheckQuery = 'SELECT creator_username FROM groups WHERE group_id = $1;';
+        const ownerCheckResult = await pgPool.query(ownerCheckQuery, [groupId]);
+
+        if (ownerCheckResult.rows.length === 0 || ownerCheckResult.rows[0].creator_username !== ownerUsername) {
+            return res.status(403).json({ message: 'Unauthorized action' });
+        }
+
+        // Remove the member from the group_members table
+        const removeMemberQuery = 'DELETE FROM group_members WHERE group_id = $1 AND username = $2;';
+        await pgPool.query(removeMemberQuery, [groupId, username]);
+
+        const removeRequestQuery = 'DELETE FROM group_join_requests WHERE group_id = $1 AND username = $2;';
+        await pgPool.query(removeRequestQuery, [groupId, username]);
+        
+        res.status(200).json({ message: 'Member removed from the group' });
+    } catch (error) {
+        console.error('Error removing group member:', error);
+        res.status(500).json({ message: 'Error removing group member' });
+    }
+}
+
+
+
 
 // Export your functions to use them in your routes
 module.exports = {
@@ -154,4 +185,5 @@ module.exports = {
     handleJoinRequest,
     getGroupDetails,
     getAllGroups,
+    removeGroupMember,
 };
