@@ -45,6 +45,32 @@ async function setUserAvatar(username, avatarFilename) {
   await pgPool.query(query, [avatarFilename, username]);
 }
 
-module.exports = { addUser, getUsers, checkUser, getUserDetails, setUserAvatar };
+
+async function deleteUser(username) {
+  try {
+  // Delete associated data first
+  await pgPool.query('DELETE FROM reviews WHERE username = $1', [username]);
+  await pgPool.query('DELETE FROM favorites WHERE username = $1', [username]);
+  await pgPool.query('DELETE FROM group_members WHERE username = $1', [username]);
+  await pgPool.query('DELETE FROM group_join_requests WHERE username = $1', [username]);
+  console.log('Deleted associated data');
+  // Then delete the user
+  const deleteU = 'DELETE FROM customer WHERE username = $1';
+  await pgPool.query(deleteU, [username]);
+  console.log('Deleted user');
+  return { success: true }; // Return a success message or status
+} catch (error) {
+  console.error('Error deleting user:', error);
+  throw new Error('Error deleting user'); // Throw an error if deletion fails
+}
+}
 
 
+module.exports = {
+  addUser,
+  getUsers,
+  checkUser,
+  getUserDetails,
+  setUserAvatar,
+  deleteUser
+};
