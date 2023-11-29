@@ -15,9 +15,15 @@ import EditGroup from './pages/groups/edit_group/edit_group';
 import BrowseAll from './pages/browse/browse_all/browse_all';
 import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 import Edit_Profile from './pages/profile/edit_profile/edit_profile';
+<<<<<<< Updated upstream
 import SearchPage from './pages/search/search';
 import SearchGroups from './pages/groups/search_groups/search_groups';
 import XmlPage from './xmlcomponents/xmlpage';
+=======
+import React, { useContext, useEffect } from 'react';
+
+import { AuthContext } from './components/Contexts'; // Adjust the path as necessary
+>>>>>>> Stashed changes
 
 function RepeatingLogComponent() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -38,6 +44,7 @@ function App() {
     <AuthProvider>
       <RepeatingLogComponent />
 
+<<<<<<< Updated upstream
       <Router>
         <TopBar /> {/* Render TopBar on all pages */}
         <Routes>
@@ -80,6 +87,24 @@ function App() {
           />
         </Routes>
       </Router>
+=======
+    <Router>
+      <TopBar /> {/* Render TopBar on all pages */}
+      <Routes>
+        <Route path="/" element={<HomePage />} /> {/* HomePage as the default route */}
+        <Route path="/movies/:movieId" element={<MovieDetail />} />
+        <Route path="/Auth" element={<Login />} /> {/* Login page */}
+        <Route path="/register" element={<Register />} /> {/* Registration page */}
+        <Route path="/profile" element={<Profile />} /> {/* Profile page */}
+        <Route path="/edit_profile" element={<Edit_Profile />} /> {/* Profile page */}
+        <Route path="/create_group" element={<CreateGroup />} /> {/* Profile page */}
+        <Route path="/edit_group" element={<EditGroup />} /> {/* Profile page */}
+        <Route path="/register" element={<Register />} /> {/* Profile page */}
+        <Route path="/browse_all" element={<BrowseAll />} /> {/* Profile page */}
+        <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Profile page */}
+      </Routes>
+    </Router>
+>>>>>>> Stashed changes
     </AuthProvider>
   );
 }
