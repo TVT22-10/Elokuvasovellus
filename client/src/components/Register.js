@@ -1,6 +1,9 @@
+// Register.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Register.css'; // Import the CSS file
 
 function Register() {
   const [uname, setUname] = useState('');
@@ -31,46 +34,53 @@ function Register() {
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
-        <div>
-          <label>First Name:</label>
+        <div className="input-group">
           <input
             type="text"
+            placeholder="First Name"
             value={fname}
-            onChange={e => setFname(e.target.value)}
+            onChange={(e) => setFname(e.target.value)}
           />
         </div>
-        <div>
-          <label>Last Name:</label>
+        <div className="input-group">
           <input
             type="text"
+            placeholder="Last Name"
             value={lname}
-            onChange={e => setLname(e.target.value)}
+            onChange={(e) => setLname(e.target.value)}
           />
         </div>
-        <div>
-          <label>Username:</label>
+        <div className="input-group">
           <input
             type="text"
+            placeholder="Username"
             value={uname}
-            onChange={e => setUname(e.target.value)}
+            onChange={(e) => setUname(e.target.value)}
           />
         </div>
-        <div>
-          <label>Password:</label>
+        <div className="input-group">
           <input
             type="password"
+            placeholder="Password"
             value={pw}
-            onChange={e => setPw(e.target.value)}
+            onChange={(e) => setPw(e.target.value)}
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" className="register-button">
+          Register
+        </button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>Registration successful! Redirecting to login...</p>}
+      {error && <p className="error-message">{error}</p>}
+      {success && (
+        <p style={{ color: 'green' }}>
+          Registration successful! Redirecting to login...
+        </p>
+      )}
     </div>
   );
 }
+
 export { Register };

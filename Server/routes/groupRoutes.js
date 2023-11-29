@@ -9,6 +9,8 @@ const {
     sendJoinRequest,
     viewJoinRequests,
     handleJoinRequest,
+    getGroupDetails,
+    getAllGroups,
 } = require('../postgre/group.js');
 
 // Route to create a new group
@@ -16,6 +18,32 @@ router.post('/create', authenticateToken, createGroup);
 
 // Route to get all members of a group
 router.get('/:groupId/members', getGroupMembers);
+
+router.get('/:groupId/details', authenticateToken, async (req, res) => {
+    const { groupId } = req.params;
+
+    try {
+        const groupDetails = await getGroupDetails(groupId);
+        if (!groupDetails) {
+            return res.status(404).json({ message: 'Group not found' });
+        }
+
+        res.status(200).json(groupDetails);
+    } catch (error) {
+        console.error('Error fetching group details:', error);
+        res.status(500).json({ message: 'Error fetching group details' });
+    }
+});
+
+router.get('/all', async (req, res) => {
+    try {
+        const groups = await getAllGroups();
+        res.status(200).json(groups);
+    } catch (error) {
+        console.error('Error fetching all groups:', error);
+        res.status(500).json({ message: 'Error fetching all groups' });
+    }
+});
 
 router.post('/:groupId/request-join', authenticateToken, sendJoinRequest);
 

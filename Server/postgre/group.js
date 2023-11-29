@@ -28,7 +28,15 @@ async function getGroupMembers(req, res) {
     const { groupId } = req.params;
 
     try {
-        const query = 'SELECT * FROM group_members WHERE group_id = $1;';
+        const query = `
+            SELECT gm.username, c.avatar, gm.joined_date,
+            CASE WHEN gm.username = (SELECT creator_username FROM groups WHERE group_id = gm.group_id) THEN 0 ELSE 1 END as is_owner
+            FROM group_members gm
+            JOIN customer c ON gm.username = c.username
+            WHERE gm.group_id = $1
+            ORDER BY is_owner, gm.joined_date;
+
+        `;
         const result = await pgPool.query(query, [groupId]);
         res.status(200).json(result.rows);
     } catch (error) {
@@ -105,7 +113,37 @@ async function handleJoinRequest(req, res) {
         console.error('Error handling join request:', error);
         res.status(500).json({ message: 'Error handling join request' });
     }
+
+    
 }
+
+async function getGroupDetails(groupId) {
+    try {
+        const query = 'SELECT * FROM groups WHERE group_id = $1;';
+        const result = await pgPool.query(query, [groupId]);
+
+        if (result.rows.length === 0) {
+            return null; // Return null if the group ID doesn't exist
+        }
+
+        return result.rows[0]; // Return the group details
+    } catch (error) {
+        console.error('Error fetching group details:', error);
+        throw error; // Handle the error or rethrow it
+    }
+}
+
+async function getAllGroups() {
+    try {
+        const query = 'SELECT * FROM groups;';
+        const result = await pgPool.query(query);
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching all groups:', error);
+        throw error; // You can also handle the error here as per your error handling strategy
+    }
+}
+
 
 // Export your functions to use them in your routes
 module.exports = {
@@ -114,4 +152,6 @@ module.exports = {
     sendJoinRequest,
     viewJoinRequests,
     handleJoinRequest,
+    getGroupDetails,
+    getAllGroups,
 };
