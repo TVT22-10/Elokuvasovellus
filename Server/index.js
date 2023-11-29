@@ -44,6 +44,7 @@ app.use('/review', reviewRoutes);
 app.use('/groups', groupRoutes);
 //mo
 
+
 app.get('/', (req, res) => {
     const person = [
         { fname: 'John', lname: 'Doe', age: 23 }
