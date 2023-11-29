@@ -1,31 +1,75 @@
 /* MovieReviews.css */
-.review-section {
+.movie-review-section {
   border-radius: 10px; /* Add rounded corners */
 }
 
-.review-heading {
+.movie-review-heading {
   font-size: 24px;
   border-bottom: 4px solid #007bff; /* Replace #007bff with your desired color */
   display: inline-block; /* Makes the border only as wide as the text */
 }
 
-.reviews-list {
+.movie-reviews-list {
   display: flex;
   flex-direction: column;
 }
 
-.review-item {
-  border-bottom: 1px solid #ddd; /* Add a border between each review */
+.movie-review-item {
+  border: 2px solid #ddd; /* MovieReviews.css */
+  .movie-review-section {
+    border-radius: 10px; /* Add rounded corners */
+  }
+  
+  .movie-review-heading {
+    font-size: 24px;
+    border-bottom: 4px solid #007bff; /* Replace #007bff with your desired color */
+    display: inline-block; /* Makes the border only as wide as the text */
+  }
+  
+  .movie-reviews-list {
+    display: flex;
+    flex-wrap: wrap; /* Allow reviews to wrap to the next line if the container is not wide enough */
+  }
+  
+  .movie-review-item {
+    border: 2px solid #ddd; /* Add a border between each review */
+    border-radius: 5px;
+    margin-right: 15px; /* Add spacing between reviews */
+    margin-bottom: 15px;
+    padding: 15px;
+    flex: 1 0 calc(33.33% - 15px); /* Adjust the width of each review item to take up one-third of the container width */
+    box-sizing: border-box;
+  }
+  
+  .movie-review-item h3 {
+    color: #007bff;
+    font-size: 20px;
+    margin-top: 5px;
+  }
+  
+  .movie-review-item p {
+    margin-top: 5px;
+  }
+  /* Add a border between each review */
+  border-radius: 5px;
   margin-bottom: 15px;
   padding-bottom: 15px;
 }
 
-.review-item h3 {
+.movie-review-item h3 {
+  margin-left: 20px;
+  color: #007bff;
   font-size: 30px;
   margin-top: 5px;
-  padding-bottom: 15px;
 }
 
-.review-item p {
-  margin: 5px 0;
+.movie-review-item p {
+  margin-left: 10px;
+}
+.star-rating {
+  color:gold;
+}
+
+.rating-container {
+  margin-left: 10px;
 }
