@@ -28,6 +28,7 @@
 - npm install react-router-dom
 - npm install react-icons
 - npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+- npm i xml2js
 
 
 "start": "react-scripts --openssl-legacy-provider start"
