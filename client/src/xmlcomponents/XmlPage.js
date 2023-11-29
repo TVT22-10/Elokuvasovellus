@@ -1,42 +1,48 @@
-// XmlPage.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import xml2js from 'xml2js';
 
-function XmlPage({ xmlUrl, topLevelProperty, nestedProperty, itemNameKey }) {
+function XmlPage({ xmlUrl, topLevelProperty, nestedProperty }) {
   const [xmlData, setXmlData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const getNestedProperty = (data, property) => {
+    // Check if the property is present and has data
+    return data && data[property] ? data[property] : [];
+  };
 
   useEffect(() => {
     const getXml = async () => {
       try {
         const result = await axios.get(xmlUrl);
         console.log('XML Response:', result.data); // Log the entire XML response
-
-        const jsResult = await xml2js.parseStringPromise(result.data);
+    
+        const jsResult = await xml2js.parseStringPromise(result.data, {
+          explicitArray: false,
+          explicitRoot: false,
+          mergeAttrs: true,
+          xmlns: true,
+        });
         console.log('Parsed XML data:', jsResult); // Log the entire object
-
-        // Verify data structure before setting state
-        if (jsResult && jsResult[topLevelProperty]) {
-          if (nestedProperty) {
-            setXmlData(jsResult[topLevelProperty][nestedProperty]);
-          } else {
-            setXmlData(jsResult[topLevelProperty]);
-          }
-        } else {
-          console.error('Invalid XML data structure:', jsResult);
-        }
-
+    
+        // Access the correct nested property
+        const topLevelData = getNestedProperty(jsResult, topLevelProperty);
+        const nestedData = getNestedProperty(topLevelData, nestedProperty);
+        setXmlData(Array.isArray(nestedData) ? nestedData : [nestedData]);
+    
         setLoading(false);
       } catch (error) {
         console.error('Error fetching or parsing XML data:', error);
         setLoading(false);
       }
     };
-
+    
     getXml();
   }, [xmlUrl, topLevelProperty, nestedProperty]);
+
+  useEffect(() => {
+    console.log('XML Data:', xmlData);
+  }, [xmlData]);
 
   return (
     <div>
@@ -49,7 +55,11 @@ function XmlPage({ xmlUrl, topLevelProperty, nestedProperty, itemNameKey }) {
           <ul>
             {xmlData.map((item, index) => (
               <li key={index}>
-                <pre>{JSON.stringify(item, null, 2)}</pre>
+                {Object.entries(item).map(([key, value]) => (
+                  <div key={key}>
+                    <strong>{key}:</strong> {Array.isArray(value) ? value.join(', ') : value}
+                  </div>
+                ))}
               </li>
             ))}
           </ul>
@@ -57,7 +67,6 @@ function XmlPage({ xmlUrl, topLevelProperty, nestedProperty, itemNameKey }) {
       )}
     </div>
   );
-  
 }
 
 export default XmlPage;
