@@ -39,7 +39,10 @@ function GroupPage() {
                 });
                 setGroupData(response.data);
                 setLoading(false);
-                fetchJoinRequests(); // Call fetchJoinRequests after setting group data
+                // Only fetch join requests if the logged-in user is the group owner
+                if (response.data.creator_username === userData.value.username) {
+                    fetchJoinRequests();
+                }
             } catch (error) {
                 console.error('Error fetching group details:', error);
                 setError(error);

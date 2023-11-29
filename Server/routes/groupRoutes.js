@@ -10,6 +10,7 @@ const {
     viewJoinRequests,
     handleJoinRequest,
     getGroupDetails,
+    getAllGroups,
 } = require('../postgre/group.js');
 
 // Route to create a new group
@@ -34,21 +35,13 @@ router.get('/:groupId/details', authenticateToken, async (req, res) => {
     }
 });
 
-router.get('/user/:username/groups', authenticateToken, async (req, res) => {
-    const { username } = req.params;
-
+router.get('/all', async (req, res) => {
     try {
-        const query = `
-            SELECT g.* 
-            FROM groups g
-            JOIN group_members gm ON g.group_id = gm.group_id
-            WHERE gm.username = $1;
-        `;
-        const result = await pgPool.query(query, [username]);
-        res.status(200).json(result.rows);
+        const groups = await getAllGroups();
+        res.status(200).json(groups);
     } catch (error) {
-        console.error('Error fetching user groups:', error);
-        res.status(500).json({ message: 'Error fetching user groups' });
+        console.error('Error fetching all groups:', error);
+        res.status(500).json({ message: 'Error fetching all groups' });
     }
 });
 

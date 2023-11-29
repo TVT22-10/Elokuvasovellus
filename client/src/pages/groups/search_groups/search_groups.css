@@ -1,9 +1,4 @@
-.my-groups h2 {
-    color: white;
-    margin-left: 100px;
-    margin-top: 100px;
-    font-size: 2em;
-}
+
 
 
 
@@ -62,20 +57,56 @@
     border: none;
   }
 
-  .my-groups h2{
-    color: white;
-    margin-left: 50px;
-    margin-top: 100px;
-    font-size: 2em;
-    position: relative;
+  .group-list {
+    list-style-type: none; /* Removes default list styling */
+    padding: 0;
+  }
+  
+  .group-item {
+    margin-bottom: 5px; /* Space between items */
+    padding: 10px; /* Padding inside each item */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  .group-item a {
+    text-decoration: none; /* Removes underline from links */
+    color: rgb(0, 132, 255);; /* Dark text color */
+    font-weight: bold;
   }
 
-  .my-groups h2::after {
-    content: ''; /* Add content to enable pseudo-element */
-    width: 50px; /* Extend the line to cover the width of the h2 */
-    height: 3px;
-    background-color: rgb(0, 132, 255);
-    position: absolute; /* Position the line relative to the h2 */
-    bottom: -5px; /* Position the line below the h2 text */
-    left: 0; /* Align the line to the left */
+
+  /* search_groups.css */
+
+  .group-sections {
+    display: flex;
   }
+
+.group-sections {
+  display: flex;
+}
+
+.my-groups, .all-groups {
+  flex: 1; /* Each section takes up half the space */
+  text-align: center;
+}
+
+.my-groups h2, .all-groups h2 {
+  color: white;
+  margin-top: 100px;
+  font-size: 2em;
+  position: relative;
+  justify-content: center;
+}
+
+.my-groups h2::after, .all-groups h2::after {
+  content: '';
+  width: 50px;
+  height: 3px;
+  background-color: rgb(0, 132, 255);
+  position: absolute;
+  bottom: -5px;
+  left: 50%; /* Start from the center of the parent element */
+  transform: translateX(-170%); /* Shift left by half of its own width to center */
+
+}
