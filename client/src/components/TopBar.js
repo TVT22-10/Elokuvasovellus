@@ -34,7 +34,7 @@ function TopBar() {
           {showDropdown && (
             <div className="dropdown-menu">
               <Link to="/Browse_reviews">Reviews</Link>
-              <Link to="/AllMovies">All Movies</Link>
+              <Link to="/browse_movies">All Movies</Link>
             </div>
           )}
         </div>
