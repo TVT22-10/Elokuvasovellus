@@ -9,7 +9,7 @@ function Edit_Profile() {
     const [changesSaved, setChangesSaved] = useState(false);
     const [availableAvatars, setAvailableAvatars] = useState([]);
     const [selectedAvatar, setSelectedAvatar] = useState(userData.value?.avatar || 'avatar1.png'); // Default to 'avatar1.png'
-    const [showAvatarDropdown, setShowAvatarDropdown] = useState(false); // New state for toggling avatar dropdown
+    const [showAvatarDropdown, setShowAvatarDropdown] = useState(false); // New state for toggling avatar dropdownz
 
     useEffect(() => {
         const token = jwtToken.value;
@@ -77,6 +77,32 @@ function Edit_Profile() {
         }
     };
 
+    // Inside the Edit_Profile component
+const handleDeleteUser = async () => {
+    try {
+        const token = jwtToken.value;
+        // Assuming userData.value contains the username
+        const username = userData.value.username;
+        
+        const confirmed = window.confirm('Are you sure you want to delete your user? This action cannot be undone.');
+
+        if (confirmed) {
+            await axios.delete(`http://localhost:3001/user/delete/${username}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            // Perform any necessary cleanup or redirection after deletion
+            // For example:
+            // Redirect the user to a different page or perform logout actions
+        }
+    } catch (error) {
+        console.error('Error deleting user:', error);
+    }
+};
+
+
     return (
         <div className="edit-profile">
             {/* Current Profile Picture */}
@@ -124,6 +150,11 @@ function Edit_Profile() {
                 </div>
                 {changesSaved && <p>Changes have been saved!</p>}
             </form>
+
+            {/* Delete User Button */}
+            <div className="delete-user">
+            <button onClick={handleDeleteUser}>Delete user</button>
+            </div>
         </div>
     );
 }

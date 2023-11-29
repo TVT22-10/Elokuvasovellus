@@ -18,8 +18,10 @@ const addReview = async (req, res) => {
 
 const getAllReviews = async (req, res) => {
   try {
-    const result = await pgPool.query('SELECT * FROM reviews');
-    res.json(result.rows); // Check if result.rows is not undefined before sending
+    const result = await pgPool.query(
+      'SELECT r.*, c.avatar FROM reviews r JOIN customer c ON r.username = c.username'
+    );
+    res.json(result.rows);
   } catch (error) {
     console.error('Error getting all reviews:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -55,6 +57,19 @@ const getReviewsByMovieId = async (req, res) => {
   }
 };
 
+const getReviewsByUsername = async (req, res) => {
+  const { username } = req.params;
 
+  try {
+    const result = await pgPool.query(
+      'SELECT review_id, movie_id, rating, review_text, review_date FROM reviews WHERE username = $1',[username]
+    );
 
-module.exports = { addReview, getAllReviews, getReviewsByRating, getReviewsByMovieId };
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error getting reviews by username:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports = { addReview, getAllReviews, getReviewsByRating, getReviewsByMovieId, getReviewsByUsername };
