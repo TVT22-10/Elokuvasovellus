@@ -5,16 +5,21 @@
 }
 
 .search-form {
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
 .search-form label {
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 
-.search-form input {
+.search-form input,
+.search-form select {
   padding: 5px;
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .search-form button {
