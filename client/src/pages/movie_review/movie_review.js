@@ -1,5 +1,4 @@
-// MovieReviews.js
-
+import { userData } from '../../components/Contexts';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './movie_review.css';
@@ -11,8 +10,9 @@ function MovieReviews({ movieId }) {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleReviews, setVisibleReviews] = useState(3); // Number of reviews initially visible
-
   const { isLoggedIn } = useContext(AuthContext);
+  const [username, setUsername] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
 
   useEffect(() => {
     axios.get(`http://localhost:3001/review/${movieId}`)
@@ -40,7 +40,12 @@ function MovieReviews({ movieId }) {
           {reviews.length > 0 ? (
             reviews.slice(0, visibleReviews).map(review => (
               <div key={review.review_id} className="movie-review-item">
-                <h3>{review.username}</h3>
+                <div className="review-profile-image">
+                <div className='review-username'>
+                      <img src={`http://localhost:3001/avatars/${review.avatar}`} alt="User Avatar" className="avatar" />
+                      <h3>{review.username}</h3>
+                    </div>
+                </div>
                 <p>Posted on: {new Date(review.review_date).toLocaleDateString()}</p>
                 <div className="rating-container">
                   <StarRating rating={review.rating} />

@@ -30,6 +30,10 @@
     display: flex;
     flex-wrap: wrap; /* Allow reviews to wrap to the next line if the container is not wide enough */
   }
+  .review-username h3 {
+    font-size: 24px;
+
+  }
   
   .movie-review-item {
     border: 2px solid #ddd; /* Add a border between each review */
@@ -56,12 +60,6 @@
   padding-bottom: 15px;
 }
 
-.movie-review-item h3 {
-  margin-left: 20px;
-  color: #007bff;
-  font-size: 30px;
-  margin-top: 5px;
-}
 
 .movie-review-item p {
   margin-left: 10px;
