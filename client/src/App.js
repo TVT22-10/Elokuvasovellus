@@ -21,6 +21,7 @@ import TheatreAreasPage from './xmlcomponents/TheatreAreas';
 import NewsPage from './xmlcomponents/News';
 import EventsPage from './xmlcomponents/Events';
 import SchedulePage from './xmlcomponents/Schedule';
+import ScheduleDatesPage from './xmlcomponents/ScheduleDates'
 
 function RepeatingLogComponent() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -61,6 +62,7 @@ function App() {
           <Route path="/news" element={<NewsPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/schedule" element={<SchedulePage />} />
+          <Route path="/scheduledates" element={<ScheduleDatesPage />} />
 
           {/* <Route path="/xml2" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/ScheduleDates/" topLevelProperty="ScheduleDates" nestedProperty="ScheduleDate" />} />
           <Route path="/xml3" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/Schedule/" topLevelProperty="Schedule" nestedProperty="Shows" />} />
