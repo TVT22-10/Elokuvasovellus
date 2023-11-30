@@ -54,3 +54,38 @@
 .browse-review-content {
   padding-left: 10px;
 }
+.sorting-dropdown {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+label[for="sortingOrder"] {
+  font-weight: 500;
+  margin-bottom:5px;
+}
+
+#sortingOrder {
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 3px;
+  color: black;
+  cursor: pointer;
+  font-weight: 500;
+  margin-left: 10px;
+  text-align: center;
+}
+
+#sortingOrder,
+#sortingOrder:hover,
+#sortingOrder:hover::-ms-expand {
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 3px;
+  color: black;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-left: 10px;
+}

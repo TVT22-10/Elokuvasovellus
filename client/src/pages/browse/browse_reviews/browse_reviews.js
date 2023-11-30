@@ -10,12 +10,12 @@ function BrowseReviews() {
   const [movies, setMovies] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [displayedReviews, setDisplayedReviews] = useState(6); // Number of reviews to display initially
-  const [expandedReviews, setExpandedReviews] = useState([]); // Track expanded reviews
+  const [displayedReviews, setDisplayedReviews] = useState(6);
+  const [expandedReviews, setExpandedReviews] = useState([]);
+  const [sortingOrder, setSortingOrder] = useState('newest'); // Default sorting order
   const navigate = useNavigate();
   const [userAvatar, setUserAvatar] = useState('');
   const [username, setUsername] = useState('');
-
 
   useEffect(() => {
     if (userData.value) {
@@ -37,12 +37,10 @@ function BrowseReviews() {
   };
 
   const handleLoadMore = () => {
-    // Increase the number of displayed reviews
-    setDisplayedReviews(displayedReviews + 6); // You can adjust the increment as needed
+    setDisplayedReviews(displayedReviews + 6);
   };
 
   const toggleReadMore = (reviewId) => {
-    // Toggle the expanded state for a specific review
     setExpandedReviews((prevExpanded) =>
       prevExpanded.includes(reviewId)
         ? prevExpanded.filter((id) => id !== reviewId)
@@ -50,40 +48,55 @@ function BrowseReviews() {
     );
   };
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/review');
-        const reviewsData = response.data;
-
-        // Extract unique movie IDs from reviews
-        const movieIds = [...new Set(reviewsData.map((review) => review.movie_id))];
-
-        // Fetch movie details for each ID
-        const movieResponses = await Promise.all(movieIds.map((id) => axios.get(`http://localhost:3001/movies/${id}`)));
-
-        // Combine movie details into an object keyed by movie ID
-        const movieDetails = {};
-        movieResponses.forEach((movieResponse) => {
-          movieDetails[movieResponse.data.id] = movieResponse.data;
-        });
-
-        
-
-        setMovies(movieDetails);
-        setReviews(reviewsData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching reviews:', error);
-        setLoading(false);
-      }
-    };
-
+  const handleSortingChange = (event) => {
+    setSortingOrder(event.target.value);
+    // Fetch reviews based on the selected sorting order
     fetchReviews();
-  }, []);
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/review?sort=${sortingOrder}`);
+      const reviewsData = response.data;
+
+      // Extract unique movie IDs from reviews
+      const movieIds = [...new Set(reviewsData.map((review) => review.movie_id))];
+
+      // Fetch movie details for each ID
+      const movieResponses = await Promise.all(movieIds.map((id) => axios.get(`http://localhost:3001/movies/${id}`)));
+
+      // Combine movie details into an object keyed by movie ID
+      const movieDetails = {};
+      movieResponses.forEach((movieResponse) => {
+        movieDetails[movieResponse.data.id] = movieResponse.data;
+      });
+
+      setMovies(movieDetails);
+      setReviews(reviewsData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch reviews when the component mounts or when sortingOrder changes
+    fetchReviews();
+  }, [sortingOrder]);
 
   return (
     <div className="browse-reviews">
+      <div className="sorting-dropdown">
+        <label htmlFor="sortingOrder">Sort by: </label>
+        <select id="sortingOrder" value={sortingOrder} onChange={handleSortingChange}>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="best">Best Review</option>
+          <option value="worst">Worst Review</option>
+        </select>
+      </div>
+
       {loading ? (
         <p>Loading reviews...</p>
       ) : (
@@ -94,28 +107,26 @@ function BrowseReviews() {
                 <div className='review-userdata-container'>
                   <div className="review-profile-image">
                     <div className='review-username'>
-                      {/* Use review.avatar instead of review.userAvatar */}
                       <img src={`http://localhost:3001/avatars/${review.avatar}`} alt="User Avatar" className="avatar" />
                       <h3>{review.username}</h3>
                     </div>
                   </div>
                 </div>
                 <div className='browse-review-content'>
-                <p>Posted on: {new Date(review.review_date).toLocaleDateString()}</p>
-                {/* Use the StarRating component to display stars */}
-                <StarRating rating={review.rating} />
-                <p>
-                  {expandedReviews.includes(review.review_id)
-                    ? review.review_text
-                    : `${review.review_text.slice(0, 70)}...`}
-                </p>
-                {review.review_text.length > 70 && (
-                  <div className='read-more-container'>
-                    <button className='read-more' onClick={() => toggleReadMore(review.review_id)}>
-                      {expandedReviews.includes(review.review_id) ? 'Read Less' : 'Read More'}
-                    </button>
-                  </div>
-                )}
+                  <p>Posted on: {new Date(review.review_date).toLocaleDateString()}</p>
+                  <StarRating rating={review.rating} />
+                  <p>
+                    {expandedReviews.includes(review.review_id)
+                      ? review.review_text
+                      : `${review.review_text.slice(0, 70)}...`}
+                  </p>
+                  {review.review_text.length > 70 && (
+                    <div className='read-more-container'>
+                      <button className='read-more' onClick={() => toggleReadMore(review.review_id)}>
+                        {expandedReviews.includes(review.review_id) ? 'Read Less' : 'Read More'}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
               {movies[review.movie_id] && (
