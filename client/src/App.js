@@ -64,11 +64,6 @@ function App() {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/schedule" element={<SchedulePage />} />
           <Route path="/scheduledates" element={<ScheduleDatesPage />} />
-
-          {/* <Route path="/xml2" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/ScheduleDates/" topLevelProperty="ScheduleDates" nestedProperty="ScheduleDate" />} />
-          <Route path="/xml3" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/Schedule/" topLevelProperty="Schedule" nestedProperty="Shows" />} />
-          <Route path="/xml5" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/News/" topLevelProperty="News" nestedProperty="NewsArticle" />} />
-          <Route path="/xml6" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/NewsCategories/" topLevelProperty="NewsCategories" nestedProperty="NewsArticleCategory" />} /> */}
         </Routes>
       </Router>
 
