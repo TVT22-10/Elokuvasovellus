@@ -165,6 +165,45 @@ app.get('/avatars', (req, res) => {
 });
 
 
+app.get('/discover-movies', async (req, res) => {
+  try {
+      let params = { ...req.query, api_key: process.env.TMDB_KEY };
+
+      if (params.genre) {
+          params.with_genres = params.genre;
+          delete params.genre;
+      }
+      if (params.startYear) {
+        params['primary_release_date.gte'] = `${params.startYear}-01-01`; // Assuming Jan 1 as the start date
+        delete params.startYear;
+    }
+
+    // Handle end year
+    if (params.endYear) {
+        params['primary_release_date.lte'] = `${params.endYear}-12-31`; // Assuming Dec 31 as the end date
+        delete params.endYear;
+    }
+
+    if (params.originalLanguage) {
+      params.with_original_language = params.originalLanguage;
+      delete params.originalLanguage;
+  }
+
+  if (params.sortBy) {
+    params.sort_by = params.sortBy;
+    delete params.sortBy;
+}
+
+
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}discover/movie`, { params });
+      res.json(response.data);
+  } catch (error) {
+      console.error('Error fetching data from TMDB', error);
+      res.status(500).json({ message: "Error fetching data from TMDB", error: error.message });
+  }
+});
+
+
   
 // Start the server
 const port = process.env.PORT || 3001;

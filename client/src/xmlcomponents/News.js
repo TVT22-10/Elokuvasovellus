@@ -34,7 +34,8 @@ function NewsPage() {
 
   return (
     <div className="news-container">
-      <h1>News</h1>
+      <h1>News From Finnkino</h1>
+      <p>The news are in Finnish</p>
       {loading ? (
         <p>Loading...</p>
       ) : (

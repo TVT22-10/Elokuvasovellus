@@ -1,0 +1,43 @@
+.filters-container {
+    display: flex;
+    justify-content: center; /* Aligns children (dropdowns) in the center */
+    flex-wrap: wrap; /* Allows items to wrap into the next line */
+    gap: 10px; /* Optional: adds space between items */
+}
+
+.select-dropdown {
+    padding: 10px 15px;
+    border-radius: 4px;
+    background-color: #252525;/* Off-white background */
+    font-size: 16px;
+    color: #ffffff;
+    outline: none;
+    margin: 5px;
+}
+
+.select-dropdown:hover, .select-dropdown:focus {
+    border-color: #888;
+    cursor: pointer;
+}
+
+.number-input {
+    width: 200px; /* Example width, adjust as needed */
+    padding: 10px 15px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+    background-color: #252525;/* Off-white background */
+    color:#ffffff
+}
+
+
+
+/* You can add media queries for responsive design */
+@media (max-width: 600px) {
+    .select-dropdown {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
