@@ -12,7 +12,6 @@ import Profile from "./pages/profile/my_profile/my_profile";
 import CreateGroup from './pages/groups/create_group/create_group';
 import GroupPage from './pages/groups/group_page/group_page';
 import EditGroup from './pages/groups/edit_group/edit_group';
-import BrowseAll from './pages/browse/browse_all/browse_all';
 import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 import Edit_Profile from './pages/profile/edit_profile/edit_profile';
 import SearchPage from './pages/search/search';
@@ -64,6 +63,11 @@ function App() {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/schedule" element={<SchedulePage />} />
           <Route path="/scheduledates" element={<ScheduleDatesPage />} />
+
+          {/* <Route path="/xml2" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/ScheduleDates/" topLevelProperty="ScheduleDates" nestedProperty="ScheduleDate" />} />
+          <Route path="/xml3" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/Schedule/" topLevelProperty="Schedule" nestedProperty="Shows" />} />
+          <Route path="/xml5" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/News/" topLevelProperty="News" nestedProperty="NewsArticle" />} />
+          <Route path="/xml6" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/NewsCategories/" topLevelProperty="NewsCategories" nestedProperty="NewsArticleCategory" />} /> */}
         </Routes>
       </Router>
 
