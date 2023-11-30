@@ -21,13 +21,13 @@ function Edit_Profile() {
                     Authorization: `Bearer ${token}`
                 }
             })
-            .then(response => {
-                const { fname, lname, avatar } = response.data;
-                setFname(fname || '');
-                setLname(lname || '');
-                setSelectedAvatar(avatar || 'avatar1.png');
-            })
-            .catch(error => console.error('Error fetching user data:', error));
+                .then(response => {
+                    const { fname, lname, avatar } = response.data;
+                    setFname(fname || '');
+                    setLname(lname || '');
+                    setSelectedAvatar(avatar || 'avatar1.png');
+                })
+                .catch(error => console.error('Error fetching user data:', error));
         }
     }, []);
 
@@ -71,52 +71,66 @@ function Edit_Profile() {
             });
             setChangesSaved(true);
             // Update userData in Signals
-            userData.value = {...userData.value, fname, lname, avatar: selectedAvatar};
+            userData.value = { ...userData.value, fname, lname, avatar: selectedAvatar };
         } catch (error) {
             console.error('Error updating profile:', error);
         }
     };
 
     // Inside the Edit_Profile component
-const handleDeleteUser = async () => {
-    try {
-        const token = jwtToken.value;
-        // Assuming userData.value contains the username
-        const username = userData.value.username;
-        
-        const confirmed = window.confirm('Are you sure you want to delete your user? This action cannot be undone.');
+    const handleDeleteUser = async () => {
+        try {
+            const token = jwtToken.value;
+            const username = userData.value.username;
+            const password = prompt('Please enter your password to confirm deletion:');
 
-        if (confirmed) {
-            await axios.delete(`http://localhost:3001/user/delete/${username}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
+            // Check if password is provided
+            if (password !== null) {
+                const confirmed = window.confirm('Are you sure you want to delete your user? This action cannot be undone.');
+
+                if (confirmed) {
+                    // Send the username and password for verification
+                    const response = await axios.delete(`http://localhost:3001/user/delete/${username}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        data: {
+                            password: password,
+                        }
+                    });
+                    // Inside handleDeleteUser function after successful deletion
+                    if (response.data.success) {
+                        window.alert('User deleted successfully');
+                        // Clear authentication-related data from local storage or cookies
+                        localStorage.removeItem('token'); // Clear JWT token from local storage
+                        // Redirect to the login page or any appropriate destination
+                        window.location.href = '/login'; // Redirect to the login page
+                    } else {
+                        window.alert(response.data.error || 'Error deleting user. Please try again.');
+                    }
                 }
-            });
-
-            // Perform any necessary cleanup or redirection after deletion
-            // For example:
-            // Redirect the user to a different page or perform logout actions
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            window.alert('Error deleting user. Please try again.');
         }
-    } catch (error) {
-        console.error('Error deleting user:', error);
-    }
-};
+    };
 
 
     return (
         <div className="edit-profile">
             {/* Current Profile Picture */}
             <div className="current-profile-picture">
-            <img src={`http://localhost:3001/avatars/${selectedAvatar}`} alt="Current Profile" className="current-avatar" />
-            <button onClick={toggleAvatarDropdown} className="change-avatar-button">Change Avatar</button>
+                <img src={`http://localhost:3001/avatars/${selectedAvatar}`} alt="Current Profile" className="current-avatar" />
+                <button onClick={toggleAvatarDropdown} className="change-avatar-button">Change Avatar</button>
             </div>
 
             {showAvatarDropdown && (
                 <div className="avatar-selection">
                     {availableAvatars.map((avatarName, index) => (
-                        <img 
-                            key={index} 
-                            src={`http://localhost:3001/avatars/${avatarName}`} 
+                        <img
+                            key={index}
+                            src={`http://localhost:3001/avatars/${avatarName}`}
                             alt={`Avatar ${index}`}
                             onClick={() => handleAvatarSelect(avatarName)}
                             className={selectedAvatar === avatarName ? 'selected-avatar' : 'avatar-option'}
@@ -128,21 +142,21 @@ const handleDeleteUser = async () => {
             {/* User Details Form */}
             <form onSubmit={handleSubmit}>
                 <div className="name-inputs">
-                    First Name: 
-                    <input 
-                        type="text" 
-                        name="fname" 
-                        value={fname} 
-                        onChange={handleInput} 
-                        placeholder={userData.value ? userData.value.fname : "First Name"} 
+                    First Name:
+                    <input
+                        type="text"
+                        name="fname"
+                        value={fname}
+                        onChange={handleInput}
+                        placeholder={userData.value ? userData.value.fname : "First Name"}
                     />
-                    Last Name: 
-                    <input 
-                        type="text" 
-                        name="lname" 
-                        value={lname} 
-                        onChange={handleInput} 
-                        placeholder={userData.value ? userData.value.lname : "Last Name"} 
+                    Last Name:
+                    <input
+                        type="text"
+                        name="lname"
+                        value={lname}
+                        onChange={handleInput}
+                        placeholder={userData.value ? userData.value.lname : "Last Name"}
                     />
                 </div>
                 <div className="save-button">
@@ -153,7 +167,7 @@ const handleDeleteUser = async () => {
 
             {/* Delete User Button */}
             <div className="delete-user">
-            <button onClick={handleDeleteUser}>Delete user</button>
+                <button onClick={handleDeleteUser}>Delete user</button>
             </div>
         </div>
     );

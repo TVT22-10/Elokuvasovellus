@@ -1,4 +1,5 @@
 const pgPool = require('./connection');
+const bcrypt = require('bcrypt');
 
 const sql = {
   INSERT_USER: 'INSERT INTO customer VALUES ($1, $2, $3, $4)',
@@ -62,8 +63,10 @@ async function setUserAvatar(username, avatarFilename) {
 }
 
 
-async function deleteUser(username) {
+/*async function deleteUser(username) {
   try {
+
+
   // Delete associated data first
   await pgPool.query('DELETE FROM reviews WHERE username = $1', [username]);
   await pgPool.query('DELETE FROM favorites WHERE username = $1', [username]);
@@ -80,5 +83,50 @@ async function deleteUser(username) {
   throw new Error('Error deleting user'); // Throw an error if deletion fails
 }
 }
+*/
 
-module.exports = { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser };
+
+// Tämä on vain esimerkki - mukauta omaan tietokantakäsittelyysi sopivaksi
+
+async function getPasswordFromDatabase(username) {
+  try {
+    const query = 'SELECT pw FROM customer WHERE username = $1';
+    const result = await pgPool.query(query, [username]);
+
+    if (result.rows.length > 0) {
+      return result.rows[0].pw; // Palauta käyttäjän tiivistetty salasana (hash)
+    } else {
+      return null; // Palauta null, jos käyttäjää ei löydy
+    }
+  } catch (error) {
+    console.error('Virhe salasanan hakemisessa tietokannasta:', error);
+    throw new Error('Virhe salasanan hakemisessa tietokannasta');
+  }
+}
+
+
+async function deleteUser(username, password) {
+  try {
+      const pwHash = await getPasswordFromDatabase(username);
+
+      const isPasswordCorrect = await bcrypt.compare(password, pwHash);
+
+      if (isPasswordCorrect) {
+          await pgPool.query('DELETE FROM reviews WHERE username = $1', [username]);
+          await pgPool.query('DELETE FROM favorites WHERE username = $1', [username]);
+          await pgPool.query('DELETE FROM group_members WHERE username = $1', [username]);
+          await pgPool.query('DELETE FROM group_join_requests WHERE username = $1', [username]);
+
+          await pgPool.query('DELETE FROM customer WHERE username = $1', [username]);
+          console.log('Deleted user');
+          return { success: true };
+      } else {
+          return { success: false, error: 'Incorrect password' };
+      }
+  } catch (error) {
+      console.error('Error deleting user:', error);
+      throw new Error('Error deleting user');
+  }
+}
+
+module.exports = { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser, getPasswordFromDatabase };
