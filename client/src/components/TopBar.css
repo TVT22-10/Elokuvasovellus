@@ -52,15 +52,17 @@
 }
 
 .dropdown-menu {
+  text-align: center;
   position: absolute;
   top: 100%;
   left: 0;
   display: flex;
   flex-direction: column;
-  background-color: #555;
+  background-color: #007bff;
   padding: 0.5rem;
   border-radius: 0.25rem;
   z-index: 1;
+  width: 85%;
 }
 
 .dropdown-menu a {
@@ -71,7 +73,7 @@
 }
 
 .dropdown-menu a:hover {
-  background-color: #777;
+  color: black ;
 }
 
 .button-container {

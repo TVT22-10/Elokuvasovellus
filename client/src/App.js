@@ -19,7 +19,9 @@ import SearchPage from './pages/search/search';
 import SearchGroups from './pages/groups/search_groups/search_groups';
 import TheatreAreasPage from './xmlcomponents/TheatreAreas';
 import NewsPage from './xmlcomponents/News';
-
+import EventsPage from './xmlcomponents/Events';
+import SchedulePage from './xmlcomponents/Schedule';
+import ScheduleDatesPage from './xmlcomponents/ScheduleDates';
 
 function RepeatingLogComponent() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -55,13 +57,12 @@ function App() {
           <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
           <Route path="/search" element={<SearchPage />} /> {/* Search page */}
           <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}
-          <Route path="/groups/:groupId" element={<GroupPage />} /> {/* Group page */}
-          {/* <Route path="/xml1" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/TheatreAreas/" topLevelProperty="TheatreAreas" nestedProperty="TheatreArea" />} />
-          <Route path="/xml2" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/ScheduleDates/" topLevelProperty="ScheduleDates" nestedProperty="ScheduleDate" />} />
-          <Route path="/xml3" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/Schedule/" topLevelProperty="Schedule" nestedProperty="Shows" />} />
-          <Route path="/xml4" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/Events/" topLevelProperty="Events" nestedProperty="Event" />} />
-          <Route path="/xml5" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/News/" topLevelProperty="News" nestedProperty="NewsArticle" />} />
-          <Route path="/xml6" element={<XmlPage xmlUrl="https://www.finnkino.fi/xml/NewsCategories/" topLevelProperty="NewsCategories" nestedProperty="NewsArticleCategory" />} /> */} */}
+          <Route path="/groups/:groupId" element={<GroupPage/>} />
+          <Route path="/theatre_areas" element={<TheatreAreasPage />} />
+          <Route path="/news" element={<NewsPage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/schedule" element={<SchedulePage />} />
+          <Route path="/scheduledates" element={<ScheduleDatesPage />} />
         </Routes>
       </Router>
 
