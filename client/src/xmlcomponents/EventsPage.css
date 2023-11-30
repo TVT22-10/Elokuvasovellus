@@ -1,0 +1,49 @@
+/* EventsPage.css */
+.events-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-form {
+  margin-bottom: 20px;
+}
+
+.search-form label {
+  margin-right: 10px;
+}
+
+.search-form input {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.search-form button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.search-form button:hover {
+  background-color: #0056b3;
+}
+
+.event-item {
+  margin-bottom: 20px;
+}
+
+.event-title {
+  font-size: 1.5em;
+  color: #007bff;
+}
+
+.event-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+  
