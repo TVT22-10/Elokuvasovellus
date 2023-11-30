@@ -100,7 +100,7 @@ function GroupPage() {
             console.error('Error handling join request:', error);
         }
     };
-    
+
     const handleRemoveMember = async (username) => {
         try {
             await axios.delete(`http://localhost:3001/groups/${groupId}/members/${username}`, {
@@ -113,7 +113,22 @@ function GroupPage() {
             // Handle error scenarios if needed
         }
     };
-    
+
+    const handleLeaveGroup = async (username) => {
+        try {
+            const confirm = window.confirm('Are you sure you want to leave the group?');
+            if (confirm) {
+                await axios.delete(`http://localhost:3001/groups/${groupId}/members/${username}`, {
+                    headers: { Authorization: `Bearer ${jwtToken.value}` },
+                });
+                fetchGroupMembers(); // Refresh the member list after leaving the group
+            }
+        } catch (error) {
+            console.error('Error leaving group:', error);
+            // Handle error scenarios if needed
+        }
+    };
+
 
     return (
         <div className="Group-page">
@@ -131,11 +146,6 @@ function GroupPage() {
 
                     </div>
                     <div className="bio-buttons">
-                        <div className="editGroup-button">
-                            <Link to="/edit_group">
-                                <button id="editGroup">Group settings</button>
-                            </Link>
-                        </div>
                         {!isMember && (
                             <button onClick={sendJoinRequest} className="join-group-button">
                                 Send Join Request
@@ -150,8 +160,8 @@ function GroupPage() {
                 <p className={`view-change ${activeTab === 'group members' ? 'active-link' : ''}`} onClick={() => setActiveTab('group members')}>Group members</p>
                 <p className={`view-change ${activeTab === 'news' ? 'active-link' : ''}`} onClick={() => setActiveTab('news')}>News</p>
                 {groupData && groupData.creator_username === userData.value.username && (
-    <p className={`view-change ${activeTab === 'join requests' ? 'active-link' : ''}`} onClick={() => setActiveTab('join requests')}>Join Requests</p>
-)}
+                    <p className={`view-change ${activeTab === 'join requests' ? 'active-link' : ''}`} onClick={() => setActiveTab('join requests')}>Join Requests</p>
+                )}
 
             </div>
             <div className="group-content">
@@ -169,11 +179,34 @@ function GroupPage() {
                             {groupMembers.map((member, index) => (
                                 <div className="member-item" key={index}>
                                     <img src={`http://localhost:3001/avatars/${member.avatar}`} alt={`${member.username}'s avatar`} className="member-avatar" />
-                                    <span className="member-name">{member.username}</span>
-                                    {groupData && member.username === groupData.creator_username && <span className="owner-tag">Owner</span>}
-                                    <span className="member-joined-date">{formatDate(member.joined_date)}</span>
-                                    <button onClick={() => handleRemoveMember(member.username)}>Delete Member</button>
-
+                                    <span className="member-name">
+                                        {member.username}
+                                        {groupData && member.username === groupData.creator_username && (
+                                            <React.Fragment>
+                                                <span className="owner-tag">Owner</span>
+                                                <span className="member-joined-date">{formatDate(member.joined_date)}</span>
+                                            </React.Fragment>
+                                        )}
+                                    </span>
+                                    {groupData && member.username !== groupData.creator_username && (
+                                        <React.Fragment>
+                                            <span className="member-joined-date">{formatDate(member.joined_date)}</span>
+                                            {userData.value.username === member.username && (
+                                                <div className="leaveGroup">
+                                                <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
+                                                </div>
+                                            )}
+                                        </React.Fragment>
+                                    )}
+                                    {groupData && userData.value.username === groupData.creator_username && (
+                                        <React.Fragment>
+                                            {userData.value.username !== member.username && (
+                                                <div className="deleteMember">
+                                                    <button onClick={() => handleRemoveMember(member.username)}>Delete Member</button>
+                                                </div>
+                                            )}
+                                        </React.Fragment>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -187,18 +220,18 @@ function GroupPage() {
                 <div className={`content ${activeTab !== 'join requests' && 'hidden'}`} id="join requests">
                     {groupData && groupData.creator_username === userData.value.username && (
                         <div className="join-requests-list">
-                        {joinRequests.length > 0 ? (
-                            joinRequests.map((request, index) => (
-                                <div className="join-request-item" key={index}>
-                                    <span>{request.username}</span>
-                                    <button onClick={() => handleJoinRequest(request.request_id, true)}>Accept</button>
-                                    <button onClick={() => handleJoinRequest(request.request_id, false)}>Decline</button>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No join requests.</p>
-                        )}
-                    </div>
+                            {joinRequests.length > 0 ? (
+                                joinRequests.map((request, index) => (
+                                    <div className="join-request-item" key={index}>
+                                        <span>{request.username}</span>
+                                        <button onClick={() => handleJoinRequest(request.request_id, true)}>Accept</button>
+                                        <button onClick={() => handleJoinRequest(request.request_id, false)}>Decline</button>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No join requests.</p>
+                            )}
+                        </div>
                     )}
                 </div>
             </div>
