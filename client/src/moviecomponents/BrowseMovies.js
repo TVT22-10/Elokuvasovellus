@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// ... other imports
+import './BrowseMovies.css';
 
 function generateYearOptions(startYear, endYear) {
     let years = [];
@@ -27,35 +26,69 @@ function BrowseMovies() {
     const [page, setPage] = useState(1); // State for pagination
     const navigate = useNavigate();
     const years = generateYearOptions(1930, new Date().getFullYear());
+    const [sortBy, setSortBy] = useState('popularity.desc');
+    const [minVoteCount, setMinVoteCount] = useState(''); // Initialize with a suitable default value
+    const [minMovieLength, setMinMovieLength] = useState('');
+    const [maxMovieLength, setMaxMovieLength] = useState('');
+
+
 
 
     useEffect(() => {
-        console.log("Fetching movies with filters:", filters);
+        console.log("Fetching movies with filters:", filters, "sort by:", sortBy, "minimum votes:", minVoteCount, "min length:", minMovieLength, "max length:", maxMovieLength);
         fetchMovies();
-    }, [filters, sortOption, page]);
+    }, [filters, sortBy, minVoteCount, minMovieLength, maxMovieLength, page]);
 
 
-    const fetchMovies = async () => {
+
+
+
+
+    const fetchMovies = async (newPage = page) => {
         try {
-            const params = { ...filters, sort: sortOption, page };
-            console.log("API Request Params:", params); // Check the parameters
+            const params = {
+                ...filters,
+                sort_by: sortBy,
+                'vote_count.gte': minVoteCount,
+                'with_runtime.gte': minMovieLength, // Minimum length
+                'with_runtime.lte': maxMovieLength, // Maximum length
+                page: newPage
+            };
+            console.log("API Request Params:", params);
             const url = new URL(`http://localhost:3001/discover-movies`);
             url.search = new URLSearchParams(params).toString();
-            console.log("API Request URL:", url.toString()); // Check the URL
+            console.log("API Request URL:", url.toString());
 
             const response = await fetch(url);
-        const data = await response.json();
-        setMovies(data.results || []);
-        setTotalPages(data.total_pages || 0); // Update totalPages based on the API response
-    } catch (error) {
-        console.error('Error:', error);
-    }
-};
+            const data = await response.json();
+
+            if (newPage === 1) {
+                setMovies(data.results || []); // Replace movies for the first page
+            } else {
+                setMovies(prevMovies => {
+                    const combinedMovies = [...prevMovies, ...(data.results || [])];
+                    const uniqueMovies = combinedMovies.reduce((acc, current) => {
+                        const x = acc.find(item => item.id === current.id);
+                        if (!x) {
+                            return acc.concat([current]);
+                        } else {
+                            return acc;
+                        }
+                    }, []);
+                    return uniqueMovies;
+                });
+            }
+            setTotalPages(data.total_pages || 0);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
 
     const loadMoreResults = async () => {
         if (page < totalPages) {
             const nextPage = page + 1;
-            await fetchMovies(nextPage);
+            await fetchMovies(nextPage); // Pass the new page number to fetchMovies
             setPage(nextPage);
         }
     };
@@ -72,13 +105,17 @@ function BrowseMovies() {
             console.log("Updated Filters:", updatedFilters);
             return updatedFilters;
         });
+        setPage(1); // Reset page number to 1
     };
+
 
 
     // Function to handle changes in sorting UI components
     const handleSortChange = (value) => {
-        setSortOption(value);
+        setSortBy(value);
+        setPage(1); // Reset page number to 1
     };
+
 
     const calculateRating = (rating) => {
         const circumference = 2 * Math.PI * 20; // Assuming the radius of the circle is 20
@@ -91,7 +128,7 @@ function BrowseMovies() {
         <div>
             <div className="filters-container">
                 {/* Genre Dropdown */}
-                <select value={filters.genre} onChange={(e) => handleFilterChange('genre', e.target.value)}>
+                <select className="select-dropdown" value={filters.genre} onChange={(e) => handleFilterChange('genre', e.target.value)}>
                     <option value="">Select Genre</option>
                     <option value="28">Action</option>
                     <option value="12">Adventure</option>
@@ -115,7 +152,7 @@ function BrowseMovies() {
                 </select>
 
                 {/* Start Year Dropdown */}
-                <select value={filters.startYear} onChange={(e) => handleFilterChange('startYear', e.target.value)}>
+                <select className="select-dropdown" value={filters.startYear} onChange={(e) => handleFilterChange('startYear', e.target.value)}>
                     <option value="">Select Start Year</option>
                     {years.map(year => (
                         <option key={`start-${year}`} value={year}>{year}</option>
@@ -123,14 +160,14 @@ function BrowseMovies() {
                 </select>
 
                 {/* End Year Dropdown */}
-                <select value={filters.endYear} onChange={(e) => handleFilterChange('endYear', e.target.value)}>
+                <select className="select-dropdown" value={filters.endYear} onChange={(e) => handleFilterChange('endYear', e.target.value)}>
                     <option value="">Select End Year</option>
                     {years.map(year => (
                         <option key={`end-${year}`} value={year}>{year}</option>
                     ))}
                 </select>
                 {/* Language Dropdown */}
-                <select value={filters.originalLanguage} onChange={(e) => handleFilterChange('originalLanguage', e.target.value)}>
+                <select className="select-dropdown" value={filters.originalLanguage} onChange={(e) => handleFilterChange('originalLanguage', e.target.value)}>
                     <option value="">Select Original Language</option>
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
@@ -147,12 +184,60 @@ function BrowseMovies() {
                     {/* Add more languages as needed */}
                 </select>
 
+
+
+                {/* Sort By Dropdown */}
+                <select className="select-dropdown" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+                    <option value="popularity.desc">Popularity Descending</option>
+                    <option value="popularity.asc">Popularity Ascending</option>
+                    <option value="release_date.desc">Release Date Descending</option>
+                    <option value="release_date.asc">Release Date Ascending</option>
+                    <option value="revenue.desc">Revenue Descending</option>
+                    <option value="revenue.asc">Revenue Ascending</option>
+                    <option value="primary_release_date.desc">Primary Release Date Descending</option>
+                    <option value="primary_release_date.asc">Primary Release Date Ascending</option>
+                    <option value="vote_average.desc">Vote Average Descending</option>
+                    <option value="vote_average.asc">Vote Average Ascending</option>
+                    <option value="vote_count.desc">Vote Count Descending</option>
+                    <option value="vote_count.asc">Vote Count Ascending</option>
+                </select>
+
+                {/* Minimum Movie Length Dropdown/Input */}
+                <select className="select-dropdown" value={minMovieLength} onChange={(e) => setMinMovieLength(e.target.value)}>
+                    <option value="">Select Minimum Length</option>
+                    <option value="30">At least 30 minutes</option>
+                    <option value="60">At least 1 hour</option>
+                    <option value="90">At least 1 hour 30 minutes</option>
+                    <option value="120">At least 2 hours</option>
+                </select>
+
+                {/* Maximum Movie Length Dropdown/Input */}
+                <select className="select-dropdown" value={maxMovieLength} onChange={(e) => setMaxMovieLength(e.target.value)}>
+                    <option value="">Select Maximum Length</option>
+                    <option value="60">Up to 1 hour</option>
+                    <option value="90">Up to 1 hour 30 minutes</option>
+                    <option value="120">Up to 2 hours</option>
+                    <option value="150">Up to 2 hours 30 minutes</option>
+                    <option value="180">Up to 3 hours</option>
+                </select>
+
+                <input
+                    type="number"
+                    className="number-input"
+                    value={minVoteCount}
+                    onChange={(e) => setMinVoteCount(e.target.value)}
+                    placeholder="Minimum Vote Count"
+                />
+
+
+
+
                 {/* Add more filter UI components here as needed */}
             </div>
             <div className="search-results-container">
-                {movies.map(movie => (
+                {movies.map((movie, index) => (
                     <div
-                        key={movie.id}
+                        key={`${movie.id}-${index}`} // Modified key
                         className="search-movie-card"
                         onClick={() => navigateToMovie(movie.id)}
                     >
@@ -195,7 +280,7 @@ function BrowseMovies() {
                 <div className="load-more-container">
                     <button onClick={loadMoreResults} className="load-more-button">LOAD MORE</button>
                 </div>
-        )}
+            )}
         </div>
     );
 }
