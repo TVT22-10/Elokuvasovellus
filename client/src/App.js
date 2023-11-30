@@ -21,7 +21,7 @@ import TheatreAreasPage from './xmlcomponents/TheatreAreas';
 import NewsPage from './xmlcomponents/News';
 import EventsPage from './xmlcomponents/Events';
 import SchedulePage from './xmlcomponents/Schedule';
-import ScheduleDatesPage from './xmlcomponents/ScheduleDates'
+import ScheduleDatesPage from './xmlcomponents/ScheduleDates';
 
 function RepeatingLogComponent() {
   const { isLoggedIn } = useContext(AuthContext);
