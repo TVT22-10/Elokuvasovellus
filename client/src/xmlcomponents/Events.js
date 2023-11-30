@@ -6,6 +6,12 @@ import './EventsPage.css'; // Import the CSS file
 function EventsPage() {
   const [eventsData, setEventsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchCriteria, setSearchCriteria] = useState({
+    productionYear: '',
+    rating: '',
+    genres: '',
+    globalDistributor: '',
+  });
 
   useEffect(() => {
     const getXml = async () => {
@@ -34,6 +40,89 @@ function EventsPage() {
   return (
     <div className="events-container">
       <h1>Events</h1>
+
+      <div className="search-form">
+        <label>
+          Production Year:
+          <select
+            name="productionYear"
+            value={searchCriteria.productionYear}
+            onChange={handleInputChange}
+          >
+            <option value="">All Years</option>
+            {eventsData
+              .map((event) => event.ProductionYear)
+              .filter((year, index, self) => self.indexOf(year) === index)
+              .sort((a, b) => b - a) // Sort in descending order
+              .map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+          </select>
+        </label>
+
+        <label>
+          Rating:
+          <select
+            name="rating"
+            value={searchCriteria.rating}
+            onChange={handleInputChange}
+          >
+            <option value="">All Ratings</option>
+            {eventsData
+              .map((event) => event.Rating)
+              .filter((rating, index, self) => self.indexOf(rating) === index)
+              .map((rating) => (
+                <option key={rating} value={rating}>
+                  {rating}
+                </option>
+              ))}
+          </select>
+        </label>
+
+        <label>
+          Genres:
+          <select
+            name="genres"
+            value={searchCriteria.genres}
+            onChange={handleInputChange}
+          >
+            <option value="">All Genres</option>
+            {eventsData
+              .map((event) => event.Genres.split(','))
+              .flat()
+              .filter((genre, index, self) => self.indexOf(genre) === index)
+              .map((genre) => (
+                <option key={genre} value={genre}>
+                  {genre}
+                </option>
+              ))}
+          </select>
+        </label>
+
+        <label>
+          Global Distributor:
+          <select
+            name="globalDistributor"
+            value={searchCriteria.globalDistributor}
+            onChange={handleInputChange}
+          >
+            <option value="">All Distributors</option>
+            {eventsData
+              .map((event) => event.GlobalDistributorName)
+              .filter((distributor, index, self) => self.indexOf(distributor) === index)
+              .map((distributor) => (
+                <option key={distributor} value={distributor}>
+                  {distributor}
+                </option>
+              ))}
+          </select>
+        </label>
+
+        <button onClick={handleSearch}>Search</button>
+      </div>
+
       {loading ? (
         <p>Loading...</p>
       ) : (
