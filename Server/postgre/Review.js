@@ -17,16 +17,47 @@ const addReview = async (req, res) => {
 };
 
 const getAllReviews = async (req, res) => {
+  const { sort } = req.query; // Extract the sort parameter from the query
+
   try {
-    const result = await pgPool.query(
-      'SELECT r.*, c.avatar FROM reviews r JOIN customer c ON r.username = c.username'
-    );
+    let result;
+
+    // Check the sort parameter and apply sorting accordingly
+    switch (sort) {
+      case 'newest':
+        result = await pgPool.query(
+          'SELECT r.*, c.avatar FROM reviews r JOIN customer c ON r.username = c.username ORDER BY r.review_date DESC'
+        );
+        break;
+      case 'oldest':
+        result = await pgPool.query(
+          'SELECT r.*, c.avatar FROM reviews r JOIN customer c ON r.username = c.username ORDER BY r.review_date ASC'
+        );
+        break;
+      case 'best':
+        result = await pgPool.query(
+          'SELECT r.*, c.avatar FROM reviews r JOIN customer c ON r.username = c.username ORDER BY r.rating DESC'
+        );
+        break;
+      case 'worst':
+        result = await pgPool.query(
+          'SELECT r.*, c.avatar FROM reviews r JOIN customer c ON r.username = c.username ORDER BY r.rating ASC'
+        );
+        break;
+      default:
+        // Default to ordering by the newest
+        result = await pgPool.query(
+          'SELECT r.*, c.avatar FROM reviews r JOIN customer c ON r.username = c.username ORDER BY r.review_date DESC'
+        );
+    }
+
     res.json(result.rows);
   } catch (error) {
     console.error('Error getting all reviews:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 const getReviewsByRating = async (req, res) => {
   const { minRating, maxRating } = req.params;
@@ -48,7 +79,10 @@ const getReviewsByMovieId = async (req, res) => {
   const { movieId } = req.params;
 
   try {
-    const result = await pgPool.query('SELECT * FROM reviews WHERE movie_id = $1', [movieId]);
+    const result = await pgPool.query(
+      'SELECT r.*, c.avatar FROM reviews r JOIN customer c ON r.username = c.username WHERE r.movie_id = $1',
+      [movieId]
+    );
 
     res.json(result.rows); // Check if result.rows is not undefined before sending
   } catch (error) {
