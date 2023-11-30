@@ -1,41 +1,41 @@
-/* EventsPage.css */
-.events-container {
+/* SchedulePage.css */
+.schedule-container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
   }
   
-  .event-list {
+  .schedule-list {
     list-style-type: none;
     padding: 0;
   }
   
-  .event-item {
+  .schedule-item {
     border-bottom: 1px solid #ccc;
     padding: 10px 0;
     margin-bottom: 20px;
   }
   
-  .event-item:last-child {
+  .schedule-item:last-child {
     border-bottom: none;
   }
   
-  .event-title {
+  .schedule-title {
     font-size: 1.5em;
     color: #007bff;
   }
   
-  .event-description {
+  .schedule-description {
     font-size: 1.1em;
     color: #ffffff;
     margin: 10px 0;
   }
   
-  .event-image {
+  .schedule-image {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
- 
   
+  /* Add more styles as needed */
