@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import './edit_profile.css';
 import { jwtToken, userData } from "../../../components/Signals";
 import axios from 'axios';
+import { AuthContext } from '../../../components/Contexts'; // Adjust the import path
+
 
 function Edit_Profile() {
     const [fname, setFname] = useState(userData.value?.fname || '');
@@ -10,6 +12,7 @@ function Edit_Profile() {
     const [availableAvatars, setAvailableAvatars] = useState([]);
     const [selectedAvatar, setSelectedAvatar] = useState(userData.value?.avatar || 'avatar1.png'); // Default to 'avatar1.png'
     const [showAvatarDropdown, setShowAvatarDropdown] = useState(false); // New state for toggling avatar dropdownz
+    const { logout } = useContext(AuthContext); // Access the logout function
 
     useEffect(() => {
         const token = jwtToken.value;
@@ -77,19 +80,18 @@ function Edit_Profile() {
         }
     };
 
-    // Inside the Edit_Profile component
+
+
+    // Updated handleDeleteUser function
     const handleDeleteUser = async () => {
         try {
             const token = jwtToken.value;
             const username = userData.value.username;
             const password = prompt('Please enter your password to confirm deletion:');
-
-            // Check if password is provided
+    
             if (password !== null) {
                 const confirmed = window.confirm('Are you sure you want to delete your user? This action cannot be undone.');
-
                 if (confirmed) {
-                    // Send the username and password for verification
                     const response = await axios.delete(`http://localhost:3001/user/delete/${username}`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -98,14 +100,15 @@ function Edit_Profile() {
                             password: password,
                         }
                     });
-                    // Inside handleDeleteUser function after successful deletion
-                    if (response.data.success) {
+    
+                    // Check if the server responded with a success message
+                    if (response.data.message === 'User deleted successfully') {
                         window.alert('User deleted successfully');
-                        // Clear authentication-related data from local storage or cookies
-                        localStorage.removeItem('token'); // Clear JWT token from local storage
-                        // Redirect to the login page or any appropriate destination
-                        window.location.href = '/login'; // Redirect to the login page
+                        logout(); // Call the logout function after successful deletion
+                        window.location.href = '/Auth'; // Redirect to the login page
+
                     } else {
+                        // Handle other server responses
                         window.alert(response.data.error || 'Error deleting user. Please try again.');
                     }
                 }
@@ -115,6 +118,9 @@ function Edit_Profile() {
             window.alert('Error deleting user. Please try again.');
         }
     };
+    
+    
+
 
 
     return (
