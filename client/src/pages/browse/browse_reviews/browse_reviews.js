@@ -93,7 +93,7 @@ function BrowseReviews() {
   return (
     <div className="browse-reviews">
       <div className="sorting-dropdown">
-        <label htmlFor="sortingOrder">Sort by: </label>
+        <label className='sortingorder-dropdown' htmlFor="sortingOrder">Sort by: </label>
         <select id="sortingOrder" value={sortingOrder} onChange={handleSortingChange}>
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
@@ -124,7 +124,7 @@ function BrowseReviews() {
                   <p>
                     {expandedReviews.includes(review.review_id)
                       ? review.review_text
-                      : `${review.review_text.slice(0, 70)}...`}
+                      : `${review.review_text.slice(0, 70)}`}
                   </p>
                   {review.review_text.length > 70 && (
                     <div className='read-more-container'>

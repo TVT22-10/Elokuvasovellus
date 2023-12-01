@@ -61,7 +61,7 @@
   background-color: #007bff;
   padding: 0.5rem;
   border-radius: 0.25rem;
-  z-index: 1;
+  z-index: 3;
   width: 85%;
 }
 
@@ -70,6 +70,7 @@
   color: white;
   text-decoration: none;
   transition: background-color 0.3s ease;
+  z-index: 3;
 }
 
 .dropdown-menu a:hover {
@@ -90,6 +91,7 @@
   border-radius: 5px;
   font-size: 1.2rem;
   transition: background-color 0.3s ease;
+  z-index: 1;
 }
 
 .login-link a:hover,
@@ -117,4 +119,42 @@
 .logout-link a,
 .browse-button span {
   font-weight: 500;
+}
+
+
+@media (max-width: 600px) {
+  .profile-link a,
+  .custom-button a,
+  .browse-button span {
+    font-size: 16px; /* Adjust font size for smaller screens */
+    padding: 0px;
+  }
+
+  .top-bar {
+    padding: 0px 0px;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .login-link a,
+  .logout-link a {
+    padding: 8px 15px; /* Adjust padding for smaller screens */
+    margin-right: 10px;
+    font-size: 0.9rem; /* Adjust font size for smaller screens */
+  }
+  .topbartitle {
+    margin-left: 10px;
+  }
+  .dropdown-menu {
+    width: 100%;
+    margin-top: -2px;
+    margin-left:-8px
+  }
+
+  .dropdown-menu a {
+    font-size: 16px;
+    padding: 0%;
+    padding-top:4px;
+  }
 }

@@ -55,7 +55,25 @@
 .review-form button:hover {
   background: #0069d9;
 }
+.review-form-button-and-message {
+  display: flex;
+  justify-content: space-between;
+}
+.review-submitted-message {
+  font-size: 1.2rem;
+  color: white;
+  margin-top: 5px;
+}
 
 .review-textfield {
   height: 400px; /* Adjust the height as needed */
+}
+
+@media (max-width: 600px) {
+  .star-rating button {
+    padding: 0px 7px;
+  }  
+  .star-icon {
+    width: 25px;
+  }
 }

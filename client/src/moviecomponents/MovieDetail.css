@@ -3,7 +3,7 @@
   display: flex;
   padding: 150px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   height: 90vh;
 }
 
@@ -32,7 +32,7 @@
   left: 0;
   width: 100%;
   height: 70%;
-  z-index: -1;
+  z-index: 1;
   
 }
 
@@ -48,7 +48,7 @@
   right: 0;
   height: 70%;
   background-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0) 100%);
-  z-index: 1;
+  z-index: 2;
 }
 
 
@@ -242,9 +242,30 @@ margin-right: 0; /* Remove any right margin if present */
     margin: 0 0 10px 0;
   }
   .movie-poster {
-    max-width: 400px;
-    height: auto;
     object-fit: contain;
+  }
+  .movie-detail-content{
+    padding: 0px;
+    margin: 0px;
+    width: 70%;
+  }
+  .background-image{
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-attachment: fixed;
+    position: absolute;
+    height: 600px;
+    width: 600px;
+  }
+  .gradient-overlay{
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0.5) 80%, rgba(0, 0, 0, 0) 100%);
+    z-index: 2;
   }
 }
 
