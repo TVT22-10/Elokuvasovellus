@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import xml2js from 'xml2js';
-import './SchedulePage.css'; // Import the CSS file
+import './SchedulePage.css';
 
-function SchedulePage() {
+const SchedulePage = () => {
   const [scheduleData, setScheduleData] = useState([]);
   const [filteredSchedule, setFilteredSchedule] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,8 +12,10 @@ function SchedulePage() {
     selectedGenre: '',
     selectedTitle: '',
     selectedTheatre: '',
-    selectedTheatreAuditorium: '',
     selectedPresentationMethod: '',
+    selectedTimeInterval: '',
+    selectedLanguage: '',
+    selectedSubtitle: '',
   });
 
   const formatLocalReleaseDate = (dateString) => {
@@ -38,7 +40,6 @@ function SchedulePage() {
     });
     return `${formattedDate} ${formattedTime}`;
   };
-
 
   useEffect(() => {
     const getXml = async () => {
@@ -70,9 +71,11 @@ function SchedulePage() {
         (filterCriteria.selectedRating === '' || item.Rating === filterCriteria.selectedRating) &&
         (filterCriteria.selectedGenre === '' || item.Genres.includes(filterCriteria.selectedGenre)) &&
         (filterCriteria.selectedTitle === '' || item.Title.includes(filterCriteria.selectedTitle)) &&
-        (filterCriteria.selectedTheatre === '' || item.Theatre.includes(filterCriteria.selectedTheatre)) &&
-        (filterCriteria.selectedTheatreAuditorium === '' || item.TheatreAuditorium.includes(filterCriteria.selectedTheatreAuditorium)) &&
-        (filterCriteria.selectedPresentationMethod === '' || item.PresentationMethod.includes(filterCriteria.selectedPresentationMethod))
+        (filterCriteria.selectedTheatre === '' || item.Theatre === filterCriteria.selectedTheatre) &&
+        (filterCriteria.selectedPresentationMethod === '' || item.PresentationMethod.includes(filterCriteria.selectedPresentationMethod)) &&
+        (filterCriteria.selectedTimeInterval === '' || handleTimeIntervalFilter(item, filterCriteria.selectedTimeInterval)) &&
+        (filterCriteria.selectedLanguage === '' || item.SpokenLanguage?.Name === filterCriteria.selectedLanguage) &&
+        (filterCriteria.selectedSubtitle === '' || item.SubtitleLanguage1?.Name === filterCriteria.selectedSubtitle)
     );
 
     setFilteredSchedule(filtered);
@@ -81,6 +84,58 @@ function SchedulePage() {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFilterCriteria((prevCriteria) => ({ ...prevCriteria, [name]: value }));
+  };
+
+  const handleTimeIntervalFilter = (item, selectedTimeInterval) => {
+    if (!selectedTimeInterval) return true;
+
+    const showDate = new Date(item.dttmShowStart);
+    const startHour = showDate.getHours();
+    const endHour = new Date(item.dttmShowEnd).getHours();
+
+    const [start, end] = selectedTimeInterval.split('-');
+    const [startHourFilter, endHourFilter] = [parseInt(start), parseInt(end)];
+
+    return startHour >= startHourFilter && endHour <= endHourFilter;
+  };
+
+  const getTimeIntervalsOptions = () => {
+    // Assuming movies start every two hours, adjust as needed
+    const intervals = Array.from({ length: 24 / 2 }, (_, index) => {
+      const startHour = index * 2;
+      const endHour = startHour + 2;
+      return `${startHour.toString().padStart(2, '0')}.00-${endHour.toString().padStart(2, '0')}.00`;
+    });
+
+    return intervals.map((interval) => (
+      <option key={interval} value={interval}>
+        {interval}
+      </option>
+    ));
+  };
+
+  const getLanguageOptions = () => {
+    const languages = Array.from(new Set(scheduleData.map((item) => item.SpokenLanguage?.Name)))
+      .filter(Boolean)
+      .map((language) => (
+        <option key={language} value={language}>
+          {language}
+        </option>
+      ));
+
+    return [<option key="allLanguages" value="">All Languages</option>, ...languages];
+  };
+
+  const getSubtitleOptions = () => {
+    const subtitles = Array.from(new Set(scheduleData.map((item) => item.SubtitleLanguage1?.Name)))
+      .filter(Boolean)
+      .map((subtitle) => (
+        <option key={subtitle} value={subtitle}>
+          {subtitle}
+        </option>
+      ));
+
+    return [<option key="allSubtitles" value="">All Subtitles</option>, ...subtitles];
   };
 
   const getUniqueValues = (key) => {
@@ -161,18 +216,6 @@ function SchedulePage() {
         </label>
 
         <label>
-          Theatre Auditorium:
-          <select
-            name="selectedTheatreAuditorium"
-            value={filterCriteria.selectedTheatreAuditorium}
-            onChange={handleInputChange}
-          >
-            <option value="">All Auditoriums</option>
-            {getUniqueValues('TheatreAuditorium')}
-          </select>
-        </label>
-
-        <label>
           Presentation Method:
           <select
             name="selectedPresentationMethod"
@@ -181,6 +224,40 @@ function SchedulePage() {
           >
             <option value="">All Methods</option>
             {getUniqueValues('PresentationMethod')}
+          </select>
+        </label>
+
+        <label>
+          Time Interval:
+          <select
+            name="selectedTimeInterval"
+            value={filterCriteria.selectedTimeInterval}
+            onChange={handleInputChange}
+          >
+            <option value="">All Time Intervals</option>
+            {getTimeIntervalsOptions()}
+          </select>
+        </label>
+
+        <label>
+          Language:
+          <select
+            name="selectedLanguage"
+            value={filterCriteria.selectedLanguage}
+            onChange={handleInputChange}
+          >
+            {getLanguageOptions()}
+          </select>
+        </label>
+
+        <label>
+          Subtitle:
+          <select
+            name="selectedSubtitle"
+            value={filterCriteria.selectedSubtitle}
+            onChange={handleInputChange}
+          >
+            {getSubtitleOptions()}
           </select>
         </label>
 
@@ -203,6 +280,8 @@ function SchedulePage() {
               <br />
               <span className="schedule-info">Length: {item.LengthInMinutes} minutes</span>
               <br />
+              <span className="schedule-info">Theatre: {item.Theatre}</span>
+              <br />
               <span className="schedule-info">Genres: {item.Genres}</span>
               <br />
               <span className="schedule-info">Rating: {item.Rating}</span>
@@ -221,7 +300,6 @@ function SchedulePage() {
                 End Time: {formatShowTime(item.dttmShowEnd)}
               </span>
               <br />
-              {/* Add more details as needed */}
               <a href={item.ShowURL} target="_blank" rel="noopener noreferrer">
                 View Details
               </a>
@@ -239,6 +317,6 @@ function SchedulePage() {
       )}
     </div>
   );
-}
+};
 
 export default SchedulePage;
