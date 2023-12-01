@@ -11,7 +11,7 @@ import { faCrown } from '@fortawesome/free-solid-svg-icons';
 function SearchGroups() {
   const [userGroups, setUserGroups] = useState([]);
   const [allGroups, setAllGroups] = useState([]); // Define the allGroups state
-
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (jwtToken.value) {
@@ -39,13 +39,11 @@ function SearchGroups() {
       });
   }, []); // Empty dependency array to run only once
 
+
   return (
     <div className="groups">
       <div className="label-name">
         <h2>Search groups</h2>
-      </div>
-      <div className="search-label">
-        <input type="text" id="group_name" name="group_name" />
       </div>
       <div className="new-group">
         <Link to="/create_group">
@@ -63,8 +61,8 @@ function SearchGroups() {
                     {group.groupname}
                   </Link>
                   {group.is_owner && (
-          <FontAwesomeIcon icon={faCrown} style={{ color: "#ffd500", marginLeft: "5px" }} />
-        )}
+                    <FontAwesomeIcon icon={faCrown} style={{ color: "#ffd500", marginLeft: "5px" }} />
+                  )}
                 </div>
               ))
             ) : (
@@ -82,8 +80,8 @@ function SearchGroups() {
                     {group.groupname}
                   </Link>
                   {group.is_owner && (
-          <FontAwesomeIcon icon={faCrown} style={{ color: "#ffd500", marginLeft: "5px" }} />
-        )}
+                    <FontAwesomeIcon icon={faCrown} style={{ color: "#ffd500", marginLeft: "5px" }} />
+                  )}
 
                 </div>
               ))
