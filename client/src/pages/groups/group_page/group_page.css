@@ -192,6 +192,29 @@ nav p {
     margin-left: 10px;
     margin-bottom: -4px;
 }
+
+@media (max-width: 600px){
+.view-change {
+    font-size: 16px;
+    margin: 0px 0px 0px;
+  }
+  .group-buttons {
+    margin: 10px
+  }
+  .group-content h2{
+    margin-top: 60px;
+    font-size: 16px;
+  }
+  .members-list{
+    padding-left: 0px;
+    margin-top: 60px;
+    margin-left: 150px;
+  }
+  .group-content p{
+    font-size: 16px;
+    margin-top: 60px;
+  }
+  
 .deleteMember{
     display: flex;
     justify-content: center;

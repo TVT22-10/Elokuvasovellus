@@ -1,16 +1,36 @@
+/* Default styles for larger screens */
+.start-page {
+  padding: 50px 80px 50px 80px;
+}
+
 .movie-heading {
-    display: inline-block; /* Keeps the container tight to the text */
-    position: relative; /* Establishes a positioning context for pseudo-elements */
-    padding-bottom: 5px; /* Adds some space between text and border */
+  display: inline-block;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.movie-heading::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 4px;
+  background-color: #007bff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+@media (max-width: 600px) {
+  .start-page {
+    padding: 0px;
+    margin: 20px;
   }
-  
+
+  .movie-heading {
+    font-size: 1.2rem; /* Adjust font size for smaller screens */
+  }
+
   .movie-heading::after {
-    content: ''; /* Necessary for pseudo-elements */
-    display: block; /* Makes the pseudo-element behave like a block */
-    width: 50%; /* Adjust this value to control the length of the underline */
-    height: 4px; /* Height of the underline */
-    background-color: #007bff; /* Color of the underline */
-    position: absolute; /* Positions relative to the .movie-heading */
-    bottom: 0; /* Aligns at the bottom of the .movie-heading */
-    left: 0; /* Starts from the left side of the .movie-heading */
+    width: 30%; /* Adjust the underline length for smaller screens */
   }
+}

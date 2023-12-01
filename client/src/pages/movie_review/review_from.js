@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { FaStar } from 'react-icons/fa';
 import './review_form.css';
@@ -8,11 +8,12 @@ function ReviewForm({ movieId }) {
   const { user } = useContext(AuthContext);
   const username = user?.username;
   const [rating, setRating] = useState(0);
+  const [initialRating, setInitialRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [selectedStar, setSelectedStar] = useState(-1);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   const handleStarClick = (index) => {
-    // If the last star is clicked, set rating to 10; otherwise, use the index
     setRating(index === 9 ? 10 : index + 1);
     setSelectedStar(index);
   };
@@ -29,12 +30,26 @@ function ReviewForm({ movieId }) {
       });
 
       console.log('Review added successfully:', response.data);
+
+      // Reset text field and show "Review submitted" message
+      setReviewText('');
+      setReviewSubmitted(true);
+
+      // Reset the selected star buttons to their initial state
+      setRating(initialRating);
+      setSelectedStar(initialRating - 1);
+
       // Optionally, you can refresh the reviews after submitting a new one
       // Implement a function to fetch reviews and update the state in MovieReviews component
     } catch (error) {
       console.error('Error adding review:', error);
     }
   };
+
+  // Update initialRating when rating changes
+  useEffect(() => {
+    setInitialRating(rating);
+  }, [rating]);
 
   return (
     <div className="review-form">
@@ -63,7 +78,10 @@ function ReviewForm({ movieId }) {
             placeholder="Add your review text here"
           />
         </label>
-        <button type="submit" className="submit-button">Submit Review</button>
+        <div className='review-form-button-and-message'>
+          <button type="submit" className="submit-button">Submit Review</button>
+          {reviewSubmitted && <p className="review-submitted-message">Review submitted</p>}
+        </div>
       </form>
     </div>
   );

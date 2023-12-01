@@ -6,14 +6,13 @@ import Upcoming from '../../moviecomponents/Upcoming'; // Import the new compone
 import './start.css';
 function HomePage() {
   return (
-    <div style={{ padding: '50px 80px 50px 80px' }}>
+    <div className='start-page'>
       <h1 className="movie-heading">Popular Movies</h1>
       <PopularMovies />
       <h1 className="movie-heading">Top Rated Movies</h1> {/* New Section Title */}
       <TopRatedMovies /> {/* New Component for Top Rated Movies */}
       <h1 className="movie-heading">Upcoming</h1> {/* New Section Title */}
       <Upcoming /> {/* New Component for Top Rated Movies */}
-
     </div>
   );
 }
