@@ -219,7 +219,7 @@ function GroupPage() {
             {loading && <p>Loading...</p>}
             {error && <p>Error loading group details.</p>}
             {groupData && !loading && !error && (
-              <div>
+              <div className="group-description">
                 <p>{groupData.groupdescription}</p>
                 {userData.value.username === groupData.creator_username && (
                   <button onClick={handleEditDescription}>Edit Description</button>
