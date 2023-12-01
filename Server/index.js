@@ -189,6 +189,11 @@ app.get('/discover-movies', async (req, res) => {
       delete params.originalLanguage;
   }
 
+  if (params.sortBy) {
+    params.sort_by = params.sortBy;
+    delete params.sortBy;
+}
+
 
       const response = await axios.get(`${process.env.TMDB_BASE_URL}discover/movie`, { params });
       res.json(response.data);

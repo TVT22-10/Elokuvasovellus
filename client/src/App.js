@@ -12,7 +12,6 @@ import Profile from "./pages/profile/my_profile/my_profile";
 import CreateGroup from './pages/groups/create_group/create_group';
 import GroupPage from './pages/groups/group_page/group_page';
 import EditGroup from './pages/groups/edit_group/edit_group';
-import BrowseAll from './pages/browse/browse_all/browse_all';
 import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 import Edit_Profile from './pages/profile/edit_profile/edit_profile';
 import SearchPage from './pages/search/search';
@@ -21,7 +20,8 @@ import TheatreAreasPage from './xmlcomponents/TheatreAreas';
 import NewsPage from './xmlcomponents/News';
 import EventsPage from './xmlcomponents/Events';
 import SchedulePage from './xmlcomponents/Schedule';
-import ScheduleDatesPage from './xmlcomponents/ScheduleDates'
+import ScheduleDatesPage from './xmlcomponents/ScheduleDates';
+import BrowseMoviesPage from './pages/browse/browse_movies/browse_movies';
 
 function RepeatingLogComponent() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -53,7 +53,7 @@ function App() {
           <Route path="/edit_profile" element={<Edit_Profile />} /> {/* Edit profile page */}
           <Route path="/create_group" element={<CreateGroup />} /> {/* Create group page */}
           <Route path="/edit_group/:groupId" element={<EditGroup />} /> {/* Edit group page */}
-          <Route path="/browse_all" element={<BrowseAll />} /> {/* Browse all page */}
+          <Route path="/browse_all" element={<BrowseMoviesPage />} /> {/* Browse all page */}
           <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
           <Route path="/search" element={<SearchPage />} /> {/* Search page */}
           <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}

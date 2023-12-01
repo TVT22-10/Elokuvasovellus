@@ -70,18 +70,17 @@ nav p {
     font-weight: 500;
   }
 
-.editGroup-button button{
+.bio-buttons button{
     background-color: rgb(0, 132, 255);
     color: white;
     border: none;
     border-radius: 5px;
     padding: 10px;
     cursor: pointer; /* Changes cursor to pointer on hover */
-    margin-top: 20px;
-    margin-left: 20px;
+    margin-top: 10px;
 }
 
-.editGroup-button button:hover{
+.bio-buttons button:hover{
     background-color: rgb(23, 92, 148);
     color: white;
     border: none;
@@ -193,6 +192,7 @@ nav p {
     margin-left: 10px;
     margin-bottom: -4px;
 }
+
 @media (max-width: 600px){
 .view-change {
     font-size: 16px;
@@ -215,4 +215,49 @@ nav p {
     margin-top: 60px;
   }
   
+.deleteMember{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 4px;
+}
+.deleteMember button{
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin-top: 10px;
+}
+
+.deleteMember button:hover{
+    background-color: rgb(187, 12, 12);
+    color: white;
+    border: none;
+}
+
+.leaveGroup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 4px;
+}
+
+.leaveGroup button{
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin-top: 10px;
+}
+
+.leaveGroup button:hover{
+    background-color: rgb(187, 12, 12);
+    color: white;
+    border: none;
 }

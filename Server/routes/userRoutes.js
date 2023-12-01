@@ -8,9 +8,8 @@ const pgPool = require('../postgre/connection'); // Adjust the path as needed
 
 
 
-
-
-const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser } = require('../postgre/User');
+const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser, getPasswordFromDatabase } = require('../postgre/User');
+const e = require('express');
 
 router.get('/', async (req, res) => {
 
@@ -121,33 +120,40 @@ router.get('/groups', authenticateToken, async (req, res) => {
 router.put('/avatar', authenticateToken, async (req, res) => {
     const username = req.user.username; // Assuming username is stored in req.user
     const avatarFilename = req.body.avatar;
-  
-    try {
-      await setUserAvatar(username, avatarFilename);
-      res.json({ message: 'Avatar updated successfully' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: error.message });
-    }
-  });
-  
-  router.delete('/delete/:username', authenticateToken, async (req, res) => {
-    const { username } = req.params; // Extract the username from the URL parameter
 
     try {
-        const deletionResult = await deleteUser(username); // Call the deleteUser function defined in User.js
-        
-        // Check the response from deleteUser function
-        if (deletionResult.success) {
-          res.status(200).json({ message: 'User deleted successfully' });
+        await setUserAvatar(username, avatarFilename);
+        res.json({ message: 'Avatar updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.delete('/delete/:username', authenticateToken, async (req, res) => {
+    const { username } = req.params;
+    const { password } = req.body;
+    try {
+        const pwHash = await getPasswordFromDatabase(username);
+
+        const isPasswordCorrect = await bcrypt.compare(password, pwHash);
+
+        if (isPasswordCorrect) {
+            const deletionResult = await deleteUser(username, password); // Pass password to deleteUser
+
+            if (deletionResult.success) {
+                res.status(200).json({ message: 'User deleted successfully' });
+            } else {
+                res.status(500).json({ error: 'Error deleting user' });
+            }
+
         } else {
-          res.status(500).json({ error: 'Error deleting user' });
+            res.status(401).json({ error: 'Incorrect password' });
         }
-      } catch (error) {
+    } catch (error) {
         console.error('Error deleting user:', error);
         res.status(500).json({ error: 'Error deleting user' });
-      }
-    });
-
+    }
+});
 
 module.exports = router;
