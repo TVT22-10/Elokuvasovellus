@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './edit_profile.css';
 import { jwtToken, userData } from "../../../components/Signals";
 import axios from 'axios';
@@ -13,6 +13,8 @@ function Edit_Profile() {
     const [selectedAvatar, setSelectedAvatar] = useState(userData.value?.avatar || 'avatar1.png'); // Default to 'avatar1.png'
     const [showAvatarDropdown, setShowAvatarDropdown] = useState(false); // New state for toggling avatar dropdownz
     const { logout } = useContext(AuthContext); // Access the logout function
+    const [bio, setBio] = useState(userData.value?.bio || '');
+
 
     useEffect(() => {
         const token = jwtToken.value;
@@ -35,10 +37,13 @@ function Edit_Profile() {
     }, []);
 
     useEffect(() => {
+
         // Fetch available avatars
         axios.get('http://localhost:3001/avatars')
             .then(response => {
-                setAvailableAvatars(response.data);
+                const avatars = response.data.filter(avatar => avatar !== 'npc.png');
+
+                setAvailableAvatars(avatars);
             })
             .catch(error => console.error('Error fetching avatars:', error));
     }, []);
@@ -47,7 +52,9 @@ function Edit_Profile() {
         const { name, value } = event.target;
         if (name === 'fname') setFname(value);
         if (name === 'lname') setLname(value);
+        if (name === 'bio') setBio(value);
     };
+
 
     const handleAvatarSelect = (avatarName) => {
         setSelectedAvatar(avatarName);
@@ -64,7 +71,9 @@ function Edit_Profile() {
             const updatedUserData = {
                 firstName: fname,
                 lastName: lname,
-                avatar: selectedAvatar
+                avatar: selectedAvatar,
+                bio: bio // include bio in the update
+
             };
             const token = jwtToken.value;
             await axios.put('http://localhost:3001/user/profile', updatedUserData, {
@@ -88,7 +97,7 @@ function Edit_Profile() {
             const token = jwtToken.value;
             const username = userData.value.username;
             const password = prompt('Please enter your password to confirm deletion:');
-    
+
             if (password !== null) {
                 const confirmed = window.confirm('Are you sure you want to delete your user? This action cannot be undone.');
                 if (confirmed) {
@@ -100,7 +109,7 @@ function Edit_Profile() {
                             password: password,
                         }
                     });
-    
+
                     // Check if the server responded with a success message
                     if (response.data.message === 'User deleted successfully') {
                         window.alert('User deleted successfully');
@@ -118,8 +127,8 @@ function Edit_Profile() {
             window.alert('Error deleting user. Please try again.');
         }
     };
-    
-    
+
+
 
 
 
@@ -165,9 +174,20 @@ function Edit_Profile() {
                         placeholder={userData.value ? userData.value.lname : "Last Name"}
                     />
                 </div>
+                <div className="bio-input">
+                    Bio:
+                    <textarea
+                        name="bio"
+                        value={bio}
+                        onChange={handleInput}
+                        placeholder="Your bio"
+                    />
+                </div>
+
                 <div className="save-button">
                     <button type="submit">Save</button>
                 </div>
+
                 {changesSaved && <p>Changes have been saved!</p>}
             </form>
 

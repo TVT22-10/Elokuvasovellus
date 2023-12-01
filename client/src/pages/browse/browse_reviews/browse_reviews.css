@@ -4,6 +4,10 @@
   margin-top: 30px;
   margin-left: 30px;
 }
+.clickable {
+  cursor: pointer;
+}
+
 
 .reviews-list {
   display: grid;

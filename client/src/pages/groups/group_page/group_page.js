@@ -3,7 +3,7 @@ import './group_page.css'; // This uses CSS modules.
 import avatar from './avatar.png';
 import axios from 'axios';
 import { jwtToken, userData } from '../../../components/Signals';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 function GroupPage() {
     const [activeTab, setActiveTab] = useState('description');
@@ -14,6 +14,13 @@ function GroupPage() {
     const [groupMembers, setGroupMembers] = useState([]);
     const [joinRequests, setJoinRequests] = useState([]);
     const isMember = userData.value ? groupMembers.some(member => member.username === userData.value.username) : false;
+    const navigate = useNavigate();
+
+    const navigateToPublicProfile = (username) => {
+        navigate(`/public_profile/${username}`);
+      };
+    
+
 
     // Function to fetch join requests
     const fetchJoinRequests = async () => {
@@ -179,7 +186,7 @@ function GroupPage() {
                             {groupMembers.map((member, index) => (
                                 <div className="member-item" key={index}>
                                     <img src={`http://localhost:3001/avatars/${member.avatar}`} alt={`${member.username}'s avatar`} className="member-avatar" />
-                                    <span className="member-name">
+                                    <span className="member-name"  onClick={() => navigateToPublicProfile(member.username)}>
                                         {member.username}
                                         {groupData && member.username === groupData.creator_username && (
                                             <React.Fragment>
