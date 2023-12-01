@@ -14,6 +14,9 @@ function GroupPage() {
     const [groupMembers, setGroupMembers] = useState([]);
     const [joinRequests, setJoinRequests] = useState([]);
     const isMember = userData.value ? groupMembers.some(member => member.username === userData.value.username) : false;
+    const [editingDescription, setEditingDescription] = useState(false);
+    const [newDescription, setNewDescription] = useState(groupData?.groupdescription || '');
+  
 
     // Function to fetch join requests
     const fetchJoinRequests = async () => {
@@ -103,31 +106,73 @@ function GroupPage() {
 
     const handleRemoveMember = async (username) => {
         try {
-            await axios.delete(`http://localhost:3001/groups/${groupId}/members/${username}`, {
-                headers: { Authorization: `Bearer ${jwtToken.value}` },
-            });
-            // After successful removal, update the UI or fetch members again
-            fetchGroupMembers();
+            const confirmRemove = window.confirm('Are you sure you want to remove this member?');
+            if (confirmRemove) {
+                await axios.delete(`http://localhost:3001/groups/${groupId}/members/${username}`, {
+                    headers: { Authorization: `Bearer ${jwtToken.value}` },
+                });
+                // After successful removal, update the UI or fetch members again
+                fetchGroupMembers();
+                window.alert('Member removed successfully');
+            }
         } catch (error) {
             console.error('Error removing member:', error);
+            window.alert('Error removing member. Please try again.');
             // Handle error scenarios if needed
         }
     };
-
+    
     const handleLeaveGroup = async (username) => {
         try {
-            const confirm = window.confirm('Are you sure you want to leave the group?');
-            if (confirm) {
+            const confirmLeave = window.confirm('Are you sure you want to leave the group?');
+            if (confirmLeave) {
                 await axios.delete(`http://localhost:3001/groups/${groupId}/members/${username}`, {
                     headers: { Authorization: `Bearer ${jwtToken.value}` },
                 });
                 fetchGroupMembers(); // Refresh the member list after leaving the group
+                window.alert('Left the group successfully');
             }
         } catch (error) {
             console.error('Error leaving group:', error);
+            window.alert('Error leaving group. Please try again.');
             // Handle error scenarios if needed
         }
     };
+    
+
+
+  // Function to handle description edit
+    const handleEditDescription = () => {
+        setEditingDescription(true);
+      };
+
+ // Function to handle description change
+  const handleDescriptionChange = (event) => {
+    setNewDescription(event.target.value);
+  }; 
+  
+  // Function to save edited description
+  const handleSaveDescription = async () => {
+    try {
+        const response = await axios.put(
+            `http://localhost:3001/groups/${groupId}/description`,
+            { groupDescription: newDescription },
+            {
+                headers: {
+                    Authorization: `Bearer ${jwtToken.value}`,
+                },
+            }
+        );
+
+        // Handle success scenario
+        setEditingDescription(false);
+        setGroupData({ ...groupData, groupdescription: newDescription });
+    } catch (error) {
+        console.error('Error updating description:', error);
+        // Handle error scenario
+    }
+};
+
 
 
     return (
@@ -169,10 +214,34 @@ function GroupPage() {
                     <p>Tähän tulis sitten käyttäjän tykätyt elokuvat</p>
                 </div>
                 <div className={`content ${activeTab !== 'description' && 'hidden'}`} id="descriptions">
-                    {loading && <p>Loading...</p>}
-                    {error && <p>Error loading group details.</p>}
-                    {groupData && !loading && !error && <h2>{groupData.groupdescription}</h2>}
-                </div>
+                {!editingDescription && (
+          <React.Fragment>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error loading group details.</p>}
+            {groupData && !loading && !error && (
+              <div>
+                <p>{groupData.groupdescription}</p>
+                {userData.value.username === groupData.creator_username && (
+                  <button onClick={handleEditDescription}>Edit Description</button>
+                )}
+              </div>
+            )}
+          </React.Fragment>
+        )}
+        {editingDescription && (
+          <div>
+            <textarea
+              value={newDescription}
+              onChange={handleDescriptionChange}
+              placeholder="Enter new description..."
+            />
+            <div>
+              <button onClick={handleSaveDescription}>Save</button>
+              <button onClick={() => setEditingDescription(false)}>Cancel</button>
+            </div>
+          </div>
+        )}
+      </div>
                 <div className={`content ${activeTab !== 'group members' && 'hidden'}`} id="group members">
                     {groupMembers.length > 0 ? (
                         <div className="members-list">

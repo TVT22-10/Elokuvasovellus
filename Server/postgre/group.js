@@ -208,7 +208,32 @@ async function removeGroupMember(req, res) {
 }
 
 
+async function updateGroupDescription(req, res) {
+    const { groupId } = req.params;
+    const { groupDescription } = req.body;
+    const ownerUsername = req.user.username; // Assuming username is stored in req.user
 
+    console.log('Received group description:', groupDescription);
+    
+    try {
+        // Check if the user is the owner of the group
+        const ownerCheckQuery = 'SELECT creator_username FROM groups WHERE group_id = $1;';
+        const ownerCheckResult = await pgPool.query(ownerCheckQuery, [groupId]);
+
+        if (ownerCheckResult.rows.length === 0 || ownerCheckResult.rows[0].creator_username !== ownerUsername) {
+            return res.status(403).json({ message: 'Unauthorized action' });
+        }
+
+        // Update the group description
+        const updateDescriptionQuery = 'UPDATE groups SET groupdescription = $1 WHERE group_id = $2;';
+        await pgPool.query(updateDescriptionQuery, [groupDescription, groupId]);
+
+        res.status(200).json({ message: 'Group description updated successfully' });
+    } catch (error) {
+        console.error('Error updating group description:', error);
+        res.status(500).json({ message: 'Error updating group description' });
+    }
+}
 
 
 // Export your functions to use them in your routes
@@ -221,4 +246,5 @@ module.exports = {
     getGroupDetails,
     getAllGroups,
     removeGroupMember,
+    updateGroupDescription,
 };
