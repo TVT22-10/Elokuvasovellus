@@ -11,6 +11,8 @@ const {
     handleJoinRequest,
     getGroupDetails,
     getAllGroups,
+    removeGroupMember,
+    updateGroupDescription,
 } = require('../postgre/group.js');
 
 // Route to create a new group
@@ -45,11 +47,19 @@ router.get('/all', async (req, res) => {
     }
 });
 
+
+
+
+router.put('/:groupId/description', authenticateToken, updateGroupDescription);
+
 router.post('/:groupId/request-join', authenticateToken, sendJoinRequest);
 
 router.get('/:groupId/requests', authenticateToken, viewJoinRequests);
 
 router.put('/:groupId/requests/:requestId', authenticateToken, handleJoinRequest);
+
+router.delete('/:groupId/members/:username', authenticateToken, removeGroupMember);
+
 
 // Add more routes as needed...
 

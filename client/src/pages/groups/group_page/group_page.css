@@ -1,43 +1,4 @@
-/* .container{
-    background-color: rgb(0, 0, 0);
-}
-/*
-.top-bar {
-    color: rgb(255, 250, 250);
-    background-color: rgb(0, 0, 0);
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
 
-.separator {
-    border: 3px solid rgb(0, 132, 255);
-    margin: 0;
-    width: 100%;
-}
-
-h1 {
-    margin: 0;
-    color: rgb(0, 132, 255);
-    font-family: Newsreader;
-} 
-
-
-nav {
-    display: flex;
-    color: white;
-}
-
-nav p {
-    margin: 0 20px;
-    cursor: pointer;
-    color: rgb(255, 255, 255);
-    font-size: 1em;
-    justify-content: space-between;
-}
-*/
 
 .group-container {
     display: flex;
@@ -70,18 +31,17 @@ nav p {
     font-weight: 500;
   }
 
-.editGroup-button button{
+.bio-buttons button{
     background-color: rgb(0, 132, 255);
     color: white;
     border: none;
     border-radius: 5px;
     padding: 10px;
     cursor: pointer; /* Changes cursor to pointer on hover */
-    margin-top: 20px;
-    margin-left: 20px;
+    margin-top: 10px;
 }
 
-.editGroup-button button:hover{
+.bio-buttons button:hover{
     background-color: rgb(23, 92, 148);
     color: white;
     border: none;
@@ -93,7 +53,7 @@ nav p {
     align-items: center;
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    grid-gap: 80px;
+    grid-gap: 20px;
     margin-top: 30px;
     cursor: pointer; /* Changes cursor to pointer on hover */
 
@@ -118,7 +78,7 @@ nav p {
 .group-buttons{
     color:rgb(255, 255, 255);
     display: flex;
-    margin: 40px 0 40px;
+    justify-content: center;
 }
 
 .view-change{
@@ -173,6 +133,12 @@ nav p {
     border-radius: 50%; 
     margin-right: 10px; 
     margin-bottom: -8px;
+    cursor:pointer;
+}
+
+.member-name {
+    cursor:pointer;
+
 }
 
 .members-list {
@@ -192,4 +158,119 @@ nav p {
     font-size:0.7em;
     margin-left: 10px;
     margin-bottom: -4px;
+}
+
+@media (max-width: 600px){
+.view-change {
+    font-size: 16px;
+    margin: 0px 0px 0px;
+  }
+  .group-buttons {
+    margin: 10px
+  }
+  .group-content h2{
+    margin-top: 60px;
+    font-size: 16px;
+  }
+  .members-list{
+    padding-left: 0px;
+    margin-top: 60px;
+    margin-left: 150px;
+  }
+  .group-content p{
+    font-size: 16px;
+    margin-top: 60px;
+  }
+}
+  
+.deleteMember{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 4px;
+}
+.deleteMember button{
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin-top: 10px;
+}
+
+.deleteMember button:hover{
+    background-color: rgb(187, 12, 12);
+    color: white;
+    border: none;
+}
+
+.leaveGroup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 4px;
+}
+
+.leaveGroup button{
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin-top: 10px;
+}
+
+.leaveGroup button:hover{
+    background-color: rgb(187, 12, 12);
+    color: white;
+    border: none;
+}
+
+.group-description p{
+    margin: 0;
+    font-size: 20px;
+    font-weight: 300;
+    margin-top: 100px;
+    margin-bottom: 20px;
+    color: rgb(255, 255, 255);
+}
+
+.group-description button{
+    background-color: rgb(0, 132, 255);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 7px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin-top: 10px;
+}
+.group-description button:hover{
+    background-color: rgb(23, 92, 148);
+    color: white;
+    border: none;
+}
+
+.edit-description textarea{
+    width: 300px;
+    height: 100px;
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.edit-description textarea input{
+    width: 300px;
+    height: 100px;
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    
 }

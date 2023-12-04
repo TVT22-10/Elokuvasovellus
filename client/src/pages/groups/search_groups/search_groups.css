@@ -110,3 +110,12 @@
   transform: translateX(-170%); /* Shift left by half of its own width to center */
 
 }
+
+@media (max-width: 600px) {
+  .all-groups h2, .my-groups h2, .label-name h2{
+    font-size: 25px;
+  }
+  .all-groups h2::after, .my-groups h2::after{
+    width: 33px;
+  }
+}

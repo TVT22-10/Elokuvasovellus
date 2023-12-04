@@ -8,9 +8,8 @@ const pgPool = require('../postgre/connection'); // Adjust the path as needed
 
 
 
-
-
-const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser } = require('../postgre/User');
+const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser, getPasswordFromDatabase } = require('../postgre/User');
+const e = require('express');
 
 router.get('/', async (req, res) => {
 
@@ -28,13 +27,17 @@ router.post('/register', upload.none(), async (req, res) => {
     const lname = req.body.lname;
     const uname = req.body.uname;
     let pw = req.body.pw;
+    const bio = "No bio yet"; // Set an initial bio value
+    const avatar = "avatar1.png"; // Set an initial avatar value
+
+
 
 
     pw = await bcrypt.hash(pw, 10);
 
 
     try {
-        await addUser(fname, lname, uname, pw);
+        await addUser(fname, lname, uname, pw, bio, avatar);
         res.end();
     } catch (error) {
         console.log(error);
@@ -87,21 +90,38 @@ router.get('/private', async (req, res) => {
     }
 });
 
+// New endpoint to get public profile data
+router.get('/profile/:username', async (req, res) => {
+    try {
+      const profileData = await getUserDetails(req.params.username);
+      if (profileData) {
+        res.json(profileData);
+      } else {
+        res.status(404).send('User not found');
+      }
+    } catch (error) {
+      res.status(500).send('Server error');
+    }
+  });
+
+
 // Express-reitti tiedostossa routes/userRoutes.js
 router.put('/profile', authenticateToken, async (req, res) => {
-    const { firstName, lastName, avatar } = req.body; // Extract firstName, lastName, and avatar from the request body
+    const { firstName, lastName, avatar, bio } = req.body; // Include the bio variable here
 
     try {
-        // Update the user's first name, last name, and avatar in the database
-        const query = 'UPDATE customer SET fname = $1, lname = $2, avatar = $3 WHERE username = $4';
-        await pgPool.query(query, [firstName, lastName, avatar, req.user.username]);
-
+        // Update the user's first name, last name, avatar, and bio using the username from the token
+        const query = 'UPDATE customer SET fname = $1, lname = $2, avatar = $3, bio = $4 WHERE username = $5';
+        await pgPool.query(query, [firstName, lastName, avatar, bio, req.user.username]);
         res.status(200).json({ message: 'Profile updated successfully' });
     } catch (error) {
         console.error('Error updating profile:', error);
         res.status(500).json({ error: error.message });
     }
 });
+
+
+
 
 // Add this to your routes file
 router.get('/groups', authenticateToken, async (req, res) => {
@@ -121,33 +141,40 @@ router.get('/groups', authenticateToken, async (req, res) => {
 router.put('/avatar', authenticateToken, async (req, res) => {
     const username = req.user.username; // Assuming username is stored in req.user
     const avatarFilename = req.body.avatar;
-  
-    try {
-      await setUserAvatar(username, avatarFilename);
-      res.json({ message: 'Avatar updated successfully' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: error.message });
-    }
-  });
-  
-  router.delete('/delete/:username', authenticateToken, async (req, res) => {
-    const { username } = req.params; // Extract the username from the URL parameter
 
     try {
-        const deletionResult = await deleteUser(username); // Call the deleteUser function defined in User.js
-        
-        // Check the response from deleteUser function
-        if (deletionResult.success) {
-          res.status(200).json({ message: 'User deleted successfully' });
+        await setUserAvatar(username, avatarFilename);
+        res.json({ message: 'Avatar updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.delete('/delete/:username', authenticateToken, async (req, res) => {
+    const { username } = req.params;
+    const { password } = req.body;
+    try {
+        const pwHash = await getPasswordFromDatabase(username);
+
+        const isPasswordCorrect = await bcrypt.compare(password, pwHash);
+
+        if (isPasswordCorrect) {
+            const deletionResult = await deleteUser(username, password); // Pass password to deleteUser
+
+            if (deletionResult.success) {
+                res.status(200).json({ message: 'User deleted successfully' });
+            } else {
+                res.status(500).json({ error: 'Error deleting user' });
+            }
+
         } else {
-          res.status(500).json({ error: 'Error deleting user' });
+            res.status(401).json({ error: 'Incorrect password' });
         }
-      } catch (error) {
+    } catch (error) {
         console.error('Error deleting user:', error);
         res.status(500).json({ error: 'Error deleting user' });
-      }
-    });
-
+    }
+});
 
 module.exports = router;
