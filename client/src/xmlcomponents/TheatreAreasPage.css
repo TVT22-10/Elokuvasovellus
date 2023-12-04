@@ -1,0 +1,48 @@
+/* TheatreAreasPage.css */
+
+.theatre-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .theatre-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .theatre-item {
+    border: 2px solid #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .theatre-item:last-child {
+    border-bottom: none;
+  }
+  
+  .theatre-item:hover {
+    background-color: #f0f0f0;
+    border-color: #f0f0f0;
+  }
+  
+  .theatre-title {
+    font-size: 1.8em;
+    color: #007bff;
+    margin-bottom: 8px;
+  }
+  
+  .theatre-description {
+    font-size: 1.1em;
+    color: #666;
+    margin: 10px 0;
+  }
+  
