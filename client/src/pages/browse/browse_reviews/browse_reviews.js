@@ -17,6 +17,11 @@ function BrowseReviews() {
   const [userAvatar, setUserAvatar] = useState('');
   const [username, setUsername] = useState('');
 
+  const navigateToPublicProfile = (username) => {
+    navigate(`/public_profile/${username}`);
+  };
+
+
   useEffect(() => {
     if (userData.value) {
       if (userData.value.username && username !== userData.value.username) {
@@ -104,11 +109,12 @@ function BrowseReviews() {
           {reviews.slice(0, displayedReviews).map((review) => (
             <div key={review.review_id} className="review-item">
               <div className="jeps-review-content">
-                <div className='review-userdata-container'>
+              <div className='review-userdata-container' onClick={() => navigateToPublicProfile(review.username)}>
                   <div className="review-profile-image">
                     <div className='review-username'>
-                      <img src={`http://localhost:3001/avatars/${review.avatar}`} alt="User Avatar" className="avatar" />
-                      <h3>{review.username}</h3>
+                      {/* Make the image and username clickable */}
+                      <img src={`http://localhost:3001/avatars/${review.avatar}`} alt="User Avatar" className="avatar clickable" />
+                      <h3 className="clickable">{review.username}</h3>
                     </div>
                   </div>
                 </div>
