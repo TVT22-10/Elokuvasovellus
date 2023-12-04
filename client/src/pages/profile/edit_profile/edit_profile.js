@@ -3,7 +3,7 @@ import './edit_profile.css';
 import { jwtToken, userData } from "../../../components/Signals";
 import axios from 'axios';
 import { AuthContext } from '../../../components/Contexts'; // Adjust the import path
-
+import EmojiPicker from 'emoji-picker-react';
 
 function Edit_Profile() {
     const [fname, setFname] = useState(userData.value?.fname || '');
@@ -14,6 +14,10 @@ function Edit_Profile() {
     const [showAvatarDropdown, setShowAvatarDropdown] = useState(false); // New state for toggling avatar dropdownz
     const { logout } = useContext(AuthContext); // Access the logout function
     const [bio, setBio] = useState(userData.value?.bio || '');
+    const [chosenEmoji, setChosenEmoji] = useState(null);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+
 
 
     useEffect(() => {
@@ -55,6 +59,21 @@ function Edit_Profile() {
         if (name === 'bio') setBio(value);
     };
 
+    const onEmojiClick = (emojiObject, event) => {
+        if (emojiObject && emojiObject.emoji) {
+            setBio(bio + emojiObject.emoji);
+        }
+    };
+    
+    
+    
+
+
+    const toggleEmojiPicker = () => {
+        setShowEmojiPicker(!showEmojiPicker);
+    };
+
+
 
     const handleAvatarSelect = (avatarName) => {
         setSelectedAvatar(avatarName);
@@ -75,6 +94,7 @@ function Edit_Profile() {
                 bio: bio // include bio in the update
 
             };
+            
             const token = jwtToken.value;
             await axios.put('http://localhost:3001/user/profile', updatedUserData, {
                 headers: {
@@ -83,7 +103,7 @@ function Edit_Profile() {
             });
             setChangesSaved(true);
             // Update userData in Signals
-            userData.value = { ...userData.value, fname, lname, avatar: selectedAvatar };
+            userData.value = { ...userData.value, fname, lname, avatar: selectedAvatar, bio };
         } catch (error) {
             console.error('Error updating profile:', error);
         }
@@ -182,7 +202,10 @@ function Edit_Profile() {
                         onChange={handleInput}
                         placeholder="Your bio"
                     />
+                    <button onClick={toggleEmojiPicker}>Add Emoji</button>
+                    {showEmojiPicker && <EmojiPicker onEmojiClick={onEmojiClick} />}
                 </div>
+
 
                 <div className="save-button">
                     <button type="submit">Save</button>
