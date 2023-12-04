@@ -5,6 +5,7 @@ import axios from 'axios';
 import { jwtToken, userData } from '../../../components/Signals';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
+
 function GroupPage() {
 
     const [activeTab, setActiveTab] = useState('description');
@@ -152,8 +153,12 @@ function GroupPage() {
       };
 
  // Function to handle description change
-  const handleDescriptionChange = (event) => {
-    setNewDescription(event.target.value);
+ const handleDescriptionChange = (e) => {
+    setNewDescription(e.target.value);
+    if (e.key === 'Enter') {
+      setNewDescription(prevDescription => prevDescription + '\n');
+      e.preventDefault();
+    }
   }; 
 
   
@@ -225,11 +230,15 @@ function GroupPage() {
             {error && <p>Error loading group details.</p>}
             {groupData && !loading && !error && (
               <div className="group-description">
-                <p>{groupData.groupdescription}</p>
-                {userData.value.username === groupData.creator_username && (
-                  <button onClick={handleEditDescription}>Edit Description</button>
-                )}
+                <div className='group-description-header'>
+              {groupData.groupdescription.split('\n').map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
               </div>
+              {userData.value.username === groupData.creator_username && (
+        <button onClick={handleEditDescription}>Edit Description</button>
+      )}
+            </div>
             )}
           </React.Fragment>
         )}
@@ -243,8 +252,11 @@ function GroupPage() {
               placeholder="Enter new description..."
             />
             <div>
+                <div className='edit-description-buttons'>
               <button onClick={handleSaveDescription}>Save</button>
               <button onClick={() => setEditingDescription(false)}>Cancel</button>
+            </div>
+            
             </div>
           </div>
         )}

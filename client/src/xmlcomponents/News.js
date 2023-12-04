@@ -1,4 +1,3 @@
-// NewsPage.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import xml2js from 'xml2js';
@@ -67,11 +66,13 @@ function NewsPage() {
         <ul className="news-list">
           {filteredNews.map((item, index) => (
             <li key={index} className="news-item">
-              <strong className="news-title">{item.Title || 'No title'}</strong>
+              <a href={item.ArticleURL} target="_blank" rel="noopener noreferrer">
+                <strong className="news-title">{item.Title || 'No title'}</strong>
+              </a>
               <br />
               <span className="news-description">{item.HTMLLead || 'No description'}</span>
               <br />
-              {item.ImageURL && <img src={item.ImageURL} alt={item.Title} className="news-image" />}
+              {item.ImageURL && <img src={item.ImageURL} alt={`Image for ${item.Title}`} className="news-image" />}
             </li>
           ))}
         </ul>
