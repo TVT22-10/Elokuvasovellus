@@ -6,6 +6,7 @@ import { jwtToken, userData } from '../../../components/Signals';
 import { Link, useParams } from 'react-router-dom';
 
 function GroupPage() {
+
     const [activeTab, setActiveTab] = useState('description');
     const [groupData, setGroupData] = useState(null);
     const { groupId } = useParams();
@@ -150,6 +151,7 @@ function GroupPage() {
   const handleDescriptionChange = (event) => {
     setNewDescription(event.target.value);
   }; 
+
   
   // Function to save edited description
   const handleSaveDescription = async () => {
@@ -171,13 +173,12 @@ function GroupPage() {
         console.error('Error updating description:', error);
         // Handle error scenario
     }
-};
 
+};
 
 
     return (
         <div className="Group-page">
-
             <div className="group-container">
                 <div className="group-image">
                     <img src={avatar} alt="Avatar" className="avatar" />
@@ -229,10 +230,12 @@ function GroupPage() {
           </React.Fragment>
         )}
         {editingDescription && (
-          <div>
+          <div className='edit-description'>
             <textarea
               value={newDescription}
               onChange={handleDescriptionChange}
+              rows={10}
+              maxLength={500}
               placeholder="Enter new description..."
             />
             <div>
