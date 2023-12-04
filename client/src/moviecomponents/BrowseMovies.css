@@ -16,15 +16,21 @@
 }
 
 .select-dropdown:hover, .select-dropdown:focus {
-    border-color: #888;
+    border-color: #007bff;
     cursor: pointer;
+}
+.select-dropdown:hover, .select-dropdown:focus, .select-dropdown:active {
+    background-color: #252525; /* New background color */
+    color: #ffffff; /* New text color */
+    cursor: pointer;
+    
 }
 
 .number-input {
     width: 200px; /* Example width, adjust as needed */
     padding: 10px 15px;
     margin: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #007bff;
     border-radius: 4px;
     font-size: 16px;
     outline: none;
