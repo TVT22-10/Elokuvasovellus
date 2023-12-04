@@ -51,16 +51,20 @@ function NewsPage() {
     <div className="news-container">
       <h1>News From Finnkino</h1>
       <p>The news are in Finnish</p>
-
-      <div className="custom-dropdown">
-        <span className="dropdown-icon">▼</span>
-        <select onChange={handleCategoryChange} value={selectedCategory || 'all'}>
-          <option value="all">All Categories 🌐</option>
-          <option value="1073">Ajankohtaista 📅</option>
-          <option value="1079">Leffauutiset 🎬</option>
-        </select>
+      
+      <div>
+        <div className="custom-dropdown">
+          <span className="dropdown-icon">▼</span>
+          <select onChange={handleCategoryChange} value={selectedCategory || 'all'}>
+            <option value="all">All Categories 🌐</option>
+            <option value="1073">Ajankohtaista 📅</option>
+            <option value="1079">Leffauutiset 🎬</option>
+          </select>
+        </div>
+        <div>
+            
+        </div>
       </div>
-
       {loading ? (
         <p>Loading...</p>
       ) : (

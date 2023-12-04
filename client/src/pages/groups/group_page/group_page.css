@@ -144,7 +144,7 @@
 .members-list {
     display: flex;
     flex-direction: column;
-    padding-left: 20px;
+    margin-left: 550px;
 }
 
 .member-item {
@@ -158,6 +158,16 @@
     font-size:0.7em;
     margin-left: 10px;
     margin-bottom: -4px;
+}
+
+.deleteMember button{
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin-left:10px
 }
 
 @media (max-width: 600px){
