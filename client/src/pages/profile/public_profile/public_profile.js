@@ -1,103 +1,70 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './my_profile.css';
-import { jwtToken, userData } from '../../../components/Signals';
-import { Link, useNavigate } from 'react-router-dom';
+import '../my_profile/my_profile.css'; // Assuming styles are similar to Profile
+import { useParams,useNavigate } from 'react-router-dom';
 import StarRating from '../../movie_review/StarRating';
 
-function Profile() {
+function PublicProfile() {
+  const { username } = useParams();
   const [activeTab, setActiveTab] = useState('favourites');
-  const [username, setUsername] = useState('');
   const [creationDate, setCreationDate] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [userAvatar, setUserAvatar] = useState('');
   const [userReviews, setUserReviews] = useState([]);
   const [movies, setMovies] = useState({});
   const [showFullReview, setShowFullReview] = useState(false);
-  const [bio, setBio] = useState('');
+  const [userExists, setUserExists] = useState(true);
   const navigate = useNavigate();
 
-  const generateShareableLink = () => {
-    const currentLink = `${window.location.origin}/profile?tab=${activeTab}`;
-
-    navigator.clipboard
-      .writeText(currentLink)
-      .then(() => {
-        alert('Link copied to clipboard!');
-      })
-      .catch((error) => {
-        console.error('Unable to copy link: ', error);
-      });
-  };
 
   useEffect(() => {
-    if (userData.value) {
-      if (userData.value.username && username !== userData.value.username) {
-        setUsername(userData.value.username);
-        setLoggedIn(true);
-      }
-      if (userData.value.creation_time && creationDate !== formatCreationDate(userData.value.creation_time)) {
-        const formattedCreationDate = formatCreationDate(userData.value.creation_time);
-        setCreationDate(formattedCreationDate);
-      }
-      if (userData.value && userData.value.avatar) {
-        setUserAvatar(`http://localhost:3001/avatars/${userData.value.avatar}`);
-      } else {
-        setUserAvatar('http://localhost:3001/avatars/npc.png');
-      }
-      if (userData.value.bio) {
-        setBio(userData.value.bio);
-      } else {
-        setBio('No bio yet');
-      }
-    }
-  }, [userData.value, username, creationDate]);
-
-  useEffect(() => {
-    if (jwtToken.value && username) {
-      axios
-        .get(`http://localhost:3001/favorites/${username}`, { headers: { Authorization: `Bearer ${jwtToken.value}` } })
-        .then((resp) => {
-          setFavorites(resp.data);
-        })
-        .catch((error) => {
-          console.error('Error fetching favorites:', error);
-        });
-    }
-  }, [username, jwtToken.value]);
-
-  useEffect(() => {
-    const fetchUserReviews = async () => {
+    const fetchMovieDetails = async (movieIds) => {
       try {
-        const response = await axios.get(`http://localhost:3001/review/user/${username}`);
-        const userReviewsData = response.data;
-
-        const movieIds = [...new Set(userReviewsData.map((review) => review.movie_id))];
-
-        const movieResponses = await Promise.all(movieIds.map((id) => axios.get(`http://localhost:3001/movies/${id}`)));
-
-        const movieDetails = {};
-        movieResponses.forEach((movieResponse) => {
-          movieDetails[movieResponse.data.id] = movieResponse.data;
+        const movieResponses = await Promise.all(
+          movieIds.map(id => axios.get(`http://localhost:3001/movies/${id}`)) // Update API endpoint if needed
+        );
+        const newMovies = {};
+        movieResponses.forEach((response, index) => {
+          newMovies[movieIds[index]] = response.data;
         });
-
-        setMovies(movieDetails);
-        setUserReviews(userReviewsData);
+        setMovies(newMovies);
       } catch (error) {
-        console.error('Error fetching user reviews:', error);
+        console.error('Error fetching movie details:', error);
       }
     };
+  
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/user/profile/${username}`);
+        if (response.data) {
+          const { creation_time, avatar, favorites, reviews } = response.data;
+          setCreationDate(formatCreationDate(creation_time));
+          setUserAvatar(avatar ? `http://localhost:3001/avatars/${avatar}` : 'http://localhost:3001/avatars/defaultAvatar.png');
+          setFavorites(favorites);
+          setUserReviews(reviews);
+          setUserExists(true);
+  
+          const movieIds = reviews.map(review => review.movie_id);
+          await fetchMovieDetails(movieIds);
+        } else {
+          setUserExists(false);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setUserExists(false);
+      }
+    };
+  
+    fetchUserData();
+  }, [username]);
+  
 
-    if (activeTab === 'reviews' && loggedIn) {
-      fetchUserReviews();
-    }
-  }, [activeTab, loggedIn, username]);
+  if (!userExists) {
+    return <div>User not found.</div>;
+  }
 
-  const calculateRating = (rating) => {
-    const circumference = 2 * Math.PI * 20;
-    return (rating / 10) * circumference;
-  };
+  // Rest of your component logic
+  // ...
 
   const navigateToMovie = (movieId) => {
     navigate(`/movies/${movieId}`);
@@ -120,11 +87,14 @@ function Profile() {
     return date.toLocaleDateString();
   };
 
-  const toggleShowFullReview = () => {
-    setShowFullReview(!showFullReview);
-  };
+    const calculateRating = (rating) => {
+        const circumference = 2 * Math.PI * 20;
+        return (rating / 10) * circumference;
+      };
 
-
+      const toggleShowFullReview = () => {
+        setShowFullReview(!showFullReview);
+      };
 
   return (
     <div className="profile-page">
@@ -138,26 +108,7 @@ function Profile() {
               <h2>{username}</h2>
               <p>Account Created On: {creationDate}</p>
             </div>
-
-            <div className="bio-buttons">
-              <div className="share-button">
-                <button id="edit" onClick={generateShareableLink}>
-                  Share the view
-                </button>
-              </div>
-              <div className="edit-button">
-                <Link to="/edit_profile">
-                  <button id="edit">Profile Settings</button>
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="bio-top-right">
-            <div className="bio-view">
-              <div className="bio-text-container">
-                <p className="bio-text-outline">{bio}</p>
-              </div>
-            </div>
+            
           </div>
         </div>
         <div className="profile-buttons">
@@ -274,4 +225,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default PublicProfile;

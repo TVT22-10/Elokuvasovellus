@@ -5,6 +5,8 @@ import './movie_review.css';
 import ReviewForm from './review_from';
 import StarRating from './StarRating'; // Import the new StarRating component
 import { AuthContext } from '../../components/Contexts';
+import { useNavigate } from 'react-router-dom';
+
 
 function MovieReviews({ movieId }) {
   const [reviews, setReviews] = useState([]);
@@ -13,6 +15,12 @@ function MovieReviews({ movieId }) {
   const { isLoggedIn } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [userAvatar, setUserAvatar] = useState('');
+  const navigate = useNavigate();
+
+
+  const navigateToPublicProfile = (username) => {
+    navigate(`/public_profile/${username}`);
+  };
 
   useEffect(() => {
     axios.get(`http://localhost:3001/review/${movieId}`)
@@ -41,7 +49,7 @@ function MovieReviews({ movieId }) {
             reviews.slice(0, visibleReviews).map(review => (
               <div key={review.review_id} className="movie-review-item">
                 <div className="review-profile-image">
-                <div className='review-username'>
+                <div className='review-username clickable' onClick={() => navigateToPublicProfile(review.username)}>
                       <img src={`http://localhost:3001/avatars/${review.avatar}`} alt="User Avatar" className="avatar" />
                       <h3>{review.username}</h3>
                     </div>
