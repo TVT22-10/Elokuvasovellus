@@ -114,6 +114,32 @@ function GroupPage() {
         try {
             const confirmRemove = window.confirm('Are you sure you want to remove this member?');
             if (confirmRemove) {
+                const isOwner = groupData.creator_username === userData.value.username;
+
+            if (!isOwner) {
+                window.alert('Only the group owner can transfer ownership.');
+                return;
+            }
+
+            const confirmNewOwner = window.confirm('You are the owner. Ypu have to transfer ownership before leaving the group! Do you want to transfer ownership?');
+
+            if (confirmNewOwner) {
+                const newOwner = prompt('Enter the username of the new owner:');
+                if (newOwner && newOwner !== groupData.creator_username) {
+                    // Update the group's owner in the backend
+                    await axios.put(`http://localhost:3001/groups/${groupId}/owner`, { newOwner }, {
+                        headers: { Authorization: `Bearer ${jwtToken.value}` },
+                    });
+
+                    window.alert(`Ownership transferred to ${newOwner}. You can now leave the group.`);
+                } else if (newOwner === groupData.creator_username) {
+                    window.alert('You cannot transfer ownership to yourself.');
+                    return;
+                } else {
+                    window.alert('Invalid username or no username entered. Ownership not transferred.');
+                    return;
+                }
+            }
                 await axios.delete(`http://localhost:3001/groups/${groupId}/members/${username}`, {
                     headers: { Authorization: `Bearer ${jwtToken.value}` },
                 });

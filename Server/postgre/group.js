@@ -235,6 +235,37 @@ async function updateGroupDescription(req, res) {
     }
 }
 
+async function assignNewOwner(req, res) {
+    const { groupId, newOwnerUsername } = req.params;
+    const currentUser = req.user.username;
+
+    try {
+        const groupQuery = 'SELECT creator_username FROM groups WHERE group_id = $1;';
+        const groupResult = await pgPool.query(groupQuery, [groupId]);
+
+        if (groupResult.rows.length === 0) {
+            return res.status(404).json({ message: 'Group not found' });
+        }
+
+        const currentOwner = groupResult.rows[0].creator_username;
+
+        // Check if the user requesting the change is the current owner
+        if (currentOwner !== currentUser) {
+            return res.status(403).json({ message: 'Only the current owner can assign a new owner' });
+        }
+
+        // Update the group's creator_username with the new owner
+        const updateOwnerQuery = 'UPDATE groups SET creator_username = $1 WHERE group_id = $2;';
+        await pgPool.query(updateOwnerQuery, [newOwnerUsername, groupId]);
+
+        res.status(200).json({ message: 'New owner assigned successfully' });
+    } catch (error) {
+        console.error('Error assigning new owner:', error);
+        res.status(500).json({ message: 'Error assigning new owner' });
+    }
+}
+
+
 
 // Export your functions to use them in your routes
 module.exports = {
@@ -247,4 +278,5 @@ module.exports = {
     getAllGroups,
     removeGroupMember,
     updateGroupDescription,
+    assignNewOwner,
 };
