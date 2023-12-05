@@ -64,5 +64,25 @@ const checkFavorite = async (req, res) => {
   }
 };
 
+const getTopUsersByFavorites = async (req, res) => {
+  try {
+    const result = await pgPool.query(
+      'SELECT f.username, c.avatar, COUNT(f.id) as favorite_count ' +
+      'FROM favorites f ' +
+      'JOIN customer c ON f.username = c.username ' +
+      'GROUP BY f.username, c.avatar ' +
+      'ORDER BY favorite_count DESC ' +
+      'LIMIT 5'
+    );
 
-module.exports = { getFavorites, addToFavorites, removeFromFavorites,checkFavorite };
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error getting top users by favorites:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
+
+module.exports = { getFavorites, addToFavorites, removeFromFavorites,checkFavorite, getTopUsersByFavorites };

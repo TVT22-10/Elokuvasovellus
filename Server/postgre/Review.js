@@ -106,4 +106,23 @@ const getReviewsByUsername = async (req, res) => {
   }
 };
 
-module.exports = { addReview, getAllReviews, getReviewsByRating, getReviewsByMovieId, getReviewsByUsername };
+const getTopReviewers = async (req, res) => {
+  try {
+    const result = await pgPool.query(
+      'SELECT r.username, c.avatar, COUNT(r.review_id) as review_count ' +
+      'FROM reviews r ' +
+      'JOIN customer c ON r.username = c.username ' +
+      'GROUP BY r.username, c.avatar ' +
+      'ORDER BY review_count DESC ' +
+      'LIMIT 5'
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error getting top reviewers:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+module.exports = { addReview, getAllReviews, getReviewsByRating, getReviewsByMovieId, getReviewsByUsername, getTopReviewers };
