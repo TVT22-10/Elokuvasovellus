@@ -23,6 +23,7 @@ import EventsPage from './xmlcomponents/Events';
 import SchedulePage from './xmlcomponents/Schedule';
 import ScheduleDatesPage from './xmlcomponents/ScheduleDates';
 import BrowseMoviesPage from './pages/browse/browse_movies/browse_movies';
+import LeaderboardsPage from './pages/leaderboard/leaderboards';
 
 function RepeatingLogComponent() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -57,6 +58,8 @@ function App() {
           <Route path="/edit_group/:groupId" element={<EditGroup />} /> {/* Edit group page */}
           <Route path="/browse_all" element={<BrowseMoviesPage />} /> {/* Browse all page */}
           <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
+          <Route path="/leaderboards" element={<LeaderboardsPage />} /> {/* Browse all page */}
+
           <Route path="/search" element={<SearchPage />} /> {/* Search page */}
           <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}
           <Route path="/groups/:groupId" element={<GroupPage/>} />
