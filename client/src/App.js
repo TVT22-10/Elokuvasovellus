@@ -21,7 +21,6 @@ import SearchGroups from './pages/groups/search_groups/search_groups';
 import NewsPage from './xmlcomponents/News';
 import EventsPage from './xmlcomponents/Events';
 import SchedulePage from './xmlcomponents/Schedule';
-import ScheduleDatesPage from './xmlcomponents/ScheduleDates';
 import BrowseMoviesPage from './pages/browse/browse_movies/browse_movies';
 import LeaderboardsPage from './pages/leaderboard/leaderboards';
 
@@ -61,14 +60,12 @@ function App() {
           <Route path="/browse_all" element={<BrowseMoviesPage />} /> {/* Browse all page */}
           <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
           <Route path="/leaderboards" element={<LeaderboardsPage />} /> {/* Browse all page */}
-
           <Route path="/search" element={<SearchPage />} /> {/* Search page */}
           <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}
           <Route path="/groups/:groupId" element={<GroupPage/>} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/schedule" element={<SchedulePage />} />
-          <Route path="/scheduledates" element={<ScheduleDatesPage />} />
 
         </Routes>
       </Router>

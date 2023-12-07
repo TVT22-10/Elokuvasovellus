@@ -59,18 +59,30 @@ function GroupPage() {
                         Authorization: `Bearer ${jwtToken.value}`,
                     },
                 });
-                setGroupData(response.data);
-                setLoading(false);
-                // Only fetch join requests if the logged-in user is the group owner
-                if (response.data.creator_username === userData.value.username) {
-                    fetchJoinRequests();
+        
+                if (response.data) {
+                    setGroupData(response.data);
+                    setLoading(false);
+        
+                    // Only fetch join requests if the logged-in user is the group owner
+                    if (userData.value && response.data.creator_username === userData.value.username) {
+                        fetchJoinRequests();
+                    }
+                } else {
+                    setError('Group details not found');
+                    setLoading(false);
                 }
             } catch (error) {
                 console.error('Error fetching group details:', error);
-                setError(error);
+        
+                // Handle different error scenarios based on the error
+                // ...
+        
                 setLoading(false);
             }
         };
+        
+        
 
 
 
@@ -214,11 +226,12 @@ function GroupPage() {
                 <p className={`view-change ${activeTab === 'description' ? 'active-link' : ''}`} onClick={() => setActiveTab('description')}>Description</p>
                 <p className={`view-change ${activeTab === 'group members' ? 'active-link' : ''}`} onClick={() => setActiveTab('group members')}>Group members</p>
                 <p className={`view-change ${activeTab === 'news' ? 'active-link' : ''}`} onClick={() => setActiveTab('news')}>News</p>
-                {groupData && groupData.creator_username === userData.value.username && (
+                {groupData && userData.value && groupData.creator_username === userData.value.username && (
                     <p className={`view-change ${activeTab === 'join requests' ? 'active-link' : ''}`} onClick={() => setActiveTab('join requests')}>Join Requests</p>
                 )}
-
             </div>
+
+
             <div className="group-content">
                 <div className={`content ${activeTab !== 'group settings' && 'hidden'}`} id="group settings">
                     <p>Tähän tulis sitten käyttäjän tykätyt elokuvat</p>
