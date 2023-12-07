@@ -203,6 +203,52 @@ app.get('/discover-movies', async (req, res) => {
   }
 });
 
+app.get('/movies/:movieId/videos', async (req, res) => {
+  try {
+      const { movieId } = req.params;
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}movie/${movieId}/videos`, {
+          params: {
+              api_key: process.env.TMDB_KEY
+          }
+      });
+      // Optionally filter for trailers here if needed
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching video data from TMDB", error: error.message });
+  }
+});
+
+// In your Express server file
+app.get('/actors/:actorId', async (req, res) => {
+  try {
+      const { actorId } = req.params;
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}person/${actorId}`, {
+          params: {
+              api_key: process.env.TMDB_KEY
+          }
+      });
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching actor details from TMDB", error: error.message });
+  }
+});
+
+app.get('/actors/:actorId/movies', async (req, res) => {
+  try {
+    const { actorId } = req.params;
+    const response = await axios.get(`${process.env.TMDB_BASE_URL}person/${actorId}/movie_credits`, {
+      params: {
+        api_key: process.env.TMDB_KEY
+      }
+    });
+    res.json(response.data.cast); // Send back only the 'cast' array which contains the movies
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching actor's movie credits from TMDB", error: error.message });
+  }
+});
+
+
+
 
   
 // Start the server

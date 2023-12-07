@@ -1,0 +1,123 @@
+.actor-details-container {
+    display: flex;
+    padding: 100px;
+    position: relative;
+    z-index: 2;
+    height: auto;
+  }
+  
+  .actor-detail-content {
+    padding: 15px;
+    width: 60%;
+  }
+  
+  .actor-profile-image {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin-right: 20px;
+  }
+  
+  .detail-title {
+    font-size: 66px;
+    margin: 0 0 10px 0;
+  }
+  
+  .actor-info-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .actor-biography {
+    margin-left: 20px;
+  }
+  
+  .actor-facts {
+    background: #007bff;
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    height: 20px;
+  }
+  
+  .background-image {
+    background-size: cover;
+    background-position: top center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    z-index: 1;
+  }
+  
+  .relative-container {
+    position: relative;
+    height: 100vh;
+  }
+  
+  .gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70%;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0) 100%);
+    z-index: 2;
+  }
+
+  .actor-filmography .movie-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); /* Creates a grid with flexible columns */
+    gap: 20px; /* Space between grid items */
+    padding: 20px;
+}
+
+.filmography-heading-container {
+    text-align: center; /* Centers the inline-block element within */
+}
+
+.filmography-heading {
+    border-bottom: 4px solid #007bff; /* Replace #007bff with your desired color */
+    display: inline-block; /* Keeps the border width equal to the text */
+    padding-bottom: 5px; /* Adds some space between text and border */
+    /* No additional changes needed for the heading itself */
+}
+
+  
+
+
+
+  
+  /* Responsive styles */
+  @media (max-width: 1024px) {
+    .actor-details-container {
+      flex-direction: column;
+      align-items: center;
+      padding: 100px 20px;
+    }
+  
+    .actor-detail-content {
+      width: 100%;
+    }
+  
+    .actor-biography {
+      margin-left: 0;
+      margin-top: 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .detail-title {
+      font-size: 30px;
+    }
+  
+    .actor-profile-image {
+      max-width: 400px;
+    }
+  }
+  

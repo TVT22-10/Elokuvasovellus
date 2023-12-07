@@ -54,9 +54,10 @@
 
 .movie-poster {
   max-width: 600px;
+  width: 100%; /* Responsive */
   height: auto;
   object-fit: contain;
-  margin-right: 10px;
+  margin-bottom: 20px; /* Space between the poster and the trailer */
 }
 
  .detail-title {
@@ -164,25 +165,38 @@ margin-right: 0; /* Remove any right margin if present */
 }
 .cast-scroll-button {
   position: absolute;
-  top: 63%; /* Adjust this value to better align with the middle of posters */
+  top: 64%; /* Center vertically */
   transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7); /* Slightly darker for better visibility */
   border: none;
+  border-radius: 50%; /* Circular buttons */
   color: white;
   cursor: pointer;
   padding: 10px;
-  z-index: 1;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5); /* Subtle shadow */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover and active states */
+}
+
+.cast-scroll-button:hover {
+  background-color: #007bff; /* Change color on hover */
+  transform: translateY(-50%) scale(1.1); /* Slightly increase size */
+}
+
+.cast-scroll-button:active {
+  transform: translateY(-50%) scale(0.9); /* Slightly decrease size when clicked */
 }
 
 /* Positioning for the left arrow */
 .cast-scroll-button.left-arrow {
-  left: 0;
+  left: 10px; /* Adjust as needed */
 }
 
 /* Positioning for the right arrow */
 .cast-scroll-button.right-arrow {
-  right: 0;
+  right: 10px; /* Adjust as needed */
 }
+
 
 /* Optional: Hide scrollbar for the cast container */
 .cast-container::-webkit-scrollbar {
@@ -212,6 +226,24 @@ margin-right: 0; /* Remove any right margin if present */
 
 .favorite-button1:hover{
   background-color: #007bff81;
+}
+
+.trailer-container {
+  width: 100%;
+}
+
+
+.movie-trailer-iframe {
+  width: 100%;
+  height: 300px; /* Adjust height as needed */
+  border: none;
+}
+
+.poster-and-trailer-container {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center the children */
+  margin-bottom: 20px; /* Space below the trailer */
 }
 
 @media (max-width: 1024px) {
