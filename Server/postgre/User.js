@@ -161,4 +161,29 @@ async function deleteUser(username, password) {
   }
 }
 
-module.exports = { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser, getPasswordFromDatabase };
+async function getOldestMembers() {
+  try {
+    const result = await pgPool.query(
+      'SELECT username, avatar, creation_time FROM customer ORDER BY creation_time ASC LIMIT 5'
+    );
+    return result.rows;
+  } catch (error) {
+    console.error('Error fetching oldest members:', error);
+    throw error;
+  }
+}
+
+async function getNewestMembers() {
+  try {
+    const result = await pgPool.query(
+      'SELECT username, avatar, creation_time FROM customer ORDER BY creation_time DESC LIMIT 5'
+    );
+    return result.rows;
+  } catch (error) {
+    console.error('Error fetching newest members:', error);
+    throw error;
+  }
+}
+
+
+module.exports = { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser, getPasswordFromDatabase, getOldestMembers, getNewestMembers };
