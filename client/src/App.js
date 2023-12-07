@@ -8,6 +8,7 @@ import { AuthProvider, AuthContext } from './components/Contexts';
 import { Register } from './components/Register';
 import HomePage from './pages/start/start';
 import MovieDetail from './moviecomponents/MovieDetail';
+import ActorDetail from './moviecomponents/ActorDetail';
 import Profile from "./pages/profile/my_profile/my_profile";
 import PublicProfile from "./pages/profile/public_profile/public_profile";
 import CreateGroup from './pages/groups/create_group/create_group';
@@ -48,6 +49,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} /> {/* HomePage as the default route */}
           <Route path="/movies/:movieId" element={<MovieDetail />} />
+          <Route path="/actors/:actorId" element={<ActorDetail />} />
+
           <Route path="/Auth" element={<Login />} /> {/* Login page */}
           <Route path="/register" element={<Register />} /> {/* Registration page */}
           <Route path="/profile" element={<Profile />} /> {/* Profile page */}
