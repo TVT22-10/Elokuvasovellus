@@ -17,7 +17,6 @@ import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 import Edit_Profile from './pages/profile/edit_profile/edit_profile';
 import SearchPage from './pages/search/search';
 import SearchGroups from './pages/groups/search_groups/search_groups';
-import TheatreAreasPage from './xmlcomponents/TheatreAreas';
 import NewsPage from './xmlcomponents/News';
 import EventsPage from './xmlcomponents/Events';
 import SchedulePage from './xmlcomponents/Schedule';
@@ -63,7 +62,6 @@ function App() {
           <Route path="/search" element={<SearchPage />} /> {/* Search page */}
           <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}
           <Route path="/groups/:groupId" element={<GroupPage/>} />
-          <Route path="/theatre_areas" element={<TheatreAreasPage />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/schedule" element={<SchedulePage />} />
