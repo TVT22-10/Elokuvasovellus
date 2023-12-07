@@ -177,6 +177,7 @@ async function getAllGroups() {
 async function removeGroupMember(req, res) {
     const { groupId, username } = req.params;
     const currentUser = req.user.username;
+    const { newOwnerUsername } = req.body;
 
     try {
         const groupQuery = 'SELECT creator_username FROM groups WHERE group_id = $1;';
@@ -191,6 +192,15 @@ async function removeGroupMember(req, res) {
         // Check if the user is the owner or the member trying to leave
         if (!isOwner && currentUser !== username) {
             return res.status(403).json({ message: 'Unauthorized action' });
+        }
+
+        if (isOwner && currentUser === username) {
+            // If the new owner's username is provided, assign the new owner
+            if (newOwnerUsername) {
+                await assignNewOwner(req, res);
+            } else {
+                return res.status(403).json({ message: 'Owner cannot leave without assigning a new owner' });
+            }
         }
 
         // Remove the member from the group_members table
@@ -235,10 +245,7 @@ async function updateGroupDescription(req, res) {
     }
 }
 
-async function assignNewOwner(req, res) {
-    const { groupId, newOwnerUsername } = req.params;
-    const currentUser = req.user.username;
-
+async function assignNewOwner(groupId, newOwnerUsername, currentUser) {
     try {
         const groupQuery = 'SELECT creator_username FROM groups WHERE group_id = $1;';
         const groupResult = await pgPool.query(groupQuery, [groupId]);
@@ -251,7 +258,7 @@ async function assignNewOwner(req, res) {
 
         // Check if the user requesting the change is the current owner
         if (currentOwner !== currentUser) {
-            return res.status(403).json({ message: 'Only the current owner can assign a new owner' });
+            return { success: false, message: 'Only the current owner can assign a new owner' };
         }
 
         // Update the group's creator_username with the new owner
