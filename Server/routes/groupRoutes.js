@@ -54,18 +54,18 @@ router.put('/:groupId/assign-owner/:newOwnerUsername', authenticateToken, async 
     const { groupId, newOwnerUsername } = req.params;
 
     try {
-        // Call the function to assign ownership with the provided parameters
-        const success = await assignNewOwner(groupId, newOwnerUsername, req.user.username); // Pass groupId and newOwnerUsername to the function
-        if (success) {
-            res.status(200).json({ message: 'Ownership transferred successfully' });
+        const result = await assignNewOwner(groupId, newOwnerUsername, req.user.username);
+        if (result.success) {
+            res.status(200).json({ message: result.message });
         } else {
-            res.status(500).json({ message: 'Error assigning ownership' });
+            res.status(500).json({ message: result.message });
         }
     } catch (error) {
         console.error('Error assigning ownership:', error);
         res.status(500).json({ message: 'Error assigning ownership' });
     }
 });
+
 
 router.put('/:groupId/description', authenticateToken, updateGroupDescription);
 
