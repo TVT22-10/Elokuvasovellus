@@ -93,6 +93,8 @@ function GroupPage() {
     if (groupId) {
       fetchGroupDetails();
       fetchGroupMembers();
+      fetchUserNews(); // Call fetchUserNews to get the news for the group
+
     }
   }, [groupId, userData?.value]);
 
@@ -360,6 +362,7 @@ function GroupPage() {
           {userNews.length > 0 ? (
             <div className="news-list">
               {userNews.map((item, index) => (
+                
                 <GroupNews
                   key={index}
                   title={item.title}
