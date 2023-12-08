@@ -177,6 +177,7 @@ async function getAllGroups() {
 async function removeGroupMember(req, res) {
     const { groupId, username } = req.params;
     const currentUser = req.user.username;
+    const { newOwnerUsername } = req.body;
 
     try {
         const groupQuery = 'SELECT creator_username FROM groups WHERE group_id = $1;';
@@ -191,6 +192,15 @@ async function removeGroupMember(req, res) {
         // Check if the user is the owner or the member trying to leave
         if (!isOwner && currentUser !== username) {
             return res.status(403).json({ message: 'Unauthorized action' });
+        }
+
+        if (isOwner && currentUser === username) {
+            // If the new owner's username is provided, assign the new owner
+            if (newOwnerUsername) {
+                await assignNewOwner(req, res);
+            } else {
+                return res.status(403).json({ message: 'Owner cannot leave without assigning a new owner' });
+            }
         }
 
         // Remove the member from the group_members table
@@ -235,6 +245,33 @@ async function updateGroupDescription(req, res) {
     }
 }
 
+async function assignNewOwner(groupId, newOwnerUsername, currentUser) {
+    try {
+        const groupQuery = 'SELECT creator_username FROM groups WHERE group_id = $1;';
+        const groupResult = await pgPool.query(groupQuery, [groupId]);
+
+        if (groupResult.rows.length === 0) {
+            return { success: false, message: 'Group not found' };
+        }
+
+        const currentOwner = groupResult.rows[0].creator_username;
+
+        if (currentOwner !== currentUser) {
+            return { success: false, message: 'Only the current owner can assign a new owner' };
+        }
+
+        const updateOwnerQuery = 'UPDATE groups SET creator_username = $1 WHERE group_id = $2;';
+        await pgPool.query(updateOwnerQuery, [newOwnerUsername, groupId]);
+
+        return { success: true, message: 'New owner assigned successfully' };
+    } catch (error) {
+        console.error('Error assigning new owner:', error);
+        return { success: false, message: 'Error assigning new owner' };
+    }
+}
+
+
+
 
 // Export your functions to use them in your routes
 module.exports = {
@@ -247,4 +284,5 @@ module.exports = {
     getAllGroups,
     removeGroupMember,
     updateGroupDescription,
+    assignNewOwner,
 };
