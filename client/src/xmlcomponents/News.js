@@ -17,6 +17,8 @@ function NewsPage() {
   const [userGroups, setUserGroups] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
 
   useEffect(() => {
     // Fetch user groups when the component mounts
@@ -98,46 +100,55 @@ function NewsPage() {
     })
     : newsData;
 
-  return (
-    <div className="news-container">
-      <h1>News From Finnkino</h1>
-      <p>The news are in Finnish</p>
-
-      <div className="custom-dropdown">
-        <span className="dropdown-icon">▼</span>
-        <select onChange={handleCategoryChange} value={selectedCategory || 'all'}>
-          <option value="all">All Categories 🌐</option>
-          <option value="1073">Ajankohtaista 📅</option>
-          <option value="1079">Leffauutiset 🎬</option>
-        </select>
+    return (
+      <div className="news-container">
+        <h1>News From Finnkino</h1>
+        <p>The news are in Finnish</p>
+  
+        <div className="custom-dropdown">
+          <span className="dropdown-icon">▼</span>
+          <select onChange={handleCategoryChange} value={selectedCategory || 'all'}>
+            <option value="all">All Categories 🌐</option>
+            <option value="1073">Ajankohtaista 📅</option>
+            <option value="1079">Leffauutiset 🎬</option>
+          </select>
+        </div>
+  
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <ul className="news-list">
+            {filteredNews.map((item, index) => {
+              const { Title, HTMLLead, ArticleURL, ImageURL } = item;
+  
+              return (
+                <li key={index} className="news-item">
+                  <GroupNews 
+                    title={Title} 
+                    description={HTMLLead} 
+                    articleUrl={ArticleURL} 
+                    imageUrl={ImageURL} 
+                    onAddToGroup={(groupId) => handleAddToGroup(index, groupId)} 
+                  />
+                  <div 
+                    className="add-to-group-button" 
+                    onClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
+                  >
+                    Add to Group
+                  </div>
+                  {activeDropdown === index && (
+                    <DropdownMenu
+                      groups={userGroups}
+                      onSelect={(group) => handleAddToGroup(index, group)}
+                    />
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
-
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <ul className="news-list">
-          {filteredNews.map((item, index) => (
-            <li key={index} className="news-item">
-              <a href={item.ArticleURL} target="_blank" rel="noopener noreferrer">
-                <strong className="news-title">{item.Title || 'No title'}</strong>
-              </a>
-              <br />
-              <span className="news-description">{item.HTMLLead || 'No description'}</span>
-              <br />
-              {item.ImageURL && <img src={item.ImageURL} alt={`Image for ${item.Title}`} className="news-image" />}
-
-              <div className="add-to-group-button" onClick={() => setShowDropdown(!showDropdown)}>
-                Add to Group
-              </div>
-              {showDropdown && (
-                <DropdownMenu groups={userGroups} onSelect={(group) => handleAddToGroup(index, group)} />
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-export default NewsPage;
+    );
+  }
+  
+  export default NewsPage;
