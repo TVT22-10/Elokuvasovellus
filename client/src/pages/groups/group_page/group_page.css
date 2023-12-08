@@ -297,4 +297,20 @@
     margin-bottom: 100px;
 }
 
+.join-request-item-buttons button{
+    background-color: rgb(0, 132, 255);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 7px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 80px;
+}
 
+.join-request-item-buttons:hover{
+    background-color: rgb(23, 92, 148);
+    color: white;
+    border: none;
+}
