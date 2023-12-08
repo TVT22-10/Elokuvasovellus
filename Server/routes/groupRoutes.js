@@ -13,7 +13,10 @@ const {
     getAllGroups,
     removeGroupMember,
     updateGroupDescription,
+    addNewsToGroup,
+    getGroupNews,
     assignNewOwner
+  
 } = require('../postgre/group.js');
 
 // Route to create a new group
@@ -48,6 +51,10 @@ router.get('/all', async (req, res) => {
     }
 });
 
+router.get('/:groupId/news', authenticateToken, getGroupNews);
+
+
+router.post('/:groupId/news', authenticateToken, addNewsToGroup);
 
 // Route to assign ownership to a new owner
 router.put('/:groupId/assign-owner/:newOwnerUsername', authenticateToken, async (req, res) => {
