@@ -158,6 +158,7 @@ function GroupPage() {
                                 fetchGroupMembers();
 
                                 window.alert(`Ownership transferred to ${newOwner}. You can now leave the group.`);
+                                
                                 // Additional logic if needed after ownership transfer
                             } catch (error) {
                                 console.error('Error transferring ownership:', error);
