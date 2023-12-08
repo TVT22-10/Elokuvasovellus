@@ -1,0 +1,100 @@
+/* Container for the cast section, including arrows */
+.cast-section {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Adjust as needed */
+    margin: auto;
+    padding-top: 15px;
+
+  }
+  
+  .cast-heading {
+    border-bottom: 4px solid #007bff; /* Replace #007bff with your desired color */
+    display: inline-block; /* Makes the border only as wide as the text */
+    padding-bottom: 5px; /* Adds some space between text and border */
+}
+
+  /* Container for the cast members that allows horizontal scrolling */
+  .cast-container {
+    display: flex;
+    overflow-x: scroll;
+    padding: 20px 0;
+    scroll-behavior: smooth;
+  }
+  
+  /* Individual cast member item */
+  .cast-member {
+    flex: 0 0 auto;
+    width: 200px; /* Adjust as needed */
+    margin-right: 10px;
+  }
+  
+  /* Cast member poster wrapper */
+  .cast-poster-wrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+  
+  /* Cast member poster */
+  .cast-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Cast member info */
+  .cast-info {
+    position: absolute; /* Positioning the info over the image */
+    bottom: 0; /* Aligning to the bottom of the poster */
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Solid black color with 60% opacity */
+    color: white;
+    padding: 5px; /* Padding inside the info box */
+    text-align: center;
+}
+
+  
+  /* Cast member name */
+  .cast-name {
+    font-size: 1rem;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.cast-scroll-button {
+    position: absolute;
+    top: 63%; /* Adjust this value to better align with the middle of posters */
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1;
+}
+  
+  /* Positioning for the left arrow */
+  .cast-scroll-button.left-arrow {
+    left: 0;
+  }
+  
+  /* Positioning for the right arrow */
+  .cast-scroll-button.right-arrow {
+    right: 0;
+  }
+  
+  /* Optional: Hide scrollbar for the cast container */
+  .cast-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .cast-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
