@@ -297,30 +297,30 @@ const handleLeaveGroup = async (username) => {
           )}
         </div>
         <div className={`content ${activeTab !== 'news' && 'hidden'}`} id="new">
-      {userNews.length > 0 ? (
-        <div className="news-list">
-          {userNews.map((item, index) => {
-            console.log(`Debug: User News item ${index + 1}`);
-            console.log('Title:', item.title);
-            console.log('Description:', item.description);
-            console.log('ArticleURL:', item.articleUrl);
-            console.log('ImageURL:', item.imageUrl);
+        {userNews.length > 0 ? (
+          <div className="news-list">
+            {userNews.map((item, index) => {
+              console.log(`Debug: User News item ${index + 1}`);
+              console.log('Title:', item.title);
+              console.log('Description:', item.description);
+              console.log('ArticleURL:', item.articleUrl);
+              console.log('ImageURL:', item.imageUrl);
 
-            return (
-              <GroupNews 
-                key={index}
-                title={item.title} 
-                description={item.description} 
-                articleUrl={item.articleUrl} 
-                imageUrl={item.imageUrl} 
-              />
-            );
-          })}
-        </div>
-      ) : (
-          <p>No news found.</p>
-          )}
+              return (
+                <GroupNews 
+                  key={index}
+                  title={item.title} 
+                  description={item.description} 
+                  articleUrl={item.articleUrl} 
+                  imageUrl={item.image_Url} 
+                />
+              );
+            })}
           </div>
+        ) : (
+          <p>No news found.</p>
+           )}
+      </div>
         <div className={`content ${activeTab !== 'join requests' && 'hidden'}`} id="join requests">
           {groupData && groupData.creator_username === userData.value.username && (
             <div className="join-requests-list">

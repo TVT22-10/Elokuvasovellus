@@ -1,4 +1,4 @@
-// NewsPage.js
+// news.js
 import { jwtToken, userData } from "../components/Signals";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -6,7 +6,8 @@ import xml2js from 'xml2js';
 import { useNavigate } from 'react-router-dom';
 import './NewsPage.css';
 import DropdownMenu from './DropdownMenu';
-import GroupNews from './GroupNews';
+import NewsItem from './NewsItem';
+
 
 function NewsPage() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ function NewsPage() {
     };
 
     fetchUserGroups();
-  }, []);
+  }, []); // Empty dependency array to run only once when the component mounts
 
   useEffect(() => {
     // Fetch news data when the component mounts
@@ -73,7 +74,7 @@ function NewsPage() {
           Authorization: `Bearer ${jwtToken.value}`,  // Add your authentication token
         },
       });
-
+  
       console.log('News added to group:', response.data);
       // Handle success as needed
       setShowDropdown(false);
@@ -115,26 +116,24 @@ function NewsPage() {
         <p>Loading...</p>
       ) : (
         <ul className="news-list">
-          {filteredNews.map((item, index) => {
-            const { Title, HTMLLead, ArticleURL, ImageURL } = item;
+          {filteredNews.map((item, index) => (
+            <li key={index} className="news-item">
+              <a href={item.ArticleURL} target="_blank" rel="noopener noreferrer">
+                <strong className="news-title">{item.Title || 'No title'}</strong>
+              </a>
+              <br />
+              <span className="news-description">{item.HTMLLead || 'No description'}</span>
+              <br />
+              {item.ImageURL && <img src={item.ImageURL} alt={`Image for ${item.Title}`} className="news-image" />}
 
-            console.log(`Debug: News item ${index + 1}`);
-            console.log('Title:', Title);
-            console.log('HTMLLead:', HTMLLead);
-            console.log('ArticleURL:', ArticleURL);
-            console.log('ImageURL:', ImageURL);
-
-            return (
-              <GroupNews 
-                key={index} 
-                title={Title} 
-                description={HTMLLead} 
-                articleUrl={ArticleURL} 
-                imageUrl={ImageURL} 
-                onAddToGroup={(groupId) => handleAddToGroup(index, groupId)} 
-              />
-            );
-          })}
+              <div className="add-to-group-button" onClick={() => setShowDropdown(!showDropdown)}>
+                Add to Group
+              </div>
+              {showDropdown && (
+                <DropdownMenu groups={userGroups} onSelect={(group) => handleAddToGroup(index, group)} />
+              )}
+            </li>
+          ))}
         </ul>
       )}
     </div>
