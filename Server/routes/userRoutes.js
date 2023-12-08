@@ -8,7 +8,7 @@ const pgPool = require('../postgre/connection'); // Adjust the path as needed
 
 
 
-const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser, getPasswordFromDatabase } = require('../postgre/User');
+const { addUser, getUsers, checkUser, getUserDetails, setUserAvatar, getUserGroups, deleteUser, getPasswordFromDatabase, getOldestMembers, getNewestMembers } = require('../postgre/User');
 const e = require('express');
 
 router.get('/', async (req, res) => {
@@ -176,5 +176,24 @@ router.delete('/delete/:username', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Error deleting user' });
     }
 });
+
+router.get('/oldest-members', async (req, res) => {
+    try {
+      const oldestMembers = await getOldestMembers();
+      res.json(oldestMembers);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
+  router.get('/newest-members', async (req, res) => {
+    try {
+      const newestMembers = await getNewestMembers();
+      res.json(newestMembers);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
 
 module.exports = router;

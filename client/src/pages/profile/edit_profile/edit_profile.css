@@ -139,3 +139,15 @@
     color: white;
     border: none;
 }
+
+.bio-input{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.bio-input textarea {
+  resize: none;
+  width: 100%;
+  height: 200px;
+}

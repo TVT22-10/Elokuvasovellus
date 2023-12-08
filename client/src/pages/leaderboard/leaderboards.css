@@ -1,0 +1,69 @@
+.leaderboard-container {
+    text-align: center; /* Keep text centered */
+    /* Removed flex properties */
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 400px); /* Two columns, each 400px wide */
+    gap: 20px;
+    margin: 20px auto;
+    max-width: fit-content;
+  }
+  
+  
+  
+  /* Rest of your CSS */
+  
+  
+  
+  .leaderboard-box {
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc; /* Outline border for the box */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+  }
+
+  
+  .leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .leaderboard-item {
+    padding: 0px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-top: 0px; /* Spacing between items */
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+
+  
+  .review-count {
+    margin-left: auto;
+    margin-right: 10px;
+  }
+  
+  .top-user {
+    font-size: 1.5em;
+  }
+  
+  .top-user .user-avatar {
+    width: 50px; /* Adjust the size as needed */
+    height: 50px;
+  }
+  
+  .days-count {
+    margin-left: auto;
+    margin-right: 10px;
+  }

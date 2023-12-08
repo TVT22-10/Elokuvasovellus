@@ -304,14 +304,14 @@
   }
 
   .bio-top-right {
-    margin-left: 20px;
+    margin-left: 100px;
 
   }
   
   .bio-text-container {
     min-height: 100px; /* Set your desired minimum height here */
     min-width: 700px;
-    border: 1px solid #ccc; /* Add a border for styling */
+    border: 2px solid rgb(0, 132, 255); /* Add a border for styling */
     padding: 10px; /* Add padding for spacing */
     box-sizing: border-box; /* Ensure padding is included in the height */
     border-radius: 4px;

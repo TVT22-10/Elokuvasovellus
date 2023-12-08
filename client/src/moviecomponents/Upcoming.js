@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MovieStyles.css'; // Assuming you are reusing the same styles
+import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Upcoming() {
   const [movies, setMovies] = useState([]);
@@ -29,7 +31,9 @@ function Upcoming() {
 
   return (
     <div className="movie-section">
-      <button onClick={() => scroll(-300)} className="scroll-button left-arrow">&lt;</button>
+      <button onClick={() => scroll(-300)} className="scroll-button left-arrow">
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </button>
       <div ref={movieContainerRef} className="movie-container">
         {movies.map(movie => (
           <div key={movie.id} className="movie" onClick={() => navigateToMovie(movie.id)}>
@@ -70,8 +74,10 @@ function Upcoming() {
           </div>
         ))}
       </div>
-      <button onClick={() => scroll(300)} className="scroll-button right-arrow">&gt;</button>
-    </div>
+      <button onClick={() => scroll(300)} className="scroll-button right-arrow">
+        <FontAwesomeIcon icon={faArrowRight} />
+      </button>  
+        </div>
   );
 }
 

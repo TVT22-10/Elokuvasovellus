@@ -14,9 +14,27 @@ function Register() {
   const [success, setSuccess] = useState(false); // New state for success message
   const navigate = useNavigate(); // Hook to navigate
 
+  const validatePassword = () => {
+    if (pw.length < 5) {
+      setError('Password must be at least 5 characters long');
+      return false;
+    }
+
+    if (!/\d/.test(pw)) {
+      setError('Password must include at least one number');
+      return false;
+    }
+
+    return true;
+  };
+
   const handleRegister = (e) => {
     e.preventDefault();
     setError(''); // Clear any previous errors
+
+    if (!validatePassword()) {
+      return; // Stop the registration process if validation fails
+    }
 
     axios.post('http://localhost:3001/User/register', { uname, pw, fname, lname })
       .then(response => {

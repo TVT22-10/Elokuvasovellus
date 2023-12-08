@@ -1,10 +1,14 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../components/Contexts'; // Adjust the path as necessary 
 import axios from 'axios';
 import './MovieDetail.css';
 import './LoadingScreen.css';
 import MovieReviews from '../pages/movie_review/movie_review';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
 
 function MovieDetail() {
   const { movieId } = useParams();
@@ -17,8 +21,14 @@ function MovieDetail() {
   const [isFavorite, setIsFavorite] = useState(false);
   const { user } = useContext(AuthContext);
   const username = user?.username;  // Safely access username
+  const [trailerUrl, setTrailerUrl] = useState(''); // State to store trailer URL
+  const navigate = useNavigate();
+
+
 
   useEffect(() => {
+    setLoading(true);
+
     // Fetch movie details
     fetch(`http://localhost:3001/movies/${movieId}`)
       .then(response => {
@@ -41,6 +51,21 @@ function MovieDetail() {
       })
       .then(castData => {
         setCast(castData.cast);
+
+        // Fetch movie trailer
+        return fetch(`http://localhost:3001/movies/${movieId}/videos`);
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch trailer.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const trailers = data.results.filter(video => video.type === 'Trailer');
+        if (trailers.length > 0) {
+          setTrailerUrl(`https://www.youtube.com/embed/${trailers[0].key}`);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -58,6 +83,7 @@ function MovieDetail() {
     }
   }, [movieId, username]);
 
+
   const calculateRating = rating => {
     const circumference = 2 * Math.PI * 20;
     return (rating / 10) * circumference;
@@ -72,7 +98,7 @@ function MovieDetail() {
     console.log('Username and MovieID:', { username, movieId }); // Log relevant information
     let response;
 
-    try {      
+    try {
       if (isFavorite) {
         response = await axios.delete(`http://localhost:3001/favorites/${username}/remove/${movieId}`);
       } else {
@@ -107,7 +133,21 @@ function MovieDetail() {
       <div className="background-image" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movieDetails.backdrop_path})` }}></div>
 
       <div className="movie-content">
-        <img src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`} alt={movieDetails.title} className="movie-poster" />
+        <div className="poster-and-trailer-container">
+          <img src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`} alt={movieDetails.title} className="movie-poster" />
+
+          {/* Trailer Section */}
+          {trailerUrl && (
+            <div className="trailer-container">
+              <iframe
+                src={trailerUrl}
+                title="Movie Trailer"
+                allowFullScreen
+                className="movie-trailer-iframe">
+              </iframe>
+            </div>
+          )}
+        </div>
 
         <div className="movie-detail-content">
           <h1 className="detail-title">{movieDetails.title}</h1>
@@ -135,7 +175,7 @@ function MovieDetail() {
 
           <p>{movieDetails.overview}</p>
 
-          {/* Add to Favorites button */}          
+          {/* Add to Favorites button */}
           <div className="favorite-button-container">
             {isLoggedIn && (
               <button className="favorite-button1" onClick={addToFavorites}>
@@ -147,10 +187,12 @@ function MovieDetail() {
           <div className="cast-section">
             <h2 className="cast-heading">CAST</h2>
 
-            <button onClick={() => scrollCast(-300)} className="cast-scroll-button left-arrow">&lt;</button>
+            <button onClick={() => scrollCast(-300)} className="cast-scroll-button left-arrow">
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
             <div ref={castContainerRef} className="cast-container">
               {cast.map(member => (
-                <div key={member.id} className="cast-member">
+                <div key={member.id} className="cast-member" onClick={() => navigate(`/actors/${member.id}`)}>
                   <div className="cast-poster-wrapper">
                     {member.profile_path && (
                       <img src={`https://image.tmdb.org/t/p/w200${member.profile_path}`} alt={member.name} className="cast-poster" />
@@ -162,12 +204,15 @@ function MovieDetail() {
                 </div>
               ))}
             </div>
-            <button onClick={() => scrollCast(300)} className="cast-scroll-button right-arrow">&gt;</button>
+            <button onClick={() => scrollCast(300)} className="cast-scroll-button right-arrow">
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
           </div>
 
           {/* Reviews section */}
           <MovieReviews movieId={movieId} />
         </div>
+
       </div>
     </div>
   );

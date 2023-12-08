@@ -8,6 +8,7 @@ import { AuthProvider, AuthContext } from './components/Contexts';
 import { Register } from './components/Register';
 import HomePage from './pages/start/start';
 import MovieDetail from './moviecomponents/MovieDetail';
+import ActorDetail from './moviecomponents/ActorDetail';
 import Profile from "./pages/profile/my_profile/my_profile";
 import PublicProfile from "./pages/profile/public_profile/public_profile";
 import CreateGroup from './pages/groups/create_group/create_group';
@@ -23,6 +24,7 @@ import EventsPage from './xmlcomponents/Events';
 import SchedulePage from './xmlcomponents/Schedule';
 import ScheduleDatesPage from './xmlcomponents/ScheduleDates';
 import BrowseMoviesPage from './pages/browse/browse_movies/browse_movies';
+import LeaderboardsPage from './pages/leaderboard/leaderboards';
 
 function RepeatingLogComponent() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -48,6 +50,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} /> {/* HomePage as the default route */}
           <Route path="/movies/:movieId" element={<MovieDetail />} />
+          <Route path="/actors/:actorId" element={<ActorDetail />} />
+
           <Route path="/Auth" element={<Login />} /> {/* Login page */}
           <Route path="/register" element={<Register />} /> {/* Registration page */}
           <Route path="/profile" element={<Profile />} /> {/* Profile page */}
@@ -57,6 +61,8 @@ function App() {
           <Route path="/edit_group/:groupId" element={<EditGroup />} /> {/* Edit group page */}
           <Route path="/browse_all" element={<BrowseMoviesPage />} /> {/* Browse all page */}
           <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
+          <Route path="/leaderboards" element={<LeaderboardsPage />} /> {/* Browse all page */}
+
           <Route path="/search" element={<SearchPage />} /> {/* Search page */}
           <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}
           <Route path="/groups/:groupId" element={<GroupPage/>} />

@@ -141,6 +141,8 @@
 
 }
 
+
+
 .members-list {
     display: flex;
     flex-direction: column;
@@ -276,12 +278,41 @@
 }
 
 .edit-description textarea input{
-    width: 300px;
-    height: 100px;
     border-radius: 5px;
     border: none;
-    padding: 10px;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    
+    padding: 1px;
+    margin-bottom: 1px;
+    margin-top: 10px;
 }
+
+.edit-description-buttons button{
+    background-color: rgb(0, 132, 255);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 7px;
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 80px;
+}
+
+.edit-description-buttons button:hover{
+    background-color: rgb(23, 92, 148);
+    color: white;
+    border: none;
+}
+
+.group-description-header p{
+    margin: 5px 0;
+    font-size: 20px;
+    font-weight: 300;
+    color: rgb(255, 255, 255);
+}
+
+.group-description-header{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+

@@ -14,6 +14,8 @@ function PublicProfile() {
   const [movies, setMovies] = useState({});
   const [showFullReview, setShowFullReview] = useState(false);
   const [userExists, setUserExists] = useState(true);
+  const [bio, setBio] = useState('');
+
   const navigate = useNavigate();
 
 
@@ -46,6 +48,8 @@ function PublicProfile() {
   
           const movieIds = reviews.map(review => review.movie_id);
           await fetchMovieDetails(movieIds);
+          setBio(response.data.bio || 'No bio yet'); // Replace 'bio' with the actual property name if different
+
         } else {
           setUserExists(false);
         }
@@ -108,8 +112,15 @@ function PublicProfile() {
               <h2>{username}</h2>
               <p>Account Created On: {creationDate}</p>
             </div>
-            
+           
           </div>
+          <div className="bio-top-right">
+          <div className="bio-view">
+            <div className="bio-text-container">
+              <p className="bio-text-outline">{bio}</p>
+            </div>
+          </div>
+        </div>
         </div>
         <div className="profile-buttons">
           <p
