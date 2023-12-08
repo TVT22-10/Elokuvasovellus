@@ -234,6 +234,42 @@ async function updateGroupDescription(req, res) {
         res.status(500).json({ message: 'Error updating group description' });
     }
 }
+// New function to add news to a group
+async function addNewsToGroup(req, res) {
+    const { groupId } = req.params;
+    const { title, description, articleUrl, imageUrl } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO groupnews (group_id, title, description, article_url, image_url)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *;
+        `;
+        const result = await pgPool.query(query, [groupId, title, description, articleUrl, imageUrl]);
+
+        const addedNewsItem = result.rows[0];
+        res.status(201).json({ message: 'News added to the group', newsItem: addedNewsItem });
+    } catch (error) {
+        console.error('Error adding news to group:', error);
+        res.status(500).json({ message: 'Error adding news to group', error: error.message }); // Include error details in the response
+    }
+}
+
+// In group.js
+async function getGroupNews(req, res) {
+    const { groupId } = req.params;
+
+    try {
+        // Query the database to get news for the specified group
+        const query = 'SELECT * FROM groupnews WHERE group_id = $1;';
+        const result = await pgPool.query(query, [groupId]);
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error fetching group news:', error);
+        res.status(500).json({ message: 'Error fetching group news', error: error.message });
+    }
+}
 
 
 // Export your functions to use them in your routes
@@ -247,4 +283,6 @@ module.exports = {
     getAllGroups,
     removeGroupMember,
     updateGroupDescription,
+    addNewsToGroup,
+    getGroupNews,
 };

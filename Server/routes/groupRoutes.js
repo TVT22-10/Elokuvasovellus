@@ -13,6 +13,8 @@ const {
     getAllGroups,
     removeGroupMember,
     updateGroupDescription,
+    addNewsToGroup,
+    getGroupNews
 } = require('../postgre/group.js');
 
 // Route to create a new group
@@ -47,8 +49,9 @@ router.get('/all', async (req, res) => {
     }
 });
 
+router.get('/:groupId/news', authenticateToken, getGroupNews);
 
-
+router.post('/:groupId/news', authenticateToken, addNewsToGroup);
 
 router.put('/:groupId/description', authenticateToken, updateGroupDescription);
 
