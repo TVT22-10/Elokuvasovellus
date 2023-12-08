@@ -1,0 +1,44 @@
+
+/* 
+
+.separator {
+    border: 3px solid rgb(0, 132, 255);
+    margin: 0;
+    width: 100%;
+}
+
+
+
+nav {
+    display: flex;
+    color: white;
+}
+
+nav p {
+    margin: 0 20px;
+    cursor: pointer;
+    color: white;
+    font-size: 1em;
+    justify-content: space-between;
+}
+
+.centered-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 50px;
+}
+
+.upper-text {
+    color: white;
+    margin-left: 50px;
+    margin-top: 50px;
+    font-size: 1.5em;
+}
+
+.lower-text {
+    color: white;
+    margin-left: 50px;
+    margin-top: 235px;
+    font-size: 1.5em;
+} */
