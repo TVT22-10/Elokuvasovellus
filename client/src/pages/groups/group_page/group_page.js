@@ -248,6 +248,9 @@ function GroupPage() {
   };
 
 
+  
+
+
   return (
     <div className="Group-page">
       <div className="group-container">
@@ -359,43 +362,44 @@ function GroupPage() {
           )}
         </div>
         <div className={`content ${activeTab !== 'news' && 'hidden'}`} id="news">
-          {userNews.length > 0 ? (
-            <div className="news-list">
-              {userNews.map((item, index) => (
-                
-                <GroupNews
-                  key={index}
-                  title={item.title}
-                  description={item.description}
-                  articleUrl={item.articleUrl}
-                  imageUrl={item.imageUrl}
-                // Add any other props that GroupNews requires
-                />
-              ))}
-            </div>
-          ) : (
-            <p>No news found.</p>
-          )}
-        </div>
-        <div className={`content ${activeTab !== 'join requests' && 'hidden'}`} id="join requests">
-          {groupData && userData.value && userData.value.username && groupData.creator_username === userData.value.username && (
-            <div className="join-requests-list">
-              {joinRequests.length > 0 ? (
-                joinRequests.map((request, index) => (
-                  <div className="join-request-item" key={index}>
-                    <span>{request.username}</span>
-                    <button onClick={() => handleJoinRequest(request.request_id, true)}>Accept</button>
-                    <button onClick={() => handleJoinRequest(request.request_id, false)}>Decline</button>
-                  </div>
-                ))
-              ) : (
-                <p>No join requests.</p>
-              )}
-            </div>
-          )}
-        </div>
+  {userNews.length > 0 ? (
+    userNews.map((item, index) => {
+
+      return (
+        <GroupNews
+          key={index}
+          title={item.title}
+          description={item.description}
+          articleUrl={item.article_url}
+          imageUrl={item.image_url} // Corrected property name
+        />
+      );
+    })
+  ) : (
+    <p>No news found.</p>
+  )}
+</div>
+
+
+      <div className={`content ${activeTab !== 'join requests' && 'hidden'}`} id="join requests">
+        {groupData && userData.value && userData.value.username && groupData.creator_username === userData.value.username && (
+          <div className="join-requests-list">
+            {joinRequests.length > 0 ? (
+              joinRequests.map((request, index) => (
+                <div className="join-request-item" key={index}>
+                  <span>{request.username}</span>
+                  <button onClick={() => handleJoinRequest(request.request_id, true)}>Accept</button>
+                  <button onClick={() => handleJoinRequest(request.request_id, false)}>Decline</button>
+                </div>
+              ))
+            ) : (
+              <p>No join requests.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
+    </div >
 
   );
 }
