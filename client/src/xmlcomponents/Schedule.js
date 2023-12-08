@@ -42,9 +42,9 @@ const SchedulePage = () => {
   };
 
   useEffect(() => {
-    const getXml = async () => {
+    const getXmlForTheatre = async (theatreAreaId) => {
       try {
-        const result = await axios.get('https://www.finnkino.fi/xml/Schedule/');
+        const result = await axios.get(`https://www.finnkino.fi/xml/Schedule/?area=${theatreAreaId}`);
         const jsResult = await xml2js.parseStringPromise(result.data, {
           explicitArray: false,
           explicitRoot: true,
@@ -52,17 +52,30 @@ const SchedulePage = () => {
         });
 
         const schedule = jsResult.Schedule.Shows.Show;
-
-        setScheduleData(Array.isArray(schedule) ? schedule : [schedule]);
-        setFilteredSchedule(Array.isArray(schedule) ? schedule : [schedule]);
-        setLoading(false);
+        return Array.isArray(schedule) ? schedule : [schedule];
       } catch (error) {
         console.error('Error fetching or parsing schedule XML data:', error);
-        setLoading(false);
+        return [];
       }
     };
 
-    getXml();
+    const getAllSchedules = async () => {
+      const theatreAreas = [
+        1014, 1018, 1015, 1016, 1017, 1041, 1019, 1034, 1035, 1022, 1046
+      ];
+      const allSchedules = [];
+
+      for (const areaId of theatreAreas) {
+        const scheduleForTheatre = await getXmlForTheatre(areaId);
+        allSchedules.push(...scheduleForTheatre);
+      }
+
+      setScheduleData(allSchedules);
+      setFilteredSchedule(allSchedules);
+      setLoading(false);
+    };
+
+    getAllSchedules();
   }, []);
 
   const handleSearch = () => {
