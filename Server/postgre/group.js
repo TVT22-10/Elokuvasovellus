@@ -244,6 +244,42 @@ async function updateGroupDescription(req, res) {
         res.status(500).json({ message: 'Error updating group description' });
     }
 }
+// New function to add news to a group
+async function addNewsToGroup(req, res) {
+    const { groupId } = req.params;
+    const { title, description, articleUrl, imageUrl } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO groupnews (group_id, title, description, article_url, image_url)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *;
+        `;
+        const result = await pgPool.query(query, [groupId, title, description, articleUrl, imageUrl]);
+
+        const addedNewsItem = result.rows[0];
+        res.status(201).json({ message: 'News added to the group', newsItem: addedNewsItem });
+    } catch (error) {
+        console.error('Error adding news to group:', error);
+        res.status(500).json({ message: 'Error adding news to group', error: error.message }); // Include error details in the response
+    }
+}
+
+// In group.js
+async function getGroupNews(req, res) {
+    const { groupId } = req.params;
+
+    try {
+        // Query the database to get news for the specified group
+        const query = 'SELECT * FROM groupnews WHERE group_id = $1;';
+        const result = await pgPool.query(query, [groupId]);
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error fetching group news:', error);
+        res.status(500).json({ message: 'Error fetching group news', error: error.message });
+    }
+}
 
 async function assignNewOwner(groupId, newOwnerUsername, currentUser) {
     try {
@@ -251,26 +287,25 @@ async function assignNewOwner(groupId, newOwnerUsername, currentUser) {
         const groupResult = await pgPool.query(groupQuery, [groupId]);
 
         if (groupResult.rows.length === 0) {
-            return res.status(404).json({ message: 'Group not found' });
+            return { success: false, message: 'Group not found' };
         }
 
         const currentOwner = groupResult.rows[0].creator_username;
 
-        // Check if the user requesting the change is the current owner
         if (currentOwner !== currentUser) {
             return { success: false, message: 'Only the current owner can assign a new owner' };
         }
 
-        // Update the group's creator_username with the new owner
         const updateOwnerQuery = 'UPDATE groups SET creator_username = $1 WHERE group_id = $2;';
         await pgPool.query(updateOwnerQuery, [newOwnerUsername, groupId]);
 
-        res.status(200).json({ message: 'New owner assigned successfully' });
+        return { success: true, message: 'New owner assigned successfully' };
     } catch (error) {
         console.error('Error assigning new owner:', error);
-        res.status(500).json({ message: 'Error assigning new owner' });
+        return { success: false, message: 'Error assigning new owner' };
     }
 }
+
 
 
 
@@ -285,5 +320,7 @@ module.exports = {
     getAllGroups,
     removeGroupMember,
     updateGroupDescription,
+    addNewsToGroup,
+    getGroupNews,
     assignNewOwner,
 };
