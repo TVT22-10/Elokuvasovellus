@@ -468,8 +468,10 @@ function GroupPage() {
                 joinRequests.map((request, index) => (
                   <div className="join-request-item" key={index}>
                     <span>{request.username}</span>
+                    <div className="request-buttons">
                     <button onClick={() => handleJoinRequest(request.request_id, true)}>Accept</button>
                     <button onClick={() => handleJoinRequest(request.request_id, false)}>Decline</button>
+                    </div>
                   </div>
                 ))
               ) : (
