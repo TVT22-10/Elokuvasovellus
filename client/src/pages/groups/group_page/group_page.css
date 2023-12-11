@@ -406,6 +406,7 @@
 }
 
 .message-avatar {
+
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -444,6 +445,9 @@
 .message-header strong {
     color: rgb(35, 149, 255); /* You can replace this color with any color you prefer */
 }
+
+  
+
 
 .request-buttons button {
     background-color: rgb(0, 132, 255);
