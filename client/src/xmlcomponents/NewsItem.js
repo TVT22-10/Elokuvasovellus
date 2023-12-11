@@ -30,13 +30,13 @@ const NewsItem = ({ item, groups, jwtToken }) => {
 
   return (
     <li className="news-item">
-      <a href={articleUrl} target="_blank" rel="noopener noreferrer">
-        <strong className="news-title">{title || 'No title'}</strong>
+      <a href={item.ArticleURL} target="_blank" rel="noopener noreferrer">
+        <strong className="news-title">{item.Title || 'No title'}</strong>
       </a>
       <br />
-      <span className="news-description">{description || 'No description'}</span>
+      <span className="news-description">{item.HTMLLead || 'No description'}</span>
       <br />
-      {imageUrl && <img src={imageUrl} alt={`Image for ${title}`} className="news-image" />}
+      {item.ImageURL && <img src={item.ImageURL} alt={`Image for ${item.Title}`} className="news-image" />}
 
       <div className="add-to-group-button" onClick={() => setShowDropdown(!showDropdown)}>
         Add to Group

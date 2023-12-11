@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import './NewsPage.css';
 import DropdownMenu from './DropdownMenu';
 import NewsItem from './NewsItem';
+import GroupNews from './GroupNews';
 
 
 function NewsPage() {
