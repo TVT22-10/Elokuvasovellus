@@ -24,6 +24,8 @@ function GroupPage() {
   const [newDescription, setNewDescription] = useState(groupData?.groupdescription || '');
   const navigate = useNavigate();
   const [userNews, setUserNews] = useState([]);
+  const [messages, setMessages] = useState([]); // State to store messages
+
 
 
 
@@ -163,19 +165,18 @@ function GroupPage() {
                   headers: { Authorization: `Bearer ${jwtToken.value}` },
                 });
 
-                console.log('Ownership transferred successfully:', response.data);
-                alert(`Ownership transferred to ${newOwner}. You can now leave the group.`);
-                return; // This ensures no further action if ownership is transferred
+                window.alert(`Ownership transferred to ${newOwner}. You can now leave the group.`);
+                // Additional logic if needed after ownership transfer
               } catch (error) {
                 console.error('Error transferring ownership:', error);
-                alert('Error transferring ownership.');
-                return; // Exit function to prevent further actions on error
+                window.alert('Error transferring ownership.');
+                return;
               }
             } else if (newOwner === groupData.creator_username) {
-              alert('You cannot transfer ownership to yourself.');
+              window.alert('You cannot transfer ownership to yourself.');
               return;
             } else {
-              alert('Invalid username or no username entered. Ownership not transferred.');
+              window.alert('Invalid username or no username entered. Ownership not transferred.');
               return;
             }
           }
@@ -248,7 +249,47 @@ function GroupPage() {
   };
 
 
-  
+  const fetchMessages = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/groups/${groupId}/messages`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken.value}`,
+        },
+      });
+      setMessages(response.data);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'chat') {
+      fetchMessages();
+    }
+  }, [activeTab, groupId]);
+
+  const [newMessage, setNewMessage] = useState(''); // State to hold the new message text
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`http://localhost:3001/groups/${groupId}/message`, {
+        message: newMessage,
+      }, {
+        headers: {
+          Authorization: `Bearer ${jwtToken.value}`,
+        },
+      });
+      setNewMessage('');
+      fetchMessages(); // Refresh messages after sending
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+
+
+
+
 
 
   return (
@@ -278,6 +319,9 @@ function GroupPage() {
       <div className="group-buttons">
         <p className={`view-change ${activeTab === 'description' ? 'active-link' : ''}`} onClick={() => setActiveTab('description')}>Description</p>
         <p className={`view-change ${activeTab === 'group members' ? 'active-link' : ''}`} onClick={() => setActiveTab('group members')}>Group members</p>
+        {isMember && (
+          <p className={`view-change ${activeTab === 'chat' ? 'active-link' : ''}`} onClick={() => setActiveTab('chat')}>Chat</p>
+        )}
         <p className={`view-change ${activeTab === 'news' || !activeTab ? 'active-link' : ''}`} onClick={() => setActiveTab('news')}>News</p>
         {groupData && userData.value && groupData.creator_username === userData.value.username && (
           <p className={`view-change ${activeTab === 'join requests' ? 'active-link' : ''}`} onClick={() => setActiveTab('join requests')}>Join Requests</p>
@@ -337,22 +381,38 @@ function GroupPage() {
                   <img src={`http://localhost:3001/avatars/${member.avatar}`} alt={`${member.username}'s avatar`} className="member-avatar" />
                   <span className="member-name" onClick={() => navigateToPublicProfile(member.username)}>
                     {member.username}
+                    {groupData && member.username === groupData.creator_username && (
+                      <React.Fragment>
+                        <span className="owner-tag">Owner</span>
+                        {groupData.joined_date && (
+                          <span className="member-joined-date">{formatDate(member.joined_date)}</span>
+                        )}
+                        {userData.value.username === member.username && (
+                          <div className="leaveGroup">
+                            <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
+                          </div>
+                        )}
+                      </React.Fragment>
+                    )}
                   </span>
-                  {groupData && member.username === groupData.creator_username && (
-                    <span className="owner-tag">Owner</span>
+                  {groupData && member.username !== groupData.creator_username && (
+                    <React.Fragment>
+                      <span className="member-joined-date">{formatDate(member.joined_date)}</span>
+                      {userData.value.username === member.username && (
+                        <div className="leaveGroup">
+                          <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
+                        </div>
+                      )}
+                    </React.Fragment>
                   )}
-                  <span className="member-joined-date">{formatDate(member.joined_date)}</span>
-                  {/* Check if userData.value is available before rendering the leave group button */}
-                  {userData?.value?.username === member.username && (
-                    <div className="leaveGroup">
-                      <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
-                    </div>
-                  )}
-                  {/* Check for groupData.creator_username and userData.value before rendering the delete member button */}
-                  {groupData.creator_username === userData?.value?.username && userData?.value?.username !== member.username && (
-                    <div className="deleteMember">
-                      <button onClick={() => handleRemoveMember(member.username)}>Delete Member</button>
-                    </div>
+                  {groupData && userData.value.username === groupData.creator_username && (
+                    <React.Fragment>
+                      {userData.value.username !== member.username && (
+                        <div className="deleteMember">
+                          <button onClick={() => handleRemoveMember(member.username)}>Delete Member</button>
+                        </div>
+                      )}
+                    </React.Fragment>
                   )}
                 </div>
               ))}
@@ -361,44 +421,66 @@ function GroupPage() {
             <p>No members found.</p>
           )}
         </div>
-        <div className={`content ${activeTab !== 'news' && 'hidden'}`} id="news">
-  {userNews.length > 0 ? (
-    userNews.map((item, index) => {
-
-      return (
-        <GroupNews
-          key={index}
-          title={item.title}
-          description={item.description}
-          articleUrl={item.article_url}
-          imageUrl={item.image_url} // Corrected property name
-        />
-      );
-    })
-  ) : (
-    <p>No news found.</p>
-  )}
-</div>
-
-
-      <div className={`content ${activeTab !== 'join requests' && 'hidden'}`} id="join requests">
-        {groupData && userData.value && userData.value.username && groupData.creator_username === userData.value.username && (
-          <div className="join-requests-list">
-            {joinRequests.length > 0 ? (
-              joinRequests.map((request, index) => (
-                <div className="join-request-item" key={index}>
-                  <span>{request.username}</span>
-                  <button onClick={() => handleJoinRequest(request.request_id, true)}>Accept</button>
-                  <button onClick={() => handleJoinRequest(request.request_id, false)}>Decline</button>
-                </div>
-              ))
-            ) : (
-              <p>No join requests.</p>
-            )}
-          </div>
-        )}
+        <div className={`content ${activeTab !== 'chat' && 'hidden'}`} id="chat">
+  <form onSubmit={handleSendMessage} className="message-send-form">
+    <input
+      type="text"
+      placeholder="Type a message..."
+      value={newMessage}
+      onChange={(e) => setNewMessage(e.target.value)}
+      className="message-input"
+    />
+    <button type="submit" className="send-message-button">Send</button>
+  </form>
+  <div className="chat-messages">
+    {messages.map((message, index) => (
+      <div key={index} className="message">
+        <img src={`http://localhost:3001/avatars/${message.avatar}`} alt={`${message.username}'s avatar`} className="message-avatar" />
+        <strong>{message.username}:</strong> {message.message}
       </div>
-    </div>
+    ))}
+  </div>
+</div>
+        <div className={`content ${activeTab !== 'news' && 'hidden'}`} id="news">
+          {userNews.length > 0 ? (
+            userNews.map((item, index) => {
+
+              return (
+                <GroupNews
+                  key={index}
+                  title={item.title}
+                  description={item.description}
+                  articleUrl={item.article_url}
+                  imageUrl={item.image_url} // Corrected property name
+                />
+              );
+            })
+          ) : (
+            <p>No news found.</p>
+          )}
+        </div>
+
+
+        <div className={`content ${activeTab !== 'join requests' && 'hidden'}`} id="join requests">
+          {groupData && userData.value && userData.value.username && groupData.creator_username === userData.value.username && (
+            <div className="join-requests-list">
+              {joinRequests.length > 0 ? (
+                joinRequests.map((request, index) => (
+                  <div className="join-request-item" key={index}>
+                    <span>{request.username}</span>
+                    <div className="request-buttons">
+                    <button onClick={() => handleJoinRequest(request.request_id, true)}>Accept</button>
+                    <button onClick={() => handleJoinRequest(request.request_id, false)}>Decline</button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No join requests.</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div >
 
   );
