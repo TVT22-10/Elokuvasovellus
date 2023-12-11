@@ -244,6 +244,42 @@ async function updateGroupDescription(req, res) {
         res.status(500).json({ message: 'Error updating group description' });
     }
 }
+// New function to add news to a group
+async function addNewsToGroup(req, res) {
+    const { groupId } = req.params;
+    const { title, description, articleUrl, imageUrl } = req.body;
+
+    try {
+        const query = `
+            INSERT INTO groupnews (group_id, title, description, article_url, image_url)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *;
+        `;
+        const result = await pgPool.query(query, [groupId, title, description, articleUrl, imageUrl]);
+
+        const addedNewsItem = result.rows[0];
+        res.status(201).json({ message: 'News added to the group', newsItem: addedNewsItem });
+    } catch (error) {
+        console.error('Error adding news to group:', error);
+        res.status(500).json({ message: 'Error adding news to group', error: error.message }); // Include error details in the response
+    }
+}
+
+// In group.js
+async function getGroupNews(req, res) {
+    const { groupId } = req.params;
+
+    try {
+        // Query the database to get news for the specified group
+        const query = 'SELECT * FROM groupnews WHERE group_id = $1;';
+        const result = await pgPool.query(query, [groupId]);
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error fetching group news:', error);
+        res.status(500).json({ message: 'Error fetching group news', error: error.message });
+    }
+}
 
 async function assignNewOwner(groupId, newOwnerUsername, currentUser) {
     try {
@@ -270,6 +306,63 @@ async function assignNewOwner(groupId, newOwnerUsername, currentUser) {
     }
 }
 
+async function postGroupMessage(req, res) {
+    const { groupId } = req.params;
+    const { message } = req.body;
+    const username = req.user.username; // Extracted from the token by authenticateToken middleware
+
+    // Check if the user is a member of the group
+    const checkMembershipQuery = 'SELECT * FROM group_members WHERE group_id = $1 AND username = $2';
+    try {
+        const membershipResult = await pgPool.query(checkMembershipQuery, [groupId, username]);
+
+        if (membershipResult.rows.length === 0) {
+            return res.status(403).json({ message: 'User is not a member of the group' });
+        }
+
+        // Insert the message into the group_chat table
+        const insertMessageQuery = 'INSERT INTO group_chat (group_id, username, message) VALUES ($1, $2, $3)';
+        await pgPool.query(insertMessageQuery, [groupId, username, message]);
+
+        res.status(201).json({ message: 'Message sent successfully' });
+    } catch (error) {
+        console.error('Error in postGroupMessage:', error);
+        res.status(500).json({ message: 'Error posting message' });
+    }
+}
+
+async function getGroupMessages(req, res) {
+    const { groupId } = req.params;
+    const username = req.user.username; // Extracted from the token by authenticateToken middleware
+
+    // Check if the user is a member of the group
+    const checkMembershipQuery = 'SELECT * FROM group_members WHERE group_id = $1 AND username = $2';
+    try {
+        const membershipResult = await pgPool.query(checkMembershipQuery, [groupId, username]);
+
+        if (membershipResult.rows.length === 0) {
+            return res.status(403).json({ message: 'User is not a member of the group' });
+        }
+
+        // Retrieve the messages along with user avatars
+        const getMessagesQuery = `
+            SELECT gc.message_id, gc.group_id, gc.username, gc.message, gc.sent_time, c.avatar
+            FROM group_chat gc
+            JOIN customer c ON gc.username = c.username
+            WHERE gc.group_id = $1
+            ORDER BY gc.sent_time DESC;
+        `;
+        const messages = await pgPool.query(getMessagesQuery, [groupId]);
+
+        res.json(messages.rows);
+    } catch (error) {
+        console.error('Error in getGroupMessages:', error);
+        res.status(500).json({ message: 'Error retrieving messages' });
+    }
+}
+
+
+
 
 
 
@@ -284,5 +377,9 @@ module.exports = {
     getAllGroups,
     removeGroupMember,
     updateGroupDescription,
+    addNewsToGroup,
+    getGroupNews,
     assignNewOwner,
+    postGroupMessage,
+    getGroupMessages,
 };

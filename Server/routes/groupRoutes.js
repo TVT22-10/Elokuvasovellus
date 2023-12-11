@@ -13,8 +13,16 @@ const {
     getAllGroups,
     removeGroupMember,
     updateGroupDescription,
-    assignNewOwner
+    addNewsToGroup,
+    getGroupNews,
+    assignNewOwner,
+    postGroupMessage,
+    getGroupMessages,
+  
 } = require('../postgre/group.js');
+
+
+
 
 // Route to create a new group
 router.post('/create', authenticateToken, createGroup);
@@ -48,6 +56,10 @@ router.get('/all', async (req, res) => {
     }
 });
 
+router.get('/:groupId/news', authenticateToken, getGroupNews);
+
+
+router.post('/:groupId/news', authenticateToken, addNewsToGroup);
 
 // Route to assign ownership to a new owner
 router.put('/:groupId/assign-owner/:newOwnerUsername', authenticateToken, async (req, res) => {
@@ -76,6 +88,14 @@ router.get('/:groupId/requests', authenticateToken, viewJoinRequests);
 router.put('/:groupId/requests/:requestId', authenticateToken, handleJoinRequest);
 
 router.delete('/:groupId/members/:username', authenticateToken, removeGroupMember);
+
+router.post('/:groupId/message', authenticateToken, postGroupMessage);
+
+
+router.get('/:groupId/messages', authenticateToken, getGroupMessages);
+
+
+
 
 
 // Add more routes as needed...
