@@ -62,7 +62,6 @@ function PublicProfile() {
   
     fetchUserData();
   }, [username]);
-  
 
   if (!userExists) {
     return <div>User not found.</div>;
