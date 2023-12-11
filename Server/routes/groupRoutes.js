@@ -18,7 +18,6 @@ const {
     assignNewOwner,
     postGroupMessage,
     getGroupMessages,
-  
 } = require('../postgre/group.js');
 
 

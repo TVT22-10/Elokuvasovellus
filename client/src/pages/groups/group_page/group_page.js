@@ -289,9 +289,6 @@ function GroupPage() {
 
 
 
-
-
-
   return (
     <div className="Group-page">
       <div className="group-container">
