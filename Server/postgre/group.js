@@ -321,8 +321,10 @@ async function postGroupMessage(req, res) {
         }
 
         // Insert the message into the group_chat table
-        const insertMessageQuery = 'INSERT INTO group_chat (group_id, username, message) VALUES ($1, $2, $3)';
-        await pgPool.query(insertMessageQuery, [groupId, username, message]);
+        const insertMessageQuery = 'INSERT INTO group_chat (group_id, username, message, sent_time) VALUES ($1, $2, $3, $4)';
+const utcTime = new Date().toISOString();
+await pgPool.query(insertMessageQuery, [groupId, username, message, utcTime]);
+
 
         res.status(201).json({ message: 'Message sent successfully' });
     } catch (error) {
@@ -361,6 +363,40 @@ async function getGroupMessages(req, res) {
     }
 }
 
+async function deleteGroupMessage(req, res) {
+    const { groupId, messageId } = req.params;
+    const username = req.user.username;
+
+    try {
+        // Check if the user is the sender of the message or the group owner
+        const checkUserQuery = `
+            SELECT gc.username, g.creator_username
+            FROM group_chat gc
+            JOIN groups g ON gc.group_id = g.group_id
+            WHERE gc.message_id = $1 AND gc.group_id = $2;
+        `;
+        const userResult = await pgPool.query(checkUserQuery, [messageId, groupId]);
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ message: 'Message not found' });
+        }
+
+        const isSender = userResult.rows[0].username === username;
+        const isOwner = userResult.rows[0].creator_username === username;
+
+        if (!isSender && !isOwner) {
+            return res.status(403).json({ message: 'Unauthorized to delete this message' });
+        }
+
+        // Delete the message
+        const deleteQuery = 'DELETE FROM group_chat WHERE message_id = $1;';
+        await pgPool.query(deleteQuery, [messageId]);
+
+        res.status(200).json({ message: 'Message deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting message:', error);
+        res.status(500).json({ message: 'Error deleting message' });
+    }
+}
 
 
 
@@ -382,4 +418,5 @@ module.exports = {
     assignNewOwner,
     postGroupMessage,
     getGroupMessages,
+    deleteGroupMessage,
 };
