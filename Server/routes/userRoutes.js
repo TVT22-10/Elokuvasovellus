@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 
 });
 
-//user root post mapping. supports urlencoded and multer
+// User root post mapping. Supports urlencoded and multer
 router.post('/register', upload.none(), async (req, res) => {
     const fname = req.body.fname;
     const lname = req.body.lname;
@@ -30,18 +30,19 @@ router.post('/register', upload.none(), async (req, res) => {
     const bio = "No bio yet"; // Set an initial bio value
     const avatar = "avatar1.png"; // Set an initial avatar value
 
-
-
+    // Check if uname exists in the request body
+    if (!uname) {
+        return res.status(400).json({ error: 'Username (uname) is required.' });
+    }
 
     pw = await bcrypt.hash(pw, 10);
-
 
     try {
         await addUser(fname, lname, uname, pw, bio, avatar);
         res.end();
     } catch (error) {
         console.log(error);
-        res.json({ error: error.message }).status(500);
+        res.status(500).json({ error: error.message });
     }
 });
 

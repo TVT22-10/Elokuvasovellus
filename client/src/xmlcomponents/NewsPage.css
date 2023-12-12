@@ -23,20 +23,20 @@ select {
   font-size: 1em;
   border: 1px solid #007bff;
   border-radius: 5px;
-  background-color: #f8f9fa;
+  background-color: #252525;
   color: #007bff;
   transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 select:hover {
   border-color: #0056b3;
-  background-color: #e2e6ea;
+  background-color: #252525;
 }
 
 select:focus {
   outline: none;
   border-color: #0056b3;
-  background-color: #fff;
+  background-color: #252525;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
@@ -93,4 +93,9 @@ select:focus {
   cursor: pointer;
 }
 
+.news-container h1 {
+  margin: 0;
+  font-size: 2em;
+  color: #007bff;
+}
 /* Add more styles as needed */
