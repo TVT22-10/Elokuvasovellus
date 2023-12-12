@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import './edit_profile.css';
 import { jwtToken, userData } from "../../../components/Signals";
 import axios from 'axios';
-import { AuthContext } from '../../../components/Contexts'; // Adjust the import path
+import { AuthContext } from '../../../components/Contexts'; // Adjust the import paths
 import EmojiPicker from 'emoji-picker-react';
 
 function Edit_Profile() {
