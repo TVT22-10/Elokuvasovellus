@@ -114,6 +114,7 @@ async function handleJoinRequest(req, res) {
         if (requestExistenceResult.rows.length === 0) {
             return res.status(404).json({ message: 'Request does not exist for the specified group' });
         }
+        
         // Update the request status
         const updateRequestStatusQuery = 'UPDATE group_join_requests SET request_status = $1 WHERE request_id = $2 AND group_id = $3 RETURNING username;';
         const requestStatus = accept ? 'accepted' : 'rejected';
