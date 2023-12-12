@@ -5,8 +5,52 @@ import axios from 'axios';
 import { jwtToken, userData } from '../../../components/Signals';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import GroupNews from '../../../xmlcomponents/GroupNews'; // Update the path based on your project structure
+import moment from 'moment';
 
 
+
+
+function Message({ message, navigateToPublicProfile, handleDeleteMessage, groupCreator, isCurrentUser }) {
+  const moment = require('moment-timezone');
+
+  function formatMessageTime(sentTime) {
+    const localTime = moment.utc(sentTime).tz('Europe/Samara'); // Adjust the timezone
+    const now = moment();
+    if (now.diff(localTime, 'days') < 1) {
+      return localTime.format('HH:mm');
+    } else if (now.diff(localTime, 'days') < 7) {
+      return localTime.format('dddd [at] HH:mm');
+    } else {
+      return localTime.format('DD/MM/YYYY [at] HH:mm');
+    }
+  }
+
+  const formattedTime = formatMessageTime(message.sent_time);
+  const canDelete = userData.value.username === message.username || 
+                      userData.value.username === groupCreator;
+
+  return (
+    <div className="message">
+      <div className="message-header">
+        <img src={`http://localhost:3001/avatars/${message.avatar}`} alt={`${message.username}'s avatar`} className="message-avatar" />
+        <strong 
+          onClick={() => navigateToPublicProfile(message.username)} 
+          style={{cursor: 'pointer', color: isCurrentUser ? 'lightgreen' : ''}}
+        >
+          {message.username}
+        </strong>
+        <span className="message-time">{formattedTime}</span> {/* Added the timestamp back */}
+
+      </div>
+      <div className="message-body">
+        {message.message}
+      </div>
+      {canDelete && (
+                <button className="delete-btn" onClick={() => handleDeleteMessage(message.message_id)}>Delete</button>
+                )}
+    </div>
+  );
+}
 
 
 function GroupPage() {
@@ -287,7 +331,22 @@ function GroupPage() {
     }
   };
 
+  const handleDeleteMessage = async (messageId) => {
+    try {
+        await axios.delete(`http://localhost:3001/groups/${groupId}/messages/${messageId}`, {
+            headers: { Authorization: `Bearer ${jwtToken.value}` }
+        });
+        // Refresh the messages list after deletion
+        fetchMessages();
+    } catch (error) {
+        console.error('Error deleting message:', error);
+        // Handle error, such as displaying a notification
+    }
+};
 
+  
+
+  
 
   return (
     <div className="Group-page">
@@ -419,25 +478,32 @@ function GroupPage() {
           )}
         </div>
         <div className={`content ${activeTab !== 'chat' && 'hidden'}`} id="chat">
-  <form onSubmit={handleSendMessage} className="message-send-form">
-    <input
-      type="text"
-      placeholder="Type a message..."
-      value={newMessage}
-      onChange={(e) => setNewMessage(e.target.value)}
-      className="message-input"
-    />
-    <button type="submit" className="send-message-button">Send</button>
-  </form>
-  <div className="chat-messages">
-    {messages.map((message, index) => (
-      <div key={index} className="message">
-        <img src={`http://localhost:3001/avatars/${message.avatar}`} alt={`${message.username}'s avatar`} className="message-avatar" />
-        <strong>{message.username}:</strong> {message.message}
+        <form onSubmit={handleSendMessage} className="message-send-form">
+          <input
+            type="text"
+            placeholder="Type a message..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            className="message-input"
+          />
+          <button type="submit" className="send-message-button">Send</button>
+        </form>
+        <div className="chat-messages">
+          {messages.map((message, index) => (
+            <Message 
+              key={index} 
+              message={message} 
+              navigateToPublicProfile={navigateToPublicProfile}
+              handleDeleteMessage={handleDeleteMessage}
+              groupCreator={groupData.creator_username} // Pass the group creator's username
+              isCurrentUser={userData.value.username === message.username} // This checks if the message is from the current user
+
+
+
+            />
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</div>
         <div className={`content ${activeTab !== 'news' && 'hidden'}`} id="news">
           {userNews.length > 0 ? (
             userNews.map((item, index) => {
