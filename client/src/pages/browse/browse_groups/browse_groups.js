@@ -1,3 +1,5 @@
+// BrowseGroups.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -6,6 +8,8 @@ import './browse_groups.css';
 function BrowseGroups() {
   const [groups, setGroups] = useState([]);
   const [displayedGroups, setDisplayedGroups] = useState(9); // Set to 9 initially
+  const [searchQuery, setSearchQuery] = useState('');
+  const [readMoreMode, setReadMoreMode] = useState(true);
 
   useEffect(() => {
     axios.get('http://localhost:3001/groups/all')
@@ -19,14 +23,34 @@ function BrowseGroups() {
 
   const handleLoadMore = () => {
     setDisplayedGroups(displayedGroups + 9);
+    setReadMoreMode(false); // Switch to "Read Less" mode
+  };
+
+  const handleReadLess = () => {
+    setDisplayedGroups(9);
+    setReadMoreMode(true); // Switch back to "Read More" mode
   };
 
   return (
     <div className="browse-groups">
       <h2>Browse Groups</h2>
+
+      {/* Search Bar */}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by group name"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={() => setSearchQuery('')}>Clear</button>
+      </div>
+
       <div className="groups-list">
-        {groups.length > 0 ? (
-          groups.slice(0, displayedGroups).map(group => (
+        {groups
+          .filter((group) => group.groupname.toLowerCase().includes(searchQuery.toLowerCase()))
+          .slice(0, displayedGroups)
+          .map(group => (
             <Link to={`/groups/${group.group_id}`} key={group.group_id} className="group-link">
               <div className="group-item">
                 <h3>{group.groupname}</h3>
@@ -35,15 +59,12 @@ function BrowseGroups() {
                 </p>
               </div>
             </Link>
-          ))
-        ) : (
-          <p>No groups available.</p>
-        )}
+          ))}
       </div>
 
-      {displayedGroups < groups.length && (
-        <button className="load-more-button" onClick={handleLoadMore}>
-          Load More
+      {(displayedGroups < groups.length || !readMoreMode) && (
+        <button className="load-more-button" onClick={readMoreMode ? handleLoadMore : handleReadLess}>
+          {readMoreMode ? 'Load More' : 'Load Less'}
         </button>
       )}
     </div>
