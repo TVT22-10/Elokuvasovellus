@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import DropdownMenu from './DropdownMenu';
 import axios from 'axios';
+import './GroupNews.css'
 
 const GroupNews = ({ title, description, articleUrl, imageUrl, onAddToGroup, groupId }) => {
   const [selectedGroup, setSelectedGroup] = useState(null);
@@ -39,6 +40,7 @@ const GroupNews = ({ title, description, articleUrl, imageUrl, onAddToGroup, gro
   // for now the debug says that the image url is undefined
   
   return (
+    <div className='group-news-item2'>
     <div className="news-item">
       <a href={articleUrl} target="_blank" rel="noopener noreferrer">
         <strong className="news-title">{title || 'No title'}</strong>
@@ -75,6 +77,7 @@ const GroupNews = ({ title, description, articleUrl, imageUrl, onAddToGroup, gro
           Confirm
         </button>
       )}
+    </div>
     </div>
   );
 };

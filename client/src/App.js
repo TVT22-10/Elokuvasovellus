@@ -16,6 +16,7 @@ import GroupPage from './pages/groups/group_page/group_page';
 import EditGroup from './pages/groups/edit_group/edit_group';
 import BrowseReviews from './pages/browse/browse_reviews/browse_reviews';
 import Edit_Profile from './pages/profile/edit_profile/edit_profile';
+import BrowseGroups from './pages/browse/browse_groups/browse_groups';
 import SearchPage from './pages/search/search';
 import SearchGroups from './pages/groups/search_groups/search_groups';
 import NewsPage from './xmlcomponents/News';
@@ -59,6 +60,7 @@ function App() {
           <Route path="/edit_group/:groupId" element={<EditGroup />} /> {/* Edit group page */}
           <Route path="/browse_all" element={<BrowseMoviesPage />} /> {/* Browse all page */}
           <Route path="/browse_reviews" element={<BrowseReviews />} /> {/* Browse reviews page */}
+          <Route path="/browse_groups" element={<BrowseGroups />} /> {/* Browse groups page */}
           <Route path="/leaderboards" element={<LeaderboardsPage />} /> {/* Browse all page */}
           <Route path="/search" element={<SearchPage />} /> {/* Search page */}
           <Route path="/search_groups" element={<SearchGroups />} /> {/* Search group page */}

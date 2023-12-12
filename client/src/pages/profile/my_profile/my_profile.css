@@ -1,323 +1,402 @@
 .profile-container {
-    display: flex;
-    justify-content: space;
-    align-items: center;
+  display: flex;
+  justify-content: space;
+  align-items: center;
 }
 
-.profile-image img{
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin: 20px;
+.profile-image img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 20px;
 }
 
 .profile {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
+
 .username {
-    display: flex;
-    flex-direction: column;
-    
-    
-  }
-  
-  .username h2 {
-    margin: 0;
-    color: rgb(255, 255, 255);
-    font-size: 30px;
-    font-weight: 500;
+  display: flex;
+  flex-direction: column;
 
-  }
-
-.share-button button{
-    background-color: rgb(0, 132, 255);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer; /* Changes cursor to pointer on hover */
-
-}
-.share-button button:hover{
-    background-color: rgb(23, 92, 148);
-    color: white;
-    border: none;
-}
-
-.edit-button button{
-    background-color: rgb(0, 132, 255);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer; /* Changes cursor to pointer on hover */
 
 }
 
-.edit-button button:hover{
-    background-color: rgb(23, 92, 148);
-    color: white;
-    border: none;
+.username h2 {
+  margin: 0;
+  color: rgb(255, 255, 255);
+  font-size: 30px;
+  font-weight: 500;
+
+}
+
+.share-button button {
+  background-color: rgb(0, 132, 255);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  /* Changes cursor to pointer on hover */
+
+}
+
+.share-button button:hover {
+  background-color: rgb(23, 92, 148);
+  color: white;
+  border: none;
+}
+
+.edit-button button {
+  background-color: rgb(0, 132, 255);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  /* Changes cursor to pointer on hover */
+
+}
+
+.edit-button button:hover {
+  background-color: rgb(23, 92, 148);
+  color: white;
+  border: none;
 }
 
 .bio-buttons {
-    display: flex;
-    align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    grid-gap: 20px;
-    cursor: pointer; /* Changes cursor to pointer on hover */
+  display: flex;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-gap: 20px;
+  cursor: pointer;
+  /* Changes cursor to pointer on hover */
 }
 
-.profile-buttons{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    grid-gap: 80px;
-    margin-top: 30px;
-    cursor: pointer; /* Changes cursor to pointer on hover */
+.profile-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-gap: 80px;
+  margin-top: 30px;
+  cursor: pointer;
+  /* Changes cursor to pointer on hover */
 
 }
 
-.profile-buttons button{
+.profile-buttons button {
 
-    border-radius: 5px;
-    border: none;
-    padding: 3px;
-    cursor: pointer;
-    width: 150px;
-    height: 30px;
-    
+  border-radius: 5px;
+  border: none;
+  padding: 3px;
+  cursor: pointer;
+  width: 150px;
+  height: 30px;
+
 }
 
-.container{
-    margin-bottom: 50px;
+.container {
+  margin-bottom: 50px;
 }
 
 
-.profile-buttons{
-    color:rgb(255, 255, 255);
-    display: flex;
-    margin: 40px 0 40px;
+.profile-buttons {
+  color: rgb(255, 255, 255);
+  display: flex;
+  margin: 40px 0 40px;
 }
 
-.view-change{
-    margin-right: 50px;
-    font-size: 20px;
-    font-weight: 500;
-    cursor: pointer;
-    position: relative;
+.view-change {
+  margin-right: 50px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
 }
 
-.view-change::after{
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 3px;
-    background-color: rgb(0, 132, 255);
-    bottom: -8px;
-    left: 0;
-    transition: 0.5s;
+.view-change::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 3px;
+  background-color: rgb(0, 132, 255);
+  bottom: -8px;
+  left: 0;
+  transition: 0.5s;
 }
 
-.view-change.active-link::after{
-    width: 40px;
+.view-change.active-link::after {
+  width: 40px;
 }
 
 .profile-content {
-    color: rgb(255, 255, 255);
-    font-size: 20px;
-    font-weight: 500;
-    margin: 0;
-    text-align: center;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
 }
 
 .profile-content.active-tab {
-    display: block;
+  display: block;
 }
 
 .hidden {
-    display: none;
-  }
+  display: none;
+}
 
-  .favorites-container {
-    box-sizing: border-box;
-    display: flex;
-    flex-wrap: wrap; /* Use flex-wrap for wrapping items */
-    justify-content: center; /* Center items horizontally */
-    align-items: center; /* Center items vertically (if needed) */
-    gap: 8px; /* Spacing between flex items */
-    margin: 0 auto; /* Center the container */
-    padding: 18px; /* If you want some padding inside the container */
+.favorites-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  /* Use flex-wrap for wrapping items */
+  justify-content: center;
+  /* Center items horizontally */
+  align-items: center;
+  /* Center items vertically (if needed) */
+  gap: 8px;
+  /* Spacing between flex items */
+  margin: 0 auto;
+  /* Center the container */
+  padding: 18px;
+  /* If you want some padding inside the container */
 }
 
 .favorites-movie-card {
-    position: relative;
-    width: 300px; /* Adjust width as needed */
-    height:450px; /* Adjust height as needed */
-    cursor: pointer;
-    overflow: hidden; /* Ensures that nothing goes outside this container */
-    
+  position: relative;
+  width: 300px;
+  /* Adjust width as needed */
+  height: 450px;
+  /* Adjust height as needed */
+  cursor: pointer;
+  overflow: hidden;
+  /* Ensures that nothing goes outside this container */
+
 }
 
 .favorites-movie-poster {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers the area nicely */
-    border-radius: 0; /* Remove border radius for no rounded corners */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Ensures the image covers the area nicely */
+  border-radius: 0;
+  /* Remove border radius for no rounded corners */
 }
 
 .favorites-movie-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-    color: white;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.3s ease-in-out;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  opacity: 0;
+  /* Initially hidden */
+  transition: opacity 0.3s ease-in-out;
 }
 
 .favorites-movie-card:hover .favorites-movie-info {
-    opacity: 1; /* Show on hover */
+  opacity: 1;
+  /* Show on hover */
 }
 
 
 /* Styling for the title, release date, and rating */
-.favorites-movie-title, .favorites-movie-release-date, .favorites-movie-rating {
-    font-size: 1rem;
-    margin: 0;
-    white-space: nowrap;      /* Prevents the text from wrapping to the next line */
-    overflow: hidden;         /* Hides overflow text */
-    text-overflow: ellipsis;  /* Adds an ellipsis to truncated text */
-    width: 180px; 
-    text-align: left;   
+.favorites-movie-title,
+.favorites-movie-release-date,
+.favorites-movie-rating {
+  font-size: 1rem;
+  margin: 0;
+  white-space: nowrap;
+  /* Prevents the text from wrapping to the next line */
+  overflow: hidden;
+  /* Hides overflow text */
+  text-overflow: ellipsis;
+  /* Adds an ellipsis to truncated text */
+  width: 180px;
+  text-align: left;
 }
+
 .review-container {
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 8px;
+  margin: 10px;
+  width: 450px;
+}
+
+.review-content {
+  margin-bottom: 0px;
+  padding-left: 10px;
+}
+
+.movie-poster-container {
+  flex-shrink: 0;
+  /* Prevent the image from shrinking */
+  margin-right: 10px;
+  /* Adjust margin as needed */
+  ;
+  cursor: pointer;
+}
+
+.browse-movie-poster {
+  width: 100%;
+  height: auto;
+  /* Maintain aspect ratio */
+  border-radius: 8px;
+  /* Adjust as needed */
+}
+
+.review-by p {
+  margin: 0;
+  /* Reset margin for the paragraph */
+  margin-left: 10px;
+  /* Added margin-left property */
+}
+
+.profile-review-text p {
+  margin: 0;
+  /* Reset margin for the paragraph */
+  margin-top: 10px;
+}
+
+.profile-review-text {
+  text-align: left;
+  align-items: left;
+  position: relative;
+  /* Add relative positioning */
+}
+
+.profile-review-text p {
+  margin: 0;
+  /* Reset margin for the paragraph */
+  margin-top: 10px;
+}
+
+.profile-review-date {
+  align-items: left;
+  text-align: left;
+}
+
+.review-container p {
+  font-size: 16px;
+}
+
+.profile-review-username {
+  color: rgb(0, 132, 255);
+  align-items: left;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.rowed-reviews-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.read-more-container {
+  display: flex;
+  justify-content: center;
+  /* Center the button horizontally */
+  margin-top: 10px;
+  /* Adjust the top margin as needed */
+}
+
+.read-more {
+  background-color: rgb(0, 132, 255);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  /* Changes cursor to pointer on hover */
+  padding: 5px 10px;
+  /* Add padding to the button */
+}
+
+.review-username {
+  display: flex;
+  margin-left: 10px;
+  color: rgb(0, 132, 255);
+}
+
+.review-profile-image {
+  display: flex;
+  flex-direction: column;
+}
+
+.review-profile-image img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-top: 10px;
+  margin-left: 0px;
+  padding-right: 10px;
+}
+
+.review-userdata-container {
+  margin-bottom: 10px;
+}
+
+.bio-top-right {
+  margin-left: 100px;
+
+}
+
+.bio-text-container {
+  min-height: 100px;
+  min-width: 700px;
+  border: 2px solid rgb(0, 132, 255);
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 4px;
+
+}
+
+.bio-text-outline {
+  margin: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .edit-button button,
+  .share-button button {
+    width: 65px;
+    height: 65px;
+  }
+
+  .bio-buttons {
     display: flex;
-    justify-content: space-between;
-    border: 2px solid rgb(255, 255, 255);
-    border-radius: 8px;
-    margin: 10px;
-    width: 450px;
-  }
-  
-  .review-content {
-    margin-bottom: 0px;
-    padding-left: 10px;
-  }
-  
-  .movie-poster-container {
-    flex-shrink: 0; /* Prevent the image from shrinking */
-    margin-right: 10px; /* Adjust margin as needed */;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust the min-width here */
+    grid-gap: 10px;
     cursor: pointer;
   }
-  
-  .browse-movie-poster {
-    width: 100%;
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Adjust as needed */
-  }
-  
-  .review-by p {
-    margin: 0; /* Reset margin for the paragraph */
-    margin-left: 10px; /* Added margin-left property */
-  }
 
-  .profile-review-text p{
-    margin: 0; /* Reset margin for the paragraph */
-    margin-top: 10px;
-  }
-  .profile-review-text {
-    text-align: left;
-    align-items: left;
-    position: relative; /* Add relative positioning */
-  }
-  
-  .profile-review-text p {
-    margin: 0; /* Reset margin for the paragraph */
-    margin-top: 10px;
-  }
-  
-  .profile-review-date {
-    align-items: left;
-    text-align: left;
-  }
-  
-  .review-container p {
-    font-size: 16px;
-  }
-  
-  .profile-review-username {
-    color: rgb(0, 132, 255);
-    align-items: left;
-    text-align: left;
-    padding-left: 10px;
-  }
-  
-  .rowed-reviews-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .read-more-container {
-    display: flex;
-    justify-content: center; /* Center the button horizontally */
-    margin-top: 10px; /* Adjust the top margin as needed */
-  }
-  
-  .read-more {
-    background-color: rgb(0, 132, 255);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer; /* Changes cursor to pointer on hover */
-    padding: 5px 10px; /* Add padding to the button */
-  }
-  .review-username{
-   display: flex;
-   margin-left:10px;
-   color:rgb(0, 132, 255);
-  }
-  .review-profile-image{
-    display: flex;
-    flex-direction: column;
-  }
-  .review-profile-image img{
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin-top:10px;
-    margin-left: 0px;
-    padding-right: 10px;
-  }
-  .review-userdata-container {
-    margin-bottom: 10px;
-  }
-
-  .bio-top-right {
-    margin-left: 100px;
-
-  }
-  
   .bio-text-container {
-    min-height: 100px; /* Set your desired minimum height here */
-    min-width: 700px;
-    border: 2px solid rgb(0, 132, 255); /* Add a border for styling */
-    padding: 10px; /* Add padding for spacing */
-    box-sizing: border-box; /* Ensure padding is included in the height */
-    border-radius: 4px;
-
+    max-width: 200px;
+    min-width: 200px; /* Set to 100% to allow it to take the full width of the screen */
+    min-height: 130px;
+    overflow-x: hidden;
   }
 
-  .bio-text-outline {
-    margin: 0;
+  .profile-image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
   }
+
+  .profile-container {
+    align-items: center;
+  }
+  .bio-top-right {
+    margin-left: 20px;
+  }
+}

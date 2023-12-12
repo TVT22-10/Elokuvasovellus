@@ -18,7 +18,9 @@ const {
     assignNewOwner,
     postGroupMessage,
     getGroupMessages,
+    deleteGroupMessage,
   
+
 } = require('../postgre/group.js');
 
 
@@ -93,6 +95,9 @@ router.post('/:groupId/message', authenticateToken, postGroupMessage);
 
 
 router.get('/:groupId/messages', authenticateToken, getGroupMessages);
+
+router.delete('/:groupId/messages/:messageId', authenticateToken, deleteGroupMessage);
+
 
 
 
