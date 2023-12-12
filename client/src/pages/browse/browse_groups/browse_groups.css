@@ -10,12 +10,12 @@
   .browse-groups .search-bar {
     margin-bottom: 20px;
     display: flex;
-    justify-content: space-between; /* Adjusted to space between items */
+    justify-content: space-between;
     align-items: center;
   }
   
   .browse-groups .search-bar input {
-    flex-grow: 1; /* Takes remaining space */
+    flex-grow: 1;
     padding: 8px;
     margin-right: 8px;
     border: none;
@@ -65,6 +65,10 @@
   .browse-groups .group-item h3 {
     font-size: 24px;
     color: #007bff;
+  }
+  
+  .browse-groups .group-item h3 .group-name-label {
+    color: white;
   }
   
   .browse-groups .group-item p {
