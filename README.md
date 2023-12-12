@@ -30,6 +30,8 @@
 - npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
 - npm i xml2js
 - npm install emoji-picker-react   
+- npm install moment
+
 
 
 "start": "react-scripts --openssl-legacy-provider start"
