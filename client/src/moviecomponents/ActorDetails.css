@@ -70,12 +70,6 @@
     z-index: 2;
   }
 
-  .actor-filmography .movie-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); /* Creates a grid with flexible columns */
-    gap: 20px; /* Space between grid items */
-    padding: 20px;
-}
 
 .filmography-heading-container {
     text-align: center; /* Centers the inline-block element within */
@@ -88,7 +82,42 @@
     /* No additional changes needed for the heading itself */
 }
 
-  
+.filmography-tabs {
+  display: flex;
+  justify-content: center; /* Aligns children (tabs) horizontally at the center */
+  align-items: center; /* Aligns children (tabs) vertically at the center (optional) */
+  /* Add any additional styling as needed, like padding or margin */
+}
+
+
+.filmography-tab {
+  padding: 10px 20px;
+  margin-right: 5px;
+  background-color: #f2f2f2;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filmography-tab:focus {
+  outline: none;
+}
+
+.filmography-tab.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.filmography-tab:hover {
+  background-color: #e0e0e0;
+}
+
+.filmography-tab.active:hover {
+  background-color: #0056b3;
+}
+
 
 
 
