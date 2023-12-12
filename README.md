@@ -44,4 +44,5 @@ CREATE TABLE customer (
     pw VARCHAR(100),
     creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 API documentation: https://documenter.getpostman.com/view/27009159/2s9YkjANet
