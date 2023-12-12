@@ -165,19 +165,18 @@ function GroupPage() {
                   headers: { Authorization: `Bearer ${jwtToken.value}` },
                 });
 
-                console.log('Ownership transferred successfully:', response.data);
-                alert(`Ownership transferred to ${newOwner}. You can now leave the group.`);
-                return; // This ensures no further action if ownership is transferred
+                window.alert(`Ownership transferred to ${newOwner}. You can now leave the group.`);
+                // Additional logic if needed after ownership transfer
               } catch (error) {
                 console.error('Error transferring ownership:', error);
-                alert('Error transferring ownership.');
-                return; // Exit function to prevent further actions on error
+                window.alert('Error transferring ownership.');
+                return;
               }
             } else if (newOwner === groupData.creator_username) {
-              alert('You cannot transfer ownership to yourself.');
+              window.alert('You cannot transfer ownership to yourself.');
               return;
             } else {
-              alert('Invalid username or no username entered. Ownership not transferred.');
+              window.alert('Invalid username or no username entered. Ownership not transferred.');
               return;
             }
           }
@@ -379,22 +378,38 @@ function GroupPage() {
                   <img src={`http://localhost:3001/avatars/${member.avatar}`} alt={`${member.username}'s avatar`} className="member-avatar" />
                   <span className="member-name" onClick={() => navigateToPublicProfile(member.username)}>
                     {member.username}
+                    {groupData && member.username === groupData.creator_username && (
+                      <React.Fragment>
+                        <span className="owner-tag">Owner</span>
+                        {groupData.joined_date && (
+                          <span className="member-joined-date">{formatDate(member.joined_date)}</span>
+                        )}
+                        {userData.value.username === member.username && (
+                          <div className="leaveGroup">
+                            <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
+                          </div>
+                        )}
+                      </React.Fragment>
+                    )}
                   </span>
-                  {groupData && member.username === groupData.creator_username && (
-                    <span className="owner-tag">Owner</span>
+                  {groupData && member.username !== groupData.creator_username && (
+                    <React.Fragment>
+                      <span className="member-joined-date">{formatDate(member.joined_date)}</span>
+                      {userData.value.username === member.username && (
+                        <div className="leaveGroup">
+                          <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
+                        </div>
+                      )}
+                    </React.Fragment>
                   )}
-                  <span className="member-joined-date">{formatDate(member.joined_date)}</span>
-                  {/* Check if userData.value is available before rendering the leave group button */}
-                  {userData?.value?.username === member.username && (
-                    <div className="leaveGroup">
-                      <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
-                    </div>
-                  )}
-                  {/* Check for groupData.creator_username and userData.value before rendering the delete member button */}
-                  {groupData.creator_username === userData?.value?.username && userData?.value?.username !== member.username && (
-                    <div className="deleteMember">
-                      <button onClick={() => handleRemoveMember(member.username)}>Delete Member</button>
-                    </div>
+                  {groupData && userData.value.username === groupData.creator_username && (
+                    <React.Fragment>
+                      {userData.value.username !== member.username && (
+                        <div className="deleteMember">
+                          <button onClick={() => handleRemoveMember(member.username)}>Delete Member</button>
+                        </div>
+                      )}
+                    </React.Fragment>
                   )}
                 </div>
               ))}
@@ -450,8 +465,10 @@ function GroupPage() {
                 joinRequests.map((request, index) => (
                   <div className="join-request-item" key={index}>
                     <span>{request.username}</span>
+                    <div className="request-buttons">
                     <button onClick={() => handleJoinRequest(request.request_id, true)}>Accept</button>
                     <button onClick={() => handleJoinRequest(request.request_id, false)}>Decline</button>
+                    </div>
                   </div>
                 ))
               ) : (
