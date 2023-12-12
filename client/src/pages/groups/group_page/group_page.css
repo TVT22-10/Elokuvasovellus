@@ -316,12 +316,138 @@
 }
 
 
+.message-send-form {
+    display: flex;
+    margin-bottom: 20px;
+    width: 65%; /* Adjust the width as needed */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.message-input {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    border: 2px solid rgb(0, 132, 255); /* Thicker border with color */
+
+}
+
+.send-message-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(0, 132, 255);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+
+}
+
+.send-message-button:hover {
+    background-color: rgb(0, 107, 206);
+}
+
+/* Styles for the Chat Messages */
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Allows scrolling for overflow in vertical direction */
+    padding: 30px;
+    width: 60%; /* Set a specific width for the container */
+    margin: auto; /* Center the container within its parent */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+.message {
+    display: flex;
+    flex-direction: column; /* Stack header and body vertically */
+    align-items: flex-start; /* Aligns items to the top */
+    margin-bottom: 15px;
+    transition: background-color 0.3s; /* Smooth transition for the background color */
+    position: relative; /* Added for relative positioning */
+
+}
+
+.message:hover {
+    background-color: rgb(45, 45, 45); /* Change the background color on hover */
+}
+
+.message .delete-btn {
+    display: none;
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    background-color: #ff4d4d; /* Red background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px 10px; /* Padding inside the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.2s ease-in-out; /* Smooth background transition */
+}
+
+.message:hover .delete-btn {
+    display: block;
+}
+
+.message .delete-btn:hover {
+    background-color: #ff3333; /* Slightly darker red on hover */
+}
+
+.message-header {
+    display: flex;
+    align-items: center; /* Align avatar and username horizontally */
+    font-size: 0.9em; /* Slightly larger font size */
+
+    
+    margin-bottom: 5px; /* Space between header and message body */
+}
+
 .message-avatar {
-    width: 30px; 
-    height: 30px;
-    border-radius: 50%; 
-    margin-right: 10px; 
-  }
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.message-body {
+    display: flex;
+    flex-direction: column; /* Stack text and time vertically */
+    justify-content: space-between; /* Space between text and time */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    min-height: 60px; /* Minimum height for consistent sizing */
+}
+
+.message-body strong {
+    display: block; /* Ensures username appears on its own line */
+    margin-bottom: 5px;
+}
+
+
+.message-text {
+    /* Styles for the message text */
+    margin-bottom: auto; /* Pushes the time to the bottom */
+}
+
+.message-time {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 10px; /* Space after the username */
+    margin-top: 2.5px;
+}
+  
+  
+.message-header strong {
+    color: rgb(35, 149, 255); /* You can replace this color with any color you prefer */
+}
+
+  
+
 
 .request-buttons button {
     background-color: rgb(0, 132, 255);
@@ -348,6 +474,5 @@
     margin: 50px 200px 0 200px;
     border-bottom: 2px solid rgb(0, 132, 255);
     padding-bottom: 10px;
-
 }
 

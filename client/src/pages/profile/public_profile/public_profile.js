@@ -15,6 +15,7 @@ function PublicProfile() {
   const [showFullReview, setShowFullReview] = useState(false);
   const [userExists, setUserExists] = useState(true);
   const [bio, setBio] = useState('');
+  
 
   const navigate = useNavigate();
 
@@ -61,7 +62,6 @@ function PublicProfile() {
   
     fetchUserData();
   }, [username]);
-  
 
   if (!userExists) {
     return <div>User not found.</div>;
@@ -185,7 +185,7 @@ function PublicProfile() {
                 {userReviews.map((review) => (
                   <div key={review.review_id} className="review-container">
                     <div className="review-content-left">
-              <div classname='review-userdata-container'>
+              <div className='review-userdata-container'>
               <div className="review-profile-image">
               <div className='review-username'><img src={userAvatar} alt="User Avatar" className="avatar" /><h3>{username}</h3></div>
               </div>

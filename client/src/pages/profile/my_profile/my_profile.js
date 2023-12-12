@@ -19,7 +19,7 @@ function Profile() {
   const navigate = useNavigate();
 
   const generateShareableLink = () => {
-    const currentLink = `${window.location.origin}/profile?tab=${activeTab}`;
+    const currentLink = `${window.location.origin}/public_profile/${username}`;
 
     navigator.clipboard
       .writeText(currentLink)
