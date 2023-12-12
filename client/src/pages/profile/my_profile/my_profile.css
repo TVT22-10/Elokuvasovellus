@@ -383,6 +383,7 @@
   .bio-text-container {
     max-width: 200px;
     min-width: 200px; /* Set to 100% to allow it to take the full width of the screen */
+    min-height: 130px;
     overflow-x: hidden;
   }
 
