@@ -36,6 +36,7 @@ function TopBar() {
               <Link to="/Browse_reviews">Reviews</Link>
               <Link to="/browse_all">Movies</Link>
               <Link to="/news">News</Link>
+              <Link to="/browse_groups">Groups</Link>
               <Link to="/leaderboards">Stats</Link>
 
             </div>

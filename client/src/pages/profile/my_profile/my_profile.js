@@ -165,7 +165,7 @@ function Profile() {
             className={`view-change ${activeTab === 'favourites' ? 'active-link' : ''}`}
             onClick={() => setActiveTab('favourites')}
           >
-            Favourites
+            Favorites
           </p>
           <p
             className={`view-change ${activeTab === 'reviews' ? 'active-link' : ''}`}
