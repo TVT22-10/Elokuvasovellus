@@ -195,23 +195,27 @@ function Edit_Profile() {
                     />
                 </div>
                 <div className="bio-input">
-                    Bio:
                     <textarea
                         name="bio"
                         value={bio}
                         onChange={handleInput}
                         placeholder="Your bio"
                     />
-                    <button onClick={toggleEmojiPicker}>Add Emoji</button>
-                    {showEmojiPicker && <EmojiPicker onEmojiClick={onEmojiClick} />}
+                    <div className="emoji-picker-container">
+                        <button className='emoji-picker-button' onClick={toggleEmojiPicker}>Add Emoji</button>
+                        {showEmojiPicker && <EmojiPicker onEmojiClick={onEmojiClick} />}
+
+                        <div className="save-button">
+                        <button type="submit">Save</button>
+                        </div>
+                    </div>
+                    
+
                 </div>
 
-
-                <div className="save-button">
-                    <button type="submit">Save</button>
-                </div>
-
-                {changesSaved && <p>Changes have been saved!</p>}
+                
+                {changesSaved && <p className='changes-have-been-saved'>
+                    Changes have been saved!</p>}
             </form>
 
             {/* Delete User Button */}
