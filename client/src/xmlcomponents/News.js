@@ -1,4 +1,4 @@
-// NewsPage.js
+// news.js
 import { jwtToken, userData } from "../components/Signals";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -6,7 +6,9 @@ import xml2js from 'xml2js';
 import { useNavigate } from 'react-router-dom';
 import './NewsPage.css';
 import DropdownMenu from './DropdownMenu';
+import NewsItem from './NewsItem';
 import GroupNews from './GroupNews';
+
 
 function NewsPage() {
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ function NewsPage() {
     };
 
     fetchUserGroups();
-  }, []);
+  }, []); // Empty dependency array to run only once when the component mounts
 
   useEffect(() => {
     // Fetch news data when the component mounts
@@ -75,7 +77,7 @@ function NewsPage() {
           Authorization: `Bearer ${jwtToken.value}`,  // Add your authentication token
         },
       });
-
+  
       console.log('News added to group:', response.data);
       // Handle success as needed
       setShowDropdown(false);
