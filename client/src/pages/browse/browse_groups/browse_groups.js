@@ -7,7 +7,7 @@ import './browse_groups.css';
 
 function BrowseGroups() {
   const [groups, setGroups] = useState([]);
-  const [displayedGroups, setDisplayedGroups] = useState(9); // Set to 9 initially
+  const [displayedGroups, setDisplayedGroups] = useState(9);
   const [searchQuery, setSearchQuery] = useState('');
   const [readMoreMode, setReadMoreMode] = useState(true);
 
@@ -23,12 +23,12 @@ function BrowseGroups() {
 
   const handleLoadMore = () => {
     setDisplayedGroups(displayedGroups + 9);
-    setReadMoreMode(false); // Switch to "Read Less" mode
+    setReadMoreMode(false);
   };
 
   const handleReadLess = () => {
     setDisplayedGroups(9);
-    setReadMoreMode(true); // Switch back to "Read More" mode
+    setReadMoreMode(true);
   };
 
   return (
@@ -53,7 +53,10 @@ function BrowseGroups() {
           .map(group => (
             <Link to={`/groups/${group.group_id}`} key={group.group_id} className="group-link">
               <div className="group-item">
-                <h3>{group.groupname}</h3>
+                <h3>
+                  <span className="group-name-label">Group Name: </span>
+                  <span style={{ color: '#007bff' }}>{group.groupname}</span>
+                </h3>
                 <p>
                   <strong>Description:</strong> {group.groupdescription}
                 </p>
