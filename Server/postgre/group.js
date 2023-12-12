@@ -28,6 +28,18 @@ async function getGroupMembers(req, res) {
     const { groupId } = req.params;
 
     try {
+        const checkGroupQuery = `
+            SELECT EXISTS (SELECT 1 FROM groups WHERE group_id = $1) AS "groupExists";
+        `;
+
+        const checkGroupResult = await pgPool.query(checkGroupQuery, [groupId]);
+
+        const groupExists = checkGroupResult.rows[0].groupExists;
+
+        if (!groupExists) {
+            return res.status(404).json({ message: 'Group not found' });
+        }
+
         const query = `
             SELECT gm.username, c.avatar, gm.joined_date,
             CASE WHEN gm.username = (SELECT creator_username FROM groups WHERE group_id = gm.group_id) THEN 0 ELSE 1 END as is_owner
@@ -35,8 +47,8 @@ async function getGroupMembers(req, res) {
             JOIN customer c ON gm.username = c.username
             WHERE gm.group_id = $1
             ORDER BY is_owner, gm.joined_date;
-
         `;
+
         const result = await pgPool.query(query, [groupId]);
         res.status(200).json(result.rows);
     } catch (error) {
@@ -44,6 +56,7 @@ async function getGroupMembers(req, res) {
         res.status(500).json({ message: 'Error getting group members' });
     }
 }
+
 
 // In your groupController.js or a similar file
 async function sendJoinRequest(req, res) {
@@ -96,6 +109,11 @@ async function handleJoinRequest(req, res) {
             return res.status(403).json({ message: 'Unauthorized action' });
         }
 
+        const requestExistenceQuery = 'SELECT * FROM group_join_requests WHERE request_id = $1 AND group_id = $2;';
+        const requestExistenceResult = await pgPool.query(requestExistenceQuery, [requestId, groupId]);
+        if (requestExistenceResult.rows.length === 0) {
+            return res.status(404).json({ message: 'Request does not exist for the specified group' });
+        }
         // Update the request status
         const updateRequestStatusQuery = 'UPDATE group_join_requests SET request_status = $1 WHERE request_id = $2 AND group_id = $3 RETURNING username;';
         const requestStatus = accept ? 'accepted' : 'rejected';
@@ -201,6 +219,14 @@ async function removeGroupMember(req, res) {
             } else {
                 return res.status(403).json({ message: 'Owner cannot leave without assigning a new owner' });
             }
+        }
+
+        // Check if the member exists in the group before removing
+        const memberExistsQuery = 'SELECT 1 FROM group_members WHERE group_id = $1 AND username = $2;';
+        const memberExistsResult = await pgPool.query(memberExistsQuery, [groupId, username]);
+
+        if (memberExistsResult.rows.length === 0) {
+            return res.status(404).json({ message: 'Member not found in the group' });
         }
 
         // Remove the member from the group_members table
