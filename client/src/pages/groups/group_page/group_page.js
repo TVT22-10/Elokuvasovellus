@@ -346,7 +346,6 @@ function GroupPage() {
 
   
 
-  
 
   return (
     <div className="Group-page">
