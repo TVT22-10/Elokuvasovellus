@@ -1,0 +1,64 @@
+/* browse_groups.css */
+
+.browse-groups {
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+.browse-groups .groups-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.browse-groups .group-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.browse-groups .group-item {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #000000;
+    display: flex;
+    width: 425px;
+    margin-bottom: 20px;
+    flex-direction: column;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.browse-groups .group-item:hover {
+    background-color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.browse-groups .group-item h3 {
+    font-size: 24px;
+    color: #007bff; /* Set group name color */
+}
+
+.browse-groups .group-item p {
+    margin: 5px 0;
+}
+
+.browse-groups .group-item .group-name-label {
+    color: white; /* Set "Group name:" text color */
+}
+
+@media (max-width: 600px) {
+    .browse-groups .group-item {
+        width: 100%;
+    }
+    .browse-groups .groups-list {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* Add margin to the right side for smaller screens */
+@media (max-width: 600px) {
+    .browse-groups {
+        margin-right: 0; /* Adjust or remove this line based on your spacing preference */
+    }
+}
