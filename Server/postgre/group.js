@@ -206,7 +206,10 @@ async function removeGroupMember(req, res) {
         }
 
         const isOwner = groupResult.rows[0].creator_username === currentUser;
-
+       
+        if (!isOwner) {
+            return res.status(403).json({ message: 'You are not a member of this group' });
+        }
         // Check if the user is the owner or the member trying to leave
         if (!isOwner && currentUser !== username) {
             return res.status(403).json({ message: 'Unauthorized action' });

@@ -157,7 +157,6 @@ router.delete('/delete/:username', authenticateToken, async (req, res) => {
     const { password } = req.body;
     try {
         const pwHash = await getPasswordFromDatabase(username);
-
         const isPasswordCorrect = await bcrypt.compare(password, pwHash);
 
         if (isPasswordCorrect) {
