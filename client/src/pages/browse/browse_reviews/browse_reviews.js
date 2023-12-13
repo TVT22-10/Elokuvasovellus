@@ -8,13 +8,13 @@ import StarRating from '../../movie_review/StarRating'; // Import the new StarRa
 function BrowseReviews() {
   const [reviews, setReviews] = useState([]);
   const [movies, setMovies] = useState({});
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false); // State for loggedIn
+  const [userAvatar, setUserAvatar] = useState(''); // State for userAvatar
   const [loading, setLoading] = useState(true);
   const [displayedReviews, setDisplayedReviews] = useState(6);
   const [expandedReviews, setExpandedReviews] = useState([]);
   const [sortingOrder, setSortingOrder] = useState('newest'); // Default sorting order
   const navigate = useNavigate();
-  const [userAvatar, setUserAvatar] = useState('');
   const [username, setUsername] = useState('');
 
   const navigateToPublicProfile = (username) => {
@@ -26,16 +26,15 @@ function BrowseReviews() {
     if (userData.value) {
       if (userData.value.username && username !== userData.value.username) {
         setUsername(userData.value.username);
-        setLoggedIn(true);
+        setLoggedIn(true); // Update state
       }
       
-      if (userData.value && userData.value.avatar) {
-        setUserAvatar(`http://localhost:3001/avatars/${userData.value.avatar}`);
-      } else {
-        setUserAvatar('http://localhost:3001/avatars/avatar1.png');
-      }
+      const avatarUrl = userData.value.avatar 
+        ? `http://localhost:3001/avatars/${userData.value.avatar}`
+        : 'http://localhost:3001/avatars/avatar1.png';
+      setUserAvatar(avatarUrl); // Update state
     }
-  }, [userData.value, username]);
+  }, [userData.value, username, setLoggedIn, setUserAvatar]);
 
   const navigateToMovie = (movieId) => {
     navigate(`/movies/${movieId}`);

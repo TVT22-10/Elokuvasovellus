@@ -52,7 +52,7 @@ function Profile() {
         setBio('No bio yet');
       }
     }
-  }, [userData.value, username, creationDate]);
+  }, [username, creationDate]);
 
   useEffect(() => {
     if (jwtToken.value && username) {
@@ -65,7 +65,7 @@ function Profile() {
           console.error('Error fetching favorites:', error);
         });
     }
-  }, [username, jwtToken.value]);
+  }, [username]);
 
   useEffect(() => {
     const fetchUserReviews = async () => {

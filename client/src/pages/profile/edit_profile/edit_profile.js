@@ -5,7 +5,7 @@ import axios from 'axios';
 import { AuthContext } from '../../../components/Contexts'; // Adjust the import paths
 import EmojiPicker from 'emoji-picker-react';
 
-function Edit_Profile() {
+function EditProfile() {
     const [fname, setFname] = useState(userData.value?.fname || '');
     const [lname, setLname] = useState(userData.value?.lname || '');
     const [changesSaved, setChangesSaved] = useState(false);
@@ -14,7 +14,6 @@ function Edit_Profile() {
     const [showAvatarDropdown, setShowAvatarDropdown] = useState(false); // New state for toggling avatar dropdownz
     const { logout } = useContext(AuthContext); // Access the logout function
     const [bio, setBio] = useState(userData.value?.bio || '');
-    const [chosenEmoji, setChosenEmoji] = useState(null);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
 
@@ -226,4 +225,4 @@ function Edit_Profile() {
     );
 }
 
-export default Edit_Profile;
+export default EditProfile;

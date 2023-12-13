@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function generateYearOptions(startYear, endYear) {
@@ -30,14 +30,7 @@ function BrowseSeries() {
     const [minVoteCount, setMinVoteCount] = useState(''); // Initialize with a suitable default value
 
 
-    useEffect(() => {
-        console.log("Fetching series with filters:", filters, "sort by:", sortBy,
-            "minimum votes:", minVoteCount, "min length:", filters.minSeriesLength,
-            "max length:", filters.maxSeriesLength);
-        fetchSeries();
-    }, [filters, sortBy, minVoteCount, page]); 
-
-    const fetchSeries = async (newPage = page) => {
+    const fetchSeries = useCallback(async(newPage = page) => {
         try {
             // Construct query params based on filters
             const params = {
@@ -72,7 +65,15 @@ function BrowseSeries() {
         } catch (error) {
             console.error('Error:', error);
         }
-    };
+    }, [filters, sortBy, minVoteCount, page]);
+
+    useEffect(() => {
+        console.log("Fetching series with filters:", filters, "sort by:", sortBy,
+            "minimum votes:", minVoteCount, "min length:", filters.minSeriesLength,
+            "max length:", filters.maxSeriesLength);
+        fetchSeries();
+      }, [filters, sortBy, minVoteCount, page, fetchSeries]); // Include fetchSeries in the dependency array
+      
 
     const loadMoreResults = async () => {
         if (page < totalPages) {

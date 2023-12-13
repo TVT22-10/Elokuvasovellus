@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 import './Search.css';
@@ -8,6 +8,20 @@ function Search() {
     const [results, setResults] = useState([]);
     const [page, setPage] = useState(1); // State for tracking the current page
     const navigate = useNavigate(); // Initialize useNavigate
+
+    const performSearch = useCallback(async (pageNum) => {
+        try {
+            const response = await fetch(`http://localhost:3001/search?query=${query}&page=${pageNum}`);
+            const data = await response.json();
+            if (pageNum === 1) {
+                setResults(data.results); // Set new results if it's the first page
+            } else {
+                setResults(prevResults => [...prevResults, ...data.results]); // Append new results for other pages
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }, [query]); // Add dependencies here
 
 
     useEffect(() => {
@@ -22,21 +36,9 @@ function Search() {
         }, 500); // 500ms delay
 
         return () => clearTimeout(delayDebounce);
-    }, [query]);
+    }, [query, performSearch]); // Include performSearch in the dependency array
 
-    const performSearch = async (pageNum) => {
-        try {
-            const response = await fetch(`http://localhost:3001/search?query=${query}&page=${pageNum}`);
-            const data = await response.json();
-            if (pageNum === 1) {
-                setResults(data.results); // Set new results if it's the first page
-            } else {
-                setResults(prevResults => [...prevResults, ...data.results]); // Append new results for other pages
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+
     
     const navigateToMovie = (movieId) => {
         navigate(`/movies/${movieId}`);

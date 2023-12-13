@@ -5,11 +5,8 @@ const userRoutes = require('./routes/userRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const app = express();
 const axios = require('axios');
-const tmdbApi = require('./tmdb/tmdb.api'); // Adjust the path as needed
-
 const fs = require('fs');
 const path = require('path');
-
 const reviewRoutes = require('./routes/reviewRoutes');
 const groupRoutes = require('./routes/groupRoutes');
 const postRoutes = require('./routes/postRoutes'); // Adjust the path as needed

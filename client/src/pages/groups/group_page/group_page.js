@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './group_page.css'; // This uses CSS modules.
-import avatar from './avatar.png';
 import axios from 'axios';
 import { jwtToken, userData } from '../../../components/Signals';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import GroupNews from '../../../xmlcomponents/GroupNews'; // Update the path based on your project structure
-import moment from 'moment';
 
 
 
@@ -26,8 +24,8 @@ function Message({ message, navigateToPublicProfile, handleDeleteMessage, groupC
   }
 
   const formattedTime = formatMessageTime(message.sent_time);
-  const canDelete = userData.value.username === message.username || 
-                      userData.value.username === groupCreator;
+  const canDelete = userData?.value?.username === message.username || 
+                      userData?.value?.username === groupCreator;
 
   return (
     <div className="message">
@@ -62,8 +60,8 @@ function GroupPage() {
   const [error, setError] = useState(null);
   const [groupMembers, setGroupMembers] = useState([]);
   const [joinRequests, setJoinRequests] = useState([]);
-  const isUserDefined = userData && userData.value && userData.value.username;
-  const isMember = isUserDefined ? groupMembers.some(member => member.username === userData.value.username) : false;
+  const isUserDefined = userData && userData.value && userData?.value?.username;
+  const isMember = isUserDefined ? groupMembers.some(member => member.username === userData?.value?.username) : false;
   const [editingDescription, setEditingDescription] = useState(false);
   const [newDescription, setNewDescription] = useState(groupData?.groupdescription || '');
   const navigate = useNavigate();
@@ -79,7 +77,7 @@ function GroupPage() {
   };
 
   // Function to fetch join requests
-  const fetchJoinRequests = async () => {
+  const fetchJoinRequests = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:3001/groups/${groupId}/requests`, {
         headers: {
@@ -90,9 +88,9 @@ function GroupPage() {
     } catch (error) {
       console.error('Error fetching join requests:', error);
     }
-  };
+  }, [groupId]); // Add the dependencies that are used in this function
 
-  const fetchGroupMembers = async () => {
+  const fetchGroupMembers = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:3001/groups/${groupId}/members`, {
         headers: {
@@ -103,7 +101,20 @@ function GroupPage() {
     } catch (error) {
       console.error('Error fetching group members:', error);
     }
-  };
+  }, [groupId]); // Add the dependencies that are used in this function
+
+  const fetchUserNews = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/groups/${groupId}/news`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken.value}`,
+        },
+      });
+      setUserNews(response.data);
+    } catch (error) {
+      console.error('Error fetching user news:', error);
+    }
+  }, [groupId]); // Add the dependencies that are used in this function
 
   useEffect(() => {
     const fetchGroupDetails = async () => {
@@ -121,7 +132,7 @@ function GroupPage() {
           setLoading(false);
 
           // Ensure userData.value is available and then check if the logged-in user is the group owner
-          if (userData?.value && creator_username === userData.value.username) {
+          if (userData.value && creator_username === userData?.value?.username) {
             fetchJoinRequests();
           }
         } else {
@@ -142,7 +153,7 @@ function GroupPage() {
       fetchUserNews(); // Call fetchUserNews to get the news for the group
 
     }
-  }, [groupId, userData?.value]);
+  }, [groupId,fetchGroupMembers, fetchJoinRequests, fetchUserNews]);
 
 
   const formatDate = (dateString) => {
@@ -194,7 +205,7 @@ function GroupPage() {
 
   const handleLeaveGroup = async (username) => {
     try {
-      const isOwner = groupData.creator_username === userData.value.username;
+      const isOwner = groupData.creator_username === userData?.value?.username;
       const confirmLeave = window.confirm('Are you sure you want to leave the group?');
 
       if (confirmLeave) {
@@ -205,7 +216,7 @@ function GroupPage() {
             const newOwner = prompt('Enter the username of the new owner:');
             if (newOwner && newOwner !== groupData.creator_username) {
               try {
-                const response = await axios.put(`http://localhost:3001/groups/${groupId}/assign-owner/${newOwner}`, {}, {
+                  await axios.put(`http://localhost:3001/groups/${groupId}/assign-owner/${newOwner}`, {}, {
                   headers: { Authorization: `Bearer ${jwtToken.value}` },
                 });
 
@@ -259,7 +270,7 @@ function GroupPage() {
   // Function to save edited description
   const handleSaveDescription = async () => {
     try {
-      const response = await axios.put(
+      await axios.put(
         `http://localhost:3001/groups/${groupId}/description`,
         { groupDescription: newDescription },
         {
@@ -279,21 +290,10 @@ function GroupPage() {
 
   };
 
-  const fetchUserNews = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/groups/${groupId}/news`, {
-        headers: {
-          Authorization: `Bearer ${jwtToken.value}`,
-        },
-      });
-      setUserNews(response.data);
-    } catch (error) {
-      console.error('Error fetching user news:', error);
-    }
-  };
 
 
-  const fetchMessages = async () => {
+
+  const fetchMessages = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:3001/groups/${groupId}/messages`, {
         headers: {
@@ -304,13 +304,15 @@ function GroupPage() {
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
-  };
+  }, [groupId]); // Add the dependencies used inside fetchMessages
+  
 
   useEffect(() => {
     if (activeTab === 'chat') {
       fetchMessages();
     }
-  }, [activeTab, groupId]);
+  }, [activeTab, groupId, fetchMessages]); // Include fetchMessages in the dependency array
+  
 
   const [newMessage, setNewMessage] = useState(''); // State to hold the new message text
 
@@ -389,7 +391,7 @@ const groupInitials = getInitials(groupData.groupname);
           <p className={`view-change ${activeTab === 'chat' ? 'active-link' : ''}`} onClick={() => setActiveTab('chat')}>Chat</p>
         )}
         <p className={`view-change ${activeTab === 'news' || !activeTab ? 'active-link' : ''}`} onClick={() => setActiveTab('news')}>News</p>
-        {groupData && userData.value && groupData.creator_username === userData.value.username && (
+        {groupData && userData.value && groupData.creator_username === userData?.value?.username && (
           <p className={`view-change ${activeTab === 'join requests' ? 'active-link' : ''}`} onClick={() => setActiveTab('join requests')}>Join Requests</p>
         )}
 
@@ -413,7 +415,7 @@ const groupInitials = getInitials(groupData.groupname);
                       ))}
                     </div>
                   )}
-                  {userData && userData.value && userData.value.username === groupData.creator_username && (
+                  {userData && userData.value && userData?.value?.username === groupData.creator_username && (
                     <button onClick={handleEditDescription}>Edit Description</button>
                   )}
                 </div>
@@ -456,8 +458,9 @@ const groupInitials = getInitials(groupData.groupname);
                         {member.joined_date && (
                           <span className="member-joined-date">{formatDate(member.joined_date)}</span>
                         )}
-                         {/* "Leave Group" button for the owner */}
-                        {userData.value.username === member.username && (
+
+                        {userData?.value?.username === member.username && (
+
                           <div className="leaveGroup">
                             <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
                           </div>
@@ -469,16 +472,16 @@ const groupInitials = getInitials(groupData.groupname);
                   {groupData && member.username !== groupData.creator_username && (
                     <React.Fragment>
                       <span className="member-joined-date">{formatDate(member.joined_date)}</span>
-                      {userData.value.username === member.username && (
+                      {userData?.value?.username === member.username && (
                         <div className="leaveGroup">
                           <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
                         </div>
                       )}
                     </React.Fragment>
                   )}
-                  {groupData && userData.value.username === groupData.creator_username && (
+                  {groupData && userData?.value?.username === groupData.creator_username && (
                     <React.Fragment>
-                      {userData.value.username !== member.username && (
+                      {userData?.value?.username !== member.username && (
                         <div className="deleteMember">
                           <button onClick={() => handleRemoveMember(member.username)}>Delete Member</button>
                         </div>
@@ -511,7 +514,7 @@ const groupInitials = getInitials(groupData.groupname);
               navigateToPublicProfile={navigateToPublicProfile}
               handleDeleteMessage={handleDeleteMessage}
               groupCreator={groupData.creator_username} // Pass the group creator's username
-              isCurrentUser={userData.value.username === message.username} // This checks if the message is from the current user
+              isCurrentUser={userData?.value?.username === message.username} // This checks if the message is from the current user
 
 
 
@@ -540,7 +543,7 @@ const groupInitials = getInitials(groupData.groupname);
 
 
         <div className={`content ${activeTab !== 'join requests' && 'hidden'}`} id="join requests">
-          {groupData && userData.value && userData.value.username && groupData.creator_username === userData.value.username && (
+          {groupData && userData.value && userData.value.username && groupData.creator_username === userData?.value?.username && (
             <div className="join-requests-list">
               {joinRequests.length > 0 ? (
                 joinRequests.map((request, index) => (

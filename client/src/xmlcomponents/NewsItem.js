@@ -33,7 +33,7 @@ const NewsItem = ({ item, groups, jwtToken, activeDropdown, setActiveDropdown, d
       <br />
       <span className="news-description">{item.HTMLLead || 'No description'}</span>
       <br />
-      {item.ImageURL && <img src={item.ImageURL} alt={`Image for ${item.Title}`} className="news-image" />}
+      {item.ImageURL && <img src={item.ImageURL} alt={item.Title} className="news-image" />}
 
       <div className="add-to-group-button" onClick={() => setActiveDropdown(activeDropdown === dropdownIndex ? null : dropdownIndex)}>
         Add to Group
