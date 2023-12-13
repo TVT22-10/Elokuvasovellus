@@ -344,6 +344,17 @@ function GroupPage() {
     }
 };
 
+const getInitials = (name) => {
+  if (!name) return 'G'; // Default initials if name is not available
+  return name.split(' ')
+             .map(word => word[0].toUpperCase())
+             .join('');
+};
+
+
+const groupInitials = getInitials(groupData.groupname);
+
+
   
 
 
@@ -351,7 +362,7 @@ function GroupPage() {
     <div className="Group-page">
       <div className="group-container">
         <div className="group-image">
-          <img src={avatar} alt="Avatar" className="avatar" />
+        <div className="group-avatar">{groupInitials}</div>
         </div>
         <div className="group-profile">
           <div className="groupName">
