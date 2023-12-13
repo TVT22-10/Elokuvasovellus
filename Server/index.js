@@ -12,6 +12,8 @@ const path = require('path');
 
 const reviewRoutes = require('./routes/reviewRoutes');
 const groupRoutes = require('./routes/groupRoutes');
+const postRoutes = require('./routes/postRoutes'); // Adjust the path as needed
+
 
 
 const corsOptions = {
@@ -43,6 +45,7 @@ app.use('/review', reviewRoutes);
 // Root route
 app.use('/groups', groupRoutes);
 //mo
+app.use('/posts', postRoutes);
 
 
 app.get('/', (req, res) => {
