@@ -120,30 +120,16 @@ function NewsPage() {
         ) : (
           <ul className="news-list">
             {filteredNews.map((item, index) => {
-              const { Title, HTMLLead, ArticleURL, ImageURL } = item;
-  
               return (
-                <li key={index} className="news-item">
-                  <GroupNews 
-                    title={Title} 
-                    description={HTMLLead} 
-                    articleUrl={ArticleURL} 
-                    imageUrl={ImageURL} 
-                    onAddToGroup={(groupId) => handleAddToGroup(index, groupId)} 
-                  />
-                  <div 
-                    className="add-to-group-button" 
-                    onClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
-                  >
-                    Add to Group
-                  </div>
-                  {activeDropdown === index && (
-                    <DropdownMenu
-                      groups={userGroups}
-                      onSelect={(group) => handleAddToGroup(index, group)}
-                    />
-                  )}
-                </li>
+                <NewsItem 
+                  key={index} 
+                  item={item} 
+                  groups={userGroups} 
+                  jwtToken={jwtToken.value} 
+                  activeDropdown={activeDropdown}
+                  setActiveDropdown={setActiveDropdown}
+                  dropdownIndex={index}
+                />
               );
             })}
           </ul>

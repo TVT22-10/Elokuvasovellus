@@ -2,8 +2,7 @@ import React from 'react';
 
 const DropdownMenu = ({ groups, onSelect }) => {
   return (
-    <div className="dropdown-menu">
-      <p>Select a group:</p>
+    <div className="dropdown-menu-news">
       <select onChange={(e) => onSelect(e.target.value)}>
         <option value="" disabled selected>Select a group</option>
         {groups.map((group) => (
