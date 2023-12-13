@@ -127,6 +127,7 @@
   transition: 0.5s;
 }
 
+.view-change:hover::after, /* This will show the pseudo-element when hovering */
 .view-change.active-link::after {
   width: 40px;
 }

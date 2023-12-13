@@ -434,14 +434,18 @@ function GroupPage() {
               {groupMembers.map((member, index) => (
                 <div className="member-item" key={index}>
                   <img src={`http://localhost:3001/avatars/${member.avatar}`} alt={`${member.username}'s avatar`} className="member-avatar" />
+                  <div className='member-name-container'>
                   <span className="member-name" onClick={() => navigateToPublicProfile(member.username)}>
                     {member.username}
+                    {/* Conditionally render "Owner" tag */}
                     {groupData && member.username === groupData.creator_username && (
                       <React.Fragment>
                         <span className="owner-tag">Owner</span>
-                        {groupData.joined_date && (
+                        {/* Member joined date for owner */}
+                        {member.joined_date && (
                           <span className="member-joined-date">{formatDate(member.joined_date)}</span>
                         )}
+                         {/* "Leave Group" button for the owner */}
                         {userData.value.username === member.username && (
                           <div className="leaveGroup">
                             <button onClick={() => handleLeaveGroup(member.username)}>Leave Group</button>
@@ -450,6 +454,7 @@ function GroupPage() {
                       </React.Fragment>
                     )}
                   </span>
+                  </div>
                   {groupData && member.username !== groupData.creator_username && (
                     <React.Fragment>
                       <span className="member-joined-date">{formatDate(member.joined_date)}</span>
