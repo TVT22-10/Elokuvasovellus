@@ -6,13 +6,17 @@ import './TopBar.css';
 function TopBar() {
   const { isLoggedIn, logout } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-  };
+
+
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
+  };
+
+  const toggleSearchDropdown = () => {
+    setShowSearchDropdown(!showSearchDropdown);
   };
 
   return (
@@ -26,8 +30,14 @@ function TopBar() {
         </Link>
       </div>
       <div className="button-container">
-        <div className="custom-button">
-          <Link to="/Search">Search</Link>
+        <div className="browse-button" onClick={toggleSearchDropdown}>
+        <span>Search</span>
+          {showSearchDropdown && (
+            <div className="dropdown-menu">
+              <Link to="/Search">Movies</Link>
+              <Link to="/SearchTV">Series</Link>
+            </div>
+          )}
         </div>
         <div className="browse-button" onClick={toggleDropdown}>
           <span>Browse</span>
@@ -35,6 +45,7 @@ function TopBar() {
             <div className="dropdown-menu">
               <Link to="/Browse_reviews">Reviews</Link>
               <Link to="/browse_all">Movies</Link>
+              <Link to="/browse_series">Series</Link>
               <Link to="/news">News</Link>
               <Link to="/browse_groups">Groups</Link>
               <Link to="/leaderboards">Stats</Link>
