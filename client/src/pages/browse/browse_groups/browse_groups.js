@@ -5,15 +5,30 @@ import './browse_groups.css';
 
 function BrowseGroups() {
   const [groups, setGroups] = useState([]);
+  const [groupMembers, setGroupMembers] = useState({});
   const [displayedGroups, setDisplayedGroups] = useState(9);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('newest'); // Set the default to 'newest'
+  const [sortBy, setSortBy] = useState('newest');
   const [readMoreMode, setReadMoreMode] = useState(true);
 
   useEffect(() => {
     axios.get('http://localhost:3001/groups/all')
       .then(response => {
         setGroups(response.data);
+
+        response.data.forEach(group => {
+          axios.get(`http://localhost:3001/groups/${group.group_id}/members`)
+            .then(membersResponse => {
+              console.log('Fetched group members:', membersResponse.data);
+              setGroupMembers(prevMembers => ({
+                ...prevMembers,
+                [group.group_id]: membersResponse.data,
+              }));
+            })
+            .catch(error => {
+              console.error(`Error fetching members for group ${group.group_id}:`, error);
+            });
+        });
       })
       .catch(error => {
         console.error('Error fetching groups:', error);
@@ -88,6 +103,11 @@ function BrowseGroups() {
                 <p>
                   <strong>Creation Time:</strong> {new Date(group.created_at).toLocaleString()}
                 </p>
+                <p>
+  <strong>Members: </strong>
+  {console.log('groupMembers:', groupMembers)}
+  {groupMembers[group.group_id]?.map(member => member.username).filter(Boolean).join(', ') || 'No members'}
+</p>
               </div>
             </Link>
           ))}
