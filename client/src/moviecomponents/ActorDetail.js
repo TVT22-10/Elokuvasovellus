@@ -9,10 +9,6 @@ function ActorDetail() {
     // State for actor details
     const [actorDetails, setActorDetails] = useState({});
 
-    // Separate states for movies and series
-    const [moviesData, setMoviesData] = useState([]);
-    const [seriesData, setSeriesData] = useState([]);
-
     // State for currently displayed filmography based on active tab
     const [filmography, setFilmography] = useState([]);
 

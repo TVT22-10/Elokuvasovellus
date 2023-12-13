@@ -18,14 +18,6 @@ const SchedulePage = () => {
     selectedSubtitle: '',
   });
 
-  const formatLocalReleaseDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fi-FI', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    });
-  };
 
   const formatShowTime = (dateTimeString) => {
     const date = new Date(dateTimeString);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from './Contexts';
 import { jwtToken, userData } from "./Signals";
 import axios from "axios";
@@ -8,10 +8,7 @@ import './Auth.css'; // Import the CSS file
 
 function UserInfo() {
   const { isLoggedIn } = useContext(AuthContext);
-  useEffect(() => {
-    console.log("UserData updated:", userData.value);
-  }, [userData.value]);
-  
+
   const formatCreationTime = (timestamp) => {
     // ... (unchanged)
   };
@@ -101,9 +98,6 @@ function LoginForm() {
 function Login() {
   const { isLoggedIn, logout } = useContext(AuthContext);
 
-  useEffect(() => {
-    console.log('User is logged in:', isLoggedIn);
-  }, [isLoggedIn]);
 
   return (
     <div>
