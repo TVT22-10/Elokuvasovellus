@@ -13,7 +13,7 @@
 ## JuliusPohjanen: Julius Pohjanen
 
 ## ER-Kaavio
-![ER-Kaavio](https://github.com/TVT22-10/Elokuvasovellus/blob/main/diagrams/er-kaavio.png)
+![ER-Kaavio](https://github.com/TVT22-10/Elokuvasovellus/blob/main/diagrams/most-recent-er-kaavio.png)
 
 ## UI suunnitelma
 ![UI-suunnitelma](https://github.com/TVT22-10/Elokuvasovellus/blob/main/diagrams/UI-suunnitelma.png)
@@ -44,3 +44,5 @@ CREATE TABLE customer (
     pw VARCHAR(100),
     creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+API documentation: https://documenter.getpostman.com/view/27009159/2s9YkjANet

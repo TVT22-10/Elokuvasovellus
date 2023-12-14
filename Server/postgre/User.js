@@ -156,8 +156,8 @@ async function deleteUser(username, password) {
           return { success: false, error: 'Incorrect password' };
       }
   } catch (error) {
-      console.error('Error deleting user:', error);
-      throw new Error('Error deleting user');
+    console.error('Error deleting user:', error);
+    return { success: false, error: error.message };
   }
 }
 

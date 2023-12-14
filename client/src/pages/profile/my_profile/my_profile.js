@@ -52,7 +52,7 @@ function Profile() {
         setBio('No bio yet');
       }
     }
-  }, [userData.value, username, creationDate]);
+  }, [username, creationDate]);
 
   useEffect(() => {
     if (jwtToken.value && username) {
@@ -65,7 +65,7 @@ function Profile() {
           console.error('Error fetching favorites:', error);
         });
     }
-  }, [username, jwtToken.value]);
+  }, [username]);
 
   useEffect(() => {
     const fetchUserReviews = async () => {
@@ -124,6 +124,63 @@ function Profile() {
     setShowFullReview(!showFullReview);
   };
 
+  const [userPosts, setUserPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/posts/${username}`);
+        setUserPosts(response.data);
+      } catch (error) {
+        console.error('Error fetching user posts:', error);
+      }
+    };
+
+    if (activeTab === 'posts') {
+      fetchUserPosts();
+    }
+  }, [username, activeTab]);
+
+  const [newPostContent, setNewPostContent] = useState('');
+
+  const handlePostSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Send the post request and get the response
+      const response = await axios.post(`http://localhost:3001/posts/`, { content: newPostContent }, {
+        headers: { Authorization: `Bearer ${jwtToken.value}` }
+      });
+
+      // Option 1: If the server returns the created post data
+      const newPost = response.data; // Adjust based on your API response structure
+
+
+      // Update the userPosts state to include the new post
+      setUserPosts([newPost, ...userPosts]);
+
+      // Clear the input field
+      setNewPostContent('');
+    } catch (error) {
+      console.error('Error creating post:', error);
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await axios.delete(`http://localhost:3001/posts/${postId}`, {
+        headers: { Authorization: `Bearer ${jwtToken.value}` },
+      });
+      // Remove the post from the state
+      const updatedPosts = userPosts.filter(post => post.post_id !== postId);
+      setUserPosts(updatedPosts);
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
+  };
+
+
+
+
 
 
   return (
@@ -165,7 +222,7 @@ function Profile() {
             className={`view-change ${activeTab === 'favourites' ? 'active-link' : ''}`}
             onClick={() => setActiveTab('favourites')}
           >
-            Favourites
+            Favorites
           </p>
           <p
             className={`view-change ${activeTab === 'reviews' ? 'active-link' : ''}`}
@@ -223,11 +280,11 @@ function Profile() {
                 {userReviews.map((review) => (
                   <div key={review.review_id} className="review-container">
                     <div className="review-content-left">
-              <div classname='review-userdata-container'>
-              <div className="review-profile-image">
-              <div className='review-username'><img src={userAvatar} alt="User Avatar" className="avatar" /><h3>{username}</h3></div>
-              </div>
-              </div>
+                      <div classname='review-userdata-container'>
+                        <div className="review-profile-image">
+                          <div className='review-username'><img src={userAvatar} alt="User Avatar" className="avatar" /><h3>{username}</h3></div>
+                        </div>
+                      </div>
                       <div className="review-content">
                         <div className='profile-review-date'><p>Posted on: {new Date(review.review_date).toLocaleDateString()}</p></div>
                         <StarRating rating={review.rating} />
@@ -265,9 +322,34 @@ function Profile() {
               <p>No reviews for this user yet.</p>
             )}
           </div>
-          <div className={`content ${activeTab !== 'posts' && 'hidden'}`} id="posts">
-            <p>Tähän tulis sitten käyttäjän postaukset</p>
+          <div className={`content ${activeTab === 'posts' ? 'visible' : 'hidden'}`} id="posts">
+            <div className="posts">
+              <form onSubmit={handlePostSubmit}>
+                <textarea
+                  value={newPostContent}
+                  onChange={(e) => setNewPostContent(e.target.value)}
+                  placeholder="What's on your mind? 📝"
+                />
+                <button type="submit">Post</button>
+              </form>
+
+              {userPosts.length > 0 ? (
+                userPosts.map((post) => (
+                  <div key={post.post_id} className="user-post">
+                    <p>{post.content}</p>
+                    <span>Posted on: {new Date(post.creation_time).toLocaleDateString()}</span>
+                    {userData.value.username === post.username && (
+                      <button className="delete-btn" onClick={() => handleDeletePost(post.post_id)}>Delete</button>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p>No posts for this user yet.</p>
+              )}
+
+            </div>
           </div>
+
         </div>
       </div>
     </div>

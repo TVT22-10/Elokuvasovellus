@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BrowseMovies.css';
 
@@ -19,7 +19,6 @@ function BrowseMovies() {
 
         // ... other filters
     });
-    const [sortOption, setSortOption] = useState(''); // State for sorting
     const [movies, setMovies] = useState([]); // State for movies
     const [totalPages, setTotalPages] = useState(0);
 
@@ -34,17 +33,10 @@ function BrowseMovies() {
 
 
 
-    useEffect(() => {
-        console.log("Fetching movies with filters:", filters, "sort by:", sortBy, "minimum votes:", minVoteCount, "min length:", minMovieLength, "max length:", maxMovieLength);
-        fetchMovies();
-    }, [filters, sortBy, minVoteCount, minMovieLength, maxMovieLength, page]);
 
 
 
-
-
-
-    const fetchMovies = async (newPage = page) => {
+    const fetchMovies = useCallback(async (newPage = page) => {
         try {
             const params = {
                 ...filters,
@@ -54,10 +46,8 @@ function BrowseMovies() {
                 'with_runtime.lte': maxMovieLength, // Maximum length
                 page: newPage
             };
-            console.log("API Request Params:", params);
             const url = new URL(`http://localhost:3001/discover-movies`);
             url.search = new URLSearchParams(params).toString();
-            console.log("API Request URL:", url.toString());
 
             const response = await fetch(url);
             const data = await response.json();
@@ -82,7 +72,12 @@ function BrowseMovies() {
         } catch (error) {
             console.error('Error:', error);
         }
-    };
+    }, [page, filters, sortBy, minVoteCount, minMovieLength, maxMovieLength]); // Add all dependencies here
+
+    useEffect(() => {
+        fetchMovies();
+    }, [filters, sortBy, minVoteCount, minMovieLength, maxMovieLength, page, fetchMovies]); // Include fetchMovies here
+
 
 
     const loadMoreResults = async () => {
@@ -102,7 +97,6 @@ function BrowseMovies() {
     const handleFilterChange = (filterType, value) => {
         setFilters(prevFilters => {
             const updatedFilters = { ...prevFilters, [filterType]: value };
-            console.log("Updated Filters:", updatedFilters);
             return updatedFilters;
         });
         setPage(1); // Reset page number to 1

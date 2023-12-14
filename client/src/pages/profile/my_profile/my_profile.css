@@ -127,6 +127,7 @@
   transition: 0.5s;
 }
 
+.view-change:hover::after, /* This will show the pseudo-element when hovering */
 .view-change.active-link::after {
   width: 40px;
 }
@@ -365,6 +366,107 @@
 .bio-text-outline {
   margin: 0;
 }
+
+/* Styling for the posts input area */
+.posts {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 65%; /* Adjust the width as needed */
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #1a1a1a; /* Dark background for the form */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker shadow for contrast */
+  border: 2px solid #007bff; /* Light blue border */
+  
+
+}
+
+.posts textarea {
+
+  flex-grow: 1;
+  width:90%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #555; /* Adjusted border color */
+  border-radius: 4px;
+  background-color: #2a2a2a; /* Slightly darker background for better contrast */
+  color: #ddd; /* Light text for readability */
+  font-size: 1em; /* Adjust font size as needed */
+  line-height: 1.5; /* Improve line spacing for better readability */
+  resize:none;
+}
+
+
+.posts button {
+  padding: 10px 20px; /* Increased padding for a larger button */
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff; /* Primary light blue color */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1em; /* Adjust font size as needed */
+  font-weight: bold; /* Bold font for prominence */
+}
+
+.posts button:hover {
+  background-color: #0056b3; /* Darker shade of blue on hover */
+}
+
+/* Styling for individual posts */
+.user-post {
+  position: relative;
+  background-color: #1a1a1a; /* Dark background for each post */
+  color: #ddd; /* Light text for readability */
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker shadow for contrast */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.user-post p {
+  font-size: 1.1em; /* Slightly larger font for readability */
+  margin-bottom: 10px; /* Space between post text and timestamp */
+}
+
+.user-post span {
+  font-size: 0.9em;
+  color: #666; /* Light grey color for timestamp */
+}
+
+.user-post .delete-btn {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 3px; /* Smaller border radius for a subtler round effect */
+  padding: 3px 7px; /* Smaller padding to reduce overall button size */
+  font-size: 0.8em; /* Smaller font size */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.user-post:hover .delete-btn {
+  display: block;
+}
+
+.user-post .delete-btn:hover {
+  background-color: #ff3333;
+}
+
+
+
+
+
+
 
 @media screen and (max-width: 600px) {
   .edit-button button,

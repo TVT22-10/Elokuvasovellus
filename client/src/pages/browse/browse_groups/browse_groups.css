@@ -1,0 +1,93 @@
+/* browse_groups.css */
+
+.browse-groups {
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .browse-groups .search-bar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .browse-groups .search-bar input {
+    flex-grow: 1;
+    padding: 8px;
+    margin-right: 8px;
+    border: none;
+    border-bottom: 2px solid #007bff;
+    outline: none;
+  }
+  
+  .browse-groups .search-bar button {
+    padding: 8px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .browse-groups .search-bar button:hover {
+    background-color: #0056b3;
+  }
+  
+  .browse-groups .groups-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .browse-groups .group-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .browse-groups .group-item {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #000000;
+    display: flex;
+    width: 425px;
+    margin-bottom: 20px;
+    flex-direction: column;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .browse-groups .group-item:hover {
+    background-color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .browse-groups .group-item h3 {
+    font-size: 24px;
+    color: #007bff;
+  }
+  
+  .browse-groups .group-item h3 .group-name-label {
+    color: white;
+  }
+  
+  .browse-groups .group-item p {
+    margin: 5px 0;
+  }
+  
+  @media (max-width: 600px) {
+    .browse-groups .group-item {
+      width: 100%;
+    }
+    .browse-groups .groups-list {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  
+  /* Add margin to the right side for smaller screens */
+  @media (max-width: 600px) {
+    .browse-groups {
+      margin-right: 0;
+    }
+  }
+  

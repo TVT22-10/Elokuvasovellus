@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './browse_reviews.css';
 import { useNavigate } from 'react-router-dom';
@@ -8,13 +8,11 @@ import StarRating from '../../movie_review/StarRating'; // Import the new StarRa
 function BrowseReviews() {
   const [reviews, setReviews] = useState([]);
   const [movies, setMovies] = useState({});
-  const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [displayedReviews, setDisplayedReviews] = useState(6);
   const [expandedReviews, setExpandedReviews] = useState([]);
   const [sortingOrder, setSortingOrder] = useState('newest'); // Default sorting order
   const navigate = useNavigate();
-  const [userAvatar, setUserAvatar] = useState('');
   const [username, setUsername] = useState('');
 
   const navigateToPublicProfile = (username) => {
@@ -26,16 +24,10 @@ function BrowseReviews() {
     if (userData.value) {
       if (userData.value.username && username !== userData.value.username) {
         setUsername(userData.value.username);
-        setLoggedIn(true);
       }
       
-      if (userData.value && userData.value.avatar) {
-        setUserAvatar(`http://localhost:3001/avatars/${userData.value.avatar}`);
-      } else {
-        setUserAvatar('http://localhost:3001/avatars/avatar1.png');
-      }
     }
-  }, [userData.value, username]);
+  }, [username]);
 
   const navigateToMovie = (movieId) => {
     navigate(`/movies/${movieId}`);
@@ -59,7 +51,7 @@ function BrowseReviews() {
     fetchReviews();
   };
 
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:3001/review?sort=${sortingOrder}`);
       const reviewsData = response.data;
@@ -83,12 +75,12 @@ function BrowseReviews() {
       console.error('Error fetching reviews:', error);
       setLoading(false);
     }
-  };
+  }, [sortingOrder]); // Include sortingOrder and any other dependencies
 
   useEffect(() => {
     // Fetch reviews when the component mounts or when sortingOrder changes
     fetchReviews();
-  }, [sortingOrder]);
+  }, [fetchReviews]); // Now fetchReviews is a dependency
 
   return (
     <div className="browse-reviews">

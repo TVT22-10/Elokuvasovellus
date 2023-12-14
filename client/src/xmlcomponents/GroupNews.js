@@ -1,12 +1,10 @@
 // GroupNews.js
 import React, { useState, useEffect } from 'react';
-import DropdownMenu from './DropdownMenu';
 import axios from 'axios';
 import './GroupNews.css'
 
 const GroupNews = ({ title, description, articleUrl, imageUrl, onAddToGroup, groupId }) => {
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedGroup] = useState(null);
   const [groupNews, setGroupNews] = useState([]);
 
   useEffect(() => {
@@ -24,20 +22,6 @@ const GroupNews = ({ title, description, articleUrl, imageUrl, onAddToGroup, gro
     }
   }, [selectedGroup, groupId]);
 
-  const handleGroupChange = (event) => {
-    setSelectedGroup(event.target.value);
-  };
-
-  const handleAddToGroup = () => {
-    if (selectedGroup) {
-      onAddToGroup(selectedGroup);
-      setSelectedGroup(null);
-      setShowDropdown(false);
-    }
-  };
-
-  // make the news image url appear in the group page news section
-  // for now the debug says that the image url is undefined
   
   return (
     <div className='group-news-item2'>
@@ -48,7 +32,7 @@ const GroupNews = ({ title, description, articleUrl, imageUrl, onAddToGroup, gro
       <br />
       <span className="news-description">{description || 'No description'}</span>
       <br />
-      {imageUrl && <img src={imageUrl} alt={`Image for ${title}`} className="news-image" />}
+      <img src={imageUrl} alt={`${title}`} className="news-image" />
 
       {groupNews.length > 0 && (
         <div className="group-news-list">
@@ -66,17 +50,8 @@ const GroupNews = ({ title, description, articleUrl, imageUrl, onAddToGroup, gro
         </div>
       )}
 
-      <div className="add-to-group-button" onClick={() => setShowDropdown(!showDropdown)}>
-        {/* Add any additional content or styling for the button */}
-      </div>
-      {showDropdown && (
-        <DropdownMenu onSelect={handleGroupChange} />
-      )}
-      {showDropdown && (
-        <button className="add-to-group-button" onClick={handleAddToGroup}>
-          Confirm
-        </button>
-      )}
+ 
+    
     </div>
     </div>
   );
