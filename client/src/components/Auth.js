@@ -40,8 +40,10 @@ function LoginForm() {
 
   function handleLogin() {
     axios
-      .post('http://localhost:3001/User/login', { uname, pw })
+      .post('http://localhost:3001/User/login', { uname, pw }) // Use axios.post here
       .then((resp) => {
+        console.log('Login response:', resp);
+
         if (resp.data && resp.data.jwtToken) {
           jwtToken.value = resp.data.jwtToken;
           userData.value = resp.data.userData;
