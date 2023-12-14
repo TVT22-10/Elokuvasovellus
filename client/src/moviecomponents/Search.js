@@ -39,7 +39,7 @@ function Search() {
     }, [query, performSearch]); // Include performSearch in the dependency array
 
 
-    
+
     const navigateToMovie = (movieId) => {
         navigate(`/movies/${movieId}`);
     };
@@ -47,9 +47,9 @@ function Search() {
     const calculateRating = (rating) => {
         const circumference = 2 * Math.PI * 20; // Assuming the radius of the circle is 20
         return (rating / 10) * circumference; // Convert to length of the circle's stroke
-      };
-    
-      const loadMoreResults = async () => {
+    };
+
+    const loadMoreResults = async () => {
         const nextPage = page + 1;
         await performSearch(nextPage);
         setPage(nextPage); // Update the page state after fetching new results
@@ -57,67 +57,69 @@ function Search() {
 
     return (
         <div>
-            <input 
-    type="text" 
-    value={query} 
-    onChange={(e) => setQuery(e.target.value)} 
-    placeholder="Search for a movie..."
-    className="search-input"
-/>
-
-
-<div className="search-results-container">
-                {results.map(movie => (
-                    <div 
-                        key={movie.id} 
-                        className="search-movie-card"
-                        onClick={() => navigateToMovie(movie.id)} // Attach navigate function here
-                    >
-            <img 
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                alt={movie.title}
-                className="search-movie-poster"
+            <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search for a movie..."
+                className="search-input"
             />
-            <div className="search-movie-info">
-            <div className="movie-rating-circle">
-              <svg width="40" height="40" viewBox="0 0 44 44">
-                <circle 
-                  className="rating-circle-bg" 
-                  cx="22" cy="22" r="20" 
-                />
-                <circle 
-                  className="rating-circle" 
-                  cx="22" cy="22" r="20" 
-                  strokeDasharray={`${calculateRating(movie.vote_average)} 999`}
-                />
-                <text 
-                  x="50%" 
-                  y="50%" 
-                  dy=".3em" /* Adjust this value as needed */
-                  textAnchor="middle"
-                  className="rating-text"
-                  >
-                  {movie.vote_average.toFixed(1)}
-                  </text>
 
-              </svg>
+
+            <div className="search-results-container">
+                {results.map((movie, index) => (
+                    <div
+                        key={`${movie.id}-${index}`} // Combine ID with index
+                        className="search-movie-card"
+                        onClick={() => navigateToMovie(movie.id)}
+                    >
+                        {movie.poster_path && (
+                            <img
+                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                                alt={movie.title}
+                                className="search-movie-poster"
+                            />
+                        )}
+                        <div className="search-movie-info">
+                            <div className="movie-rating-circle">
+                                <svg width="40" height="40" viewBox="0 0 44 44">
+                                    <circle
+                                        className="rating-circle-bg"
+                                        cx="22" cy="22" r="20"
+                                    />
+                                    <circle
+                                        className="rating-circle"
+                                        cx="22" cy="22" r="20"
+                                        strokeDasharray={`${calculateRating(movie.vote_average)} 999`}
+                                    />
+                                    <text
+                                        x="50%"
+                                        y="50%"
+                                        dy=".3em" /* Adjust this value as needed */
+                                        textAnchor="middle"
+                                        className="rating-text"
+                                    >
+                                        {movie.vote_average.toFixed(1)}
+                                    </text>
+
+                                </svg>
+                            </div>
+                            <p className="search-movie-release-date">Released: {movie.release_date}</p>
+                            <h3 className="search-movie-title">{movie.title}</h3>
+                        </div>
+
+                    </div>
+                ))}
+
             </div>
-                <p className="search-movie-release-date">Released: {movie.release_date}</p>
-                <h3 className="search-movie-title">{movie.title}</h3>
-            </div>
-            
+            {/* Conditionally render Load More button */}
+            {results.length > 0 && (
+                <div className="load-more-container">
+                    <button onClick={loadMoreResults} className="load-more-button">LOAD MORE</button>
+                </div>
+            )}
         </div>
-    ))}
-    
-        </div>
-        {/* Conditionally render Load More button */}
-        {results.length > 0 && (
-            <div className="load-more-container">
-                <button onClick={loadMoreResults} className="load-more-button">LOAD MORE</button>
-            </div>
-        )}
-    </div>
-);
+    );
 }
 
 export default Search;

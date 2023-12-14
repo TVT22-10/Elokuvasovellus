@@ -68,9 +68,7 @@ function BrowseSeries() {
     }, [filters, sortBy, minVoteCount, page]);
 
     useEffect(() => {
-        console.log("Fetching series with filters:", filters, "sort by:", sortBy,
-            "minimum votes:", minVoteCount, "min length:", filters.minSeriesLength,
-            "max length:", filters.maxSeriesLength);
+        
         fetchSeries();
       }, [filters, sortBy, minVoteCount, page, fetchSeries]); // Include fetchSeries in the dependency array
       
@@ -91,7 +89,6 @@ function BrowseSeries() {
     const handleFilterChange = (filterType, value) => {
         setFilters(prevFilters => {
             const updatedFilters = { ...prevFilters, [filterType]: value };
-            console.log("Updated Filters:", updatedFilters);
             return updatedFilters;
         });
         setPage(1); // Reset page number to 1
