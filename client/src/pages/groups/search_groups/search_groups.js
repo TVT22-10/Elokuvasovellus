@@ -2,7 +2,7 @@
   import './search_groups.css';
   import { Link } from 'react-router-dom';
   import axios from 'axios';
-  import { jwtToken, userData } from '../../../components/Signals';
+  import { jwtToken } from '../../../components/Signals';
   import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
   import { faCrown } from '@fortawesome/free-solid-svg-icons';
 
@@ -11,7 +11,6 @@
   function SearchGroups() {
     const [userGroups, setUserGroups] = useState([]);
     const [allGroups, setAllGroups] = useState([]); // Define the allGroups state
-    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
       if (jwtToken.value) {
@@ -25,7 +24,7 @@
             console.error('Error fetching groups:', error);
           });
       }
-    }, [jwtToken.value]); // Depend on jwtToken.value to re-run
+    }, []); // Depend on jwtToken.value to re-run
 
 
     // Fetching all groups
