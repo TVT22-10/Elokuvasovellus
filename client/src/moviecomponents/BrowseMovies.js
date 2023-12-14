@@ -46,10 +46,8 @@ function BrowseMovies() {
                 'with_runtime.lte': maxMovieLength, // Maximum length
                 page: newPage
             };
-            console.log("API Request Params:", params);
             const url = new URL(`http://localhost:3001/discover-movies`);
             url.search = new URLSearchParams(params).toString();
-            console.log("API Request URL:", url.toString());
 
             const response = await fetch(url);
             const data = await response.json();
@@ -77,7 +75,6 @@ function BrowseMovies() {
     }, [page, filters, sortBy, minVoteCount, minMovieLength, maxMovieLength]); // Add all dependencies here
 
     useEffect(() => {
-        console.log("Fetching movies with filters:", filters, "sort by:", sortBy, "minimum votes:", minVoteCount, "min length:", minMovieLength, "max length:", maxMovieLength);
         fetchMovies();
     }, [filters, sortBy, minVoteCount, minMovieLength, maxMovieLength, page, fetchMovies]); // Include fetchMovies here
 
@@ -100,7 +97,6 @@ function BrowseMovies() {
     const handleFilterChange = (filterType, value) => {
         setFilters(prevFilters => {
             const updatedFilters = { ...prevFilters, [filterType]: value };
-            console.log("Updated Filters:", updatedFilters);
             return updatedFilters;
         });
         setPage(1); // Reset page number to 1
