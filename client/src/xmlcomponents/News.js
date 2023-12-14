@@ -1,23 +1,17 @@
 // news.js
-import { jwtToken, userData } from "../components/Signals";
+import { jwtToken } from "../components/Signals";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import xml2js from 'xml2js';
-import { useNavigate } from 'react-router-dom';
 import './NewsPage.css';
-import DropdownMenu from './DropdownMenu';
 import NewsItem from './NewsItem';
-import GroupNews from './GroupNews';
 
 
 function NewsPage() {
-  const navigate = useNavigate();
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [userGroups, setUserGroups] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState(null);
   const [activeDropdown, setActiveDropdown] = useState(null);
 
 
@@ -64,28 +58,6 @@ function NewsPage() {
     getXml();
   }, []);
 
-  const handleAddToGroup = async (itemIndex, groupId) => {
-    try {
-      const selectedItem = filteredNews[itemIndex]; // Get the selected news item
-      const response = await axios.post(`http://localhost:3001/groups/${groupId}/news`, {
-        title: selectedItem.Title,
-        description: selectedItem.HTMLLead,
-        articleUrl: selectedItem.ArticleURL,
-        imageUrl: selectedItem.ImageURL,
-      }, {
-        headers: {
-          Authorization: `Bearer ${jwtToken.value}`,  // Add your authentication token
-        },
-      });
-  
-      console.log('News added to group:', response.data);
-      // Handle success as needed
-      setShowDropdown(false);
-    } catch (error) {
-      console.error('Error adding news to group:', error);
-      // Handle error as needed
-    }
-  };
 
   const handleCategoryChange = (event) => {
     const selectedCategoryId = event.target.value;
@@ -101,55 +73,47 @@ function NewsPage() {
     })
     : newsData;
 
-    return (
-      <div className="news-container">
-        <h1>News From Finnkino</h1>
-        <p>The news are in Finnish</p>
-  
-        <div className="custom-dropdown">
-          <span className="dropdown-icon">▼</span>
-          <select onChange={handleCategoryChange} value={selectedCategory || 'all'}>
-            <option value="all">All Categories 🌐</option>
-            <option value="1073">Ajankohtaista 📅</option>
-            <option value="1079">Leffauutiset 🎬</option>
-          </select>
-        </div>
-  
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <ul className="news-list">
-            {filteredNews.map((item, index) => {
-              const { Title, HTMLLead, ArticleURL, ImageURL } = item;
-  
-              return (
-                <li key={index} className="news-item">
-                  <GroupNews 
-                    title={Title} 
-                    description={HTMLLead} 
-                    articleUrl={ArticleURL} 
-                    imageUrl={ImageURL} 
-                    onAddToGroup={(groupId) => handleAddToGroup(index, groupId)} 
-                  />
-                  <div 
-                    className="add-to-group-button" 
-                    onClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
-                  >
-                    Add to Group
-                  </div>
-                  {activeDropdown === index && (
-                    <DropdownMenu
-                      groups={userGroups}
-                      onSelect={(group) => handleAddToGroup(index, group)}
-                    />
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        )}
+  return (
+    <div className="news-container">
+      <h1>News From Finnkino</h1>
+      <p>The news are in Finnish</p>
+
+      <div className="custom-dropdown">
+        <span className="dropdown-icon">▼</span>
+        <select onChange={handleCategoryChange} value={selectedCategory || 'all'}>
+          <option value="all">
+            <span role="img" aria-label="All Categories">All Categories 🌐</span>
+          </option>
+          <option value="1073">
+            <span role="img" aria-label="Current Affairs">Ajankohtaista 📅</span>
+          </option>
+          <option value="1079">
+            <span role="img" aria-label="Movie News">Leffauutiset 🎬</span>
+          </option>
+        </select>
       </div>
-    );
-  }
-  
-  export default NewsPage;
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul className="news-list">
+          {filteredNews.map((item, index) => {
+            return (
+              <NewsItem
+                key={index}
+                item={item}
+                groups={userGroups}
+                jwtToken={jwtToken.value}
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
+                dropdownIndex={index}
+              />
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export default NewsPage;

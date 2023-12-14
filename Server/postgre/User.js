@@ -148,6 +148,7 @@ async function deleteUser(username, password) {
           await pgPool.query('DELETE FROM favorites WHERE username = $1', [username]);
           await pgPool.query('DELETE FROM group_members WHERE username = $1', [username]);
           await pgPool.query('DELETE FROM group_join_requests WHERE username = $1', [username]);
+          await pgPool.query('DELETE FROM group_chat WHERE username = $1', [username]);
 
           await pgPool.query('DELETE FROM customer WHERE username = $1', [username]);
           console.log('Deleted user');
@@ -156,8 +157,8 @@ async function deleteUser(username, password) {
           return { success: false, error: 'Incorrect password' };
       }
   } catch (error) {
-      console.error('Error deleting user:', error);
-      throw new Error('Error deleting user');
+    console.error('Error deleting user:', error);
+    return { success: false, error: error.message };
   }
 }
 

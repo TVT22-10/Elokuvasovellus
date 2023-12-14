@@ -126,14 +126,14 @@ async function handleJoinRequest(req, res) {
             const addMemberQuery = 'INSERT INTO group_members (group_id, username) VALUES ($1, $2);';
             await pgPool.query(addMemberQuery, [groupId, memberUsername]);
         }
-        
-        res.status(200).json({ message: `Request ${requestStatus}`});
+
+        res.status(200).json({ message: `Request ${requestStatus}` });
     } catch (error) {
         console.error('Error handling join request:', error);
         res.status(500).json({ message: 'Error handling join request' });
     }
 
-    
+
 }
 
 async function getGroupDetails(groupId) {
@@ -207,7 +207,10 @@ async function removeGroupMember(req, res) {
         }
 
         const isOwner = groupResult.rows[0].creator_username === currentUser;
-
+       
+        if (!isOwner) {
+            return res.status(403).json({ message: 'You are not a member of this group' });
+        }
         // Check if the user is the owner or the member trying to leave
         if (!isOwner && currentUser !== username) {
             return res.status(403).json({ message: 'Unauthorized action' });
@@ -251,7 +254,7 @@ async function updateGroupDescription(req, res) {
     const ownerUsername = req.user.username; // Assuming username is stored in req.user
 
     console.log('Received group description:', groupDescription);
-    
+
     try {
         // Check if the user is the owner of the group
         const ownerCheckQuery = 'SELECT creator_username FROM groups WHERE group_id = $1;';
@@ -271,6 +274,7 @@ async function updateGroupDescription(req, res) {
         res.status(500).json({ message: 'Error updating group description' });
     }
 }
+
 // New function to add news to a group
 async function addNewsToGroup(req, res) {
     const { groupId } = req.params;
@@ -349,8 +353,8 @@ async function postGroupMessage(req, res) {
 
         // Insert the message into the group_chat table
         const insertMessageQuery = 'INSERT INTO group_chat (group_id, username, message, sent_time) VALUES ($1, $2, $3, $4)';
-const utcTime = new Date().toISOString();
-await pgPool.query(insertMessageQuery, [groupId, username, message, utcTime]);
+        const utcTime = new Date().toISOString();
+        await pgPool.query(insertMessageQuery, [groupId, username, message, utcTime]);
 
 
         res.status(201).json({ message: 'Message sent successfully' });

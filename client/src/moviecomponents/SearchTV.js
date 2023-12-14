@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-import './Search.css';
+import './Search.css'; // Assuming the same CSS can be used
 
-function Search() {
+function SearchTV() {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [page, setPage] = useState(1); // State for tracking the current page
@@ -11,7 +11,7 @@ function Search() {
 
     const performSearch = useCallback(async (pageNum) => {
         try {
-            const response = await fetch(`http://localhost:3001/search?query=${query}&page=${pageNum}`);
+            const response = await fetch(`http://localhost:3001/searchTV?query=${query}&page=${pageNum}`);
             const data = await response.json();
             if (pageNum === 1) {
                 setResults(data.results); // Set new results if it's the first page
@@ -22,7 +22,6 @@ function Search() {
             console.error('Error:', error);
         }
     }, [query]); // Add dependencies here
-
 
     useEffect(() => {
         // Debounce the search operation
@@ -38,10 +37,10 @@ function Search() {
         return () => clearTimeout(delayDebounce);
     }, [query, performSearch]); // Include performSearch in the dependency array
 
-
+ 
     
-    const navigateToMovie = (movieId) => {
-        navigate(`/movies/${movieId}`);
+    const navigateToSeries = (seriesId) => {
+        navigate(`/series/${seriesId}`); // Change the navigation path
     };
 
     const calculateRating = (rating) => {
@@ -58,52 +57,51 @@ function Search() {
     return (
         <div>
             <input 
-    type="text" 
-    value={query} 
-    onChange={(e) => setQuery(e.target.value)} 
-    placeholder="Search for a movie..."
-    className="search-input"
-/>
+                type="text" 
+                value={query} 
+                onChange={(e) => setQuery(e.target.value)} 
+                placeholder="Search for a series..."
+                className="search-input"
+            />
 
-
-<div className="search-results-container">
-                {results.map(movie => (
+            {/* Render search results */}
+            <div className="search-results-container">
+                {results.map(series => (
                     <div 
-                        key={movie.id} 
+                        key={series.id} 
                         className="search-movie-card"
-                        onClick={() => navigateToMovie(movie.id)} // Attach navigate function here
+                        onClick={() => navigateToSeries(series.id)} // Use navigateToSeries here
                     >
-            <img 
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                alt={movie.title}
+                        <img 
+                src={`https://image.tmdb.org/t/p/w500${series.poster_path}`} 
+                alt={series.name}
                 className="search-movie-poster"
             />
-            <div className="search-movie-info">
-            <div className="movie-rating-circle">
-              <svg width="40" height="40" viewBox="0 0 44 44">
-                <circle 
-                  className="rating-circle-bg" 
-                  cx="22" cy="22" r="20" 
-                />
-                <circle 
-                  className="rating-circle" 
-                  cx="22" cy="22" r="20" 
-                  strokeDasharray={`${calculateRating(movie.vote_average)} 999`}
-                />
-                <text 
-                  x="50%" 
-                  y="50%" 
-                  dy=".3em" /* Adjust this value as needed */
-                  textAnchor="middle"
-                  className="rating-text"
-                  >
-                  {movie.vote_average.toFixed(1)}
-                  </text>
-
-              </svg>
-            </div>
-                <p className="search-movie-release-date">Released: {movie.release_date}</p>
-                <h3 className="search-movie-title">{movie.title}</h3>
+             <div className="search-movie-info">
+                <div className="movie-rating-circle">
+                    <svg width="40" height="40" viewBox="0 0 44 44">
+                        <circle 
+                            className="rating-circle-bg" 
+                            cx="22" cy="22" r="20"
+                        />
+                        <circle 
+                            className="rating-circle" 
+                            cx="22" cy="22" r="20"
+                            strokeDasharray={`${calculateRating(series.vote_average)} 999`}
+                        />
+                        <text 
+                            x="50%" 
+                            y="50%" 
+                            dy=".3em" /* Adjust this value as needed */
+                            textAnchor="middle"
+                            className="rating-text"
+                        >
+                            {series.vote_average.toFixed(1)}
+                        </text>
+                    </svg>
+                </div>
+                <p className="search-movie-release-date">First Aired: {series.first_air_date}</p>
+                <h3 className="search-movie-title">{series.name}</h3>
             </div>
             
         </div>
@@ -120,4 +118,4 @@ function Search() {
 );
 }
 
-export default Search;
+export default SearchTV;

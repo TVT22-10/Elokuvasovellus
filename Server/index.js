@@ -5,13 +5,12 @@ const userRoutes = require('./routes/userRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const app = express();
 const axios = require('axios');
-const tmdbApi = require('./tmdb/tmdb.api'); // Adjust the path as needed
-
 const fs = require('fs');
 const path = require('path');
-
 const reviewRoutes = require('./routes/reviewRoutes');
 const groupRoutes = require('./routes/groupRoutes');
+const postRoutes = require('./routes/postRoutes'); // Adjust the path as needed
+
 
 
 const corsOptions = {
@@ -43,6 +42,7 @@ app.use('/review', reviewRoutes);
 // Root route
 app.use('/groups', groupRoutes);
 //mo
+app.use('/posts', postRoutes);
 
 
 app.get('/', (req, res) => {
@@ -247,6 +247,127 @@ app.get('/actors/:actorId/movies', async (req, res) => {
   }
 });
 
+
+
+app.get('/discover-tv', async (req, res) => {
+  try {
+      let params = { ...req.query, api_key: process.env.TMDB_KEY };
+
+      // Handle genre
+      if (params.genre) {
+          params.with_genres = params.genre;
+          delete params.genre;
+      }
+
+      // Handle start year (first air date for TV series)
+      if (params.startYear) {
+        params['first_air_date.gte'] = `${params.startYear}-01-01`; // Assuming Jan 1 as the start date
+        delete params.startYear;
+      }
+
+      // Handle end year (first air date for TV series)
+      if (params.endYear) {
+        params['first_air_date.lte'] = `${params.endYear}-12-31`; // Assuming Dec 31 as the end date
+        delete params.endYear;
+      }
+
+      // Handle original language
+      if (params.originalLanguage) {
+        params.with_original_language = params.originalLanguage;
+        delete params.originalLanguage;
+      }
+
+      // Handle sorting
+      if (params.sortBy) {
+        params.sort_by = params.sortBy;
+        delete params.sortBy;
+      }
+
+      // Make the request to TMDB API for TV series
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}discover/tv`, { params });
+      res.json(response.data);
+  } catch (error) {
+      console.error('Error fetching TV series data from TMDB', error);
+      res.status(500).json({ message: "Error fetching TV series data from TMDB", error: error.message });
+  }
+});
+
+app.get('/series/:seriesId', async (req, res) => {
+  try {
+      const { seriesId } = req.params;
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}tv/${seriesId}`, {
+          params: {
+              api_key: process.env.TMDB_KEY
+          }
+      });
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching series details from TMDB", error: error.message });
+  }
+});
+
+
+app.get('/series/:seriesId/cast', async (req, res) => {
+  try {
+      const { seriesId } = req.params;
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}tv/${seriesId}/credits`, {
+          params: {
+              api_key: process.env.TMDB_KEY
+          }
+      });
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching series cast information from TMDB", error: error.message });
+  }
+});
+
+app.get('/series/:seriesId/videos', async (req, res) => {
+  try {
+      const { seriesId } = req.params;
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}tv/${seriesId}/videos`, {
+          params: {
+              api_key: process.env.TMDB_KEY
+          }
+      });
+      // Optionally filter for trailers here if needed
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching video data from TMDB", error: error.message });
+  }
+});
+
+app.get('/actors/:actorId/series', async (req, res) => {
+    try {
+        const { actorId } = req.params;
+        const response = await axios.get(`${process.env.TMDB_BASE_URL}person/${actorId}/tv_credits`, {
+            params: {
+                api_key: process.env.TMDB_KEY
+            }
+        });
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching TV series credits from TMDB", error: error.message });
+    }
+});
+
+app.get('/searchTV', async (req, res) => {
+  try {
+      const query = req.query.query; // Get the search query from URL parameters
+      const page = req.query.page || 1; // Get the page number, default to 1 if not provided
+
+      const response = await axios.get(`${process.env.TMDB_BASE_URL}search/tv`, { // Change to the TV search endpoint
+          params: {
+              api_key: process.env.TMDB_KEY,
+              query: query,
+              page: page // Pass the page parameter to the TMDB API
+          }
+      });
+
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ message: "Error searching TMDB for TV series", error: error.message });
+  }
+});
 
 
 

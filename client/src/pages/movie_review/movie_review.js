@@ -1,4 +1,3 @@
-import { userData } from '../../components/Contexts';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './movie_review.css';
@@ -13,8 +12,6 @@ function MovieReviews({ movieId }) {
   const [loading, setLoading] = useState(true);
   const [visibleReviews, setVisibleReviews] = useState(3); // Number of reviews initially visible
   const { isLoggedIn } = useContext(AuthContext);
-  const [username, setUsername] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
   const navigate = useNavigate();
 
 

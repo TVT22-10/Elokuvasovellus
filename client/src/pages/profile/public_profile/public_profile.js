@@ -15,6 +15,8 @@ function PublicProfile() {
   const [showFullReview, setShowFullReview] = useState(false);
   const [userExists, setUserExists] = useState(true);
   const [bio, setBio] = useState('');
+  const [userPosts, setUserPosts] = useState([]); // Added this line
+
   
 
   const navigate = useNavigate();
@@ -35,6 +37,9 @@ function PublicProfile() {
         console.error('Error fetching movie details:', error);
       }
     };
+
+    
+
   
     const fetchUserData = async () => {
       try {
@@ -62,6 +67,21 @@ function PublicProfile() {
   
     fetchUserData();
   }, [username]);
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/posts/${username}`);
+        setUserPosts(response.data);
+      } catch (error) {
+        console.error('Error fetching user posts:', error);
+      }
+    };
+
+    fetchUserPosts();
+  }, [username]);
+
+  
 
   if (!userExists) {
     return <div>User not found.</div>;
@@ -99,6 +119,8 @@ function PublicProfile() {
       const toggleShowFullReview = () => {
         setShowFullReview(!showFullReview);
       };
+
+
 
   return (
     <div className="profile-page">
@@ -227,9 +249,21 @@ function PublicProfile() {
               <p>No reviews for this user yet.</p>
             )}
           </div>
-          <div className={`content ${activeTab !== 'posts' && 'hidden'}`} id="posts">
-            <p>Tähän tulis sitten käyttäjän postaukset</p>
-          </div>
+          <div className={`content ${activeTab === 'posts' ? 'visible' : 'hidden'}`} id="posts">
+          <div className="posts">
+
+          {userPosts.length > 0 ? (
+            userPosts.map((post) => (
+              <div key={post.post_id} className="user-post">
+                <p>{post.content}</p>
+                <span>Posted on: {new Date(post.creation_time).toLocaleDateString()}</span>
+              </div>
+            ))
+          ) : (
+            <p>No posts for this user yet.</p>
+          )}
+        </div>
+        </div>
         </div>
       </div>
     </div>
