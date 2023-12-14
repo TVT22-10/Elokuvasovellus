@@ -28,6 +28,18 @@ async function getGroupMembers(req, res) {
     const { groupId } = req.params;
 
     try {
+        const checkGroupQuery = `
+            SELECT EXISTS (SELECT 1 FROM groups WHERE group_id = $1) AS "groupExists";
+        `;
+
+        const checkGroupResult = await pgPool.query(checkGroupQuery, [groupId]);
+
+        const groupExists = checkGroupResult.rows[0].groupExists;
+
+        if (!groupExists) {
+            return res.status(404).json({ message: 'Group not found' });
+        }
+
         const query = `
             SELECT gm.username, c.avatar, gm.joined_date,
             CASE WHEN gm.username = (SELECT creator_username FROM groups WHERE group_id = gm.group_id) THEN 0 ELSE 1 END as is_owner
@@ -35,8 +47,8 @@ async function getGroupMembers(req, res) {
             JOIN customer c ON gm.username = c.username
             WHERE gm.group_id = $1
             ORDER BY is_owner, gm.joined_date;
-
         `;
+
         const result = await pgPool.query(query, [groupId]);
         res.status(200).json(result.rows);
     } catch (error) {
@@ -44,6 +56,7 @@ async function getGroupMembers(req, res) {
         res.status(500).json({ message: 'Error getting group members' });
     }
 }
+
 
 // In your groupController.js or a similar file
 async function sendJoinRequest(req, res) {
@@ -96,6 +109,11 @@ async function handleJoinRequest(req, res) {
             return res.status(403).json({ message: 'Unauthorized action' });
         }
 
+        const requestExistenceQuery = 'SELECT * FROM group_join_requests WHERE request_id = $1 AND group_id = $2;';
+        const requestExistenceResult = await pgPool.query(requestExistenceQuery, [requestId, groupId]);
+        if (requestExistenceResult.rows.length === 0) {
+            return res.status(404).json({ message: 'Request does not exist for the specified group' });
+        }
         // Update the request status
         const updateRequestStatusQuery = 'UPDATE group_join_requests SET request_status = $1 WHERE request_id = $2 AND group_id = $3 RETURNING username;';
         const requestStatus = accept ? 'accepted' : 'rejected';
@@ -201,6 +219,14 @@ async function removeGroupMember(req, res) {
             } else {
                 return res.status(403).json({ message: 'Owner cannot leave without assigning a new owner' });
             }
+        }
+
+        // Check if the member exists in the group before removing
+        const memberExistsQuery = 'SELECT 1 FROM group_members WHERE group_id = $1 AND username = $2;';
+        const memberExistsResult = await pgPool.query(memberExistsQuery, [groupId, username]);
+
+        if (memberExistsResult.rows.length === 0) {
+            return res.status(404).json({ message: 'Member not found in the group' });
         }
 
         // Remove the member from the group_members table
@@ -321,8 +347,10 @@ async function postGroupMessage(req, res) {
         }
 
         // Insert the message into the group_chat table
-        const insertMessageQuery = 'INSERT INTO group_chat (group_id, username, message) VALUES ($1, $2, $3)';
-        await pgPool.query(insertMessageQuery, [groupId, username, message]);
+        const insertMessageQuery = 'INSERT INTO group_chat (group_id, username, message, sent_time) VALUES ($1, $2, $3, $4)';
+const utcTime = new Date().toISOString();
+await pgPool.query(insertMessageQuery, [groupId, username, message, utcTime]);
+
 
         res.status(201).json({ message: 'Message sent successfully' });
     } catch (error) {
@@ -361,6 +389,40 @@ async function getGroupMessages(req, res) {
     }
 }
 
+async function deleteGroupMessage(req, res) {
+    const { groupId, messageId } = req.params;
+    const username = req.user.username;
+
+    try {
+        // Check if the user is the sender of the message or the group owner
+        const checkUserQuery = `
+            SELECT gc.username, g.creator_username
+            FROM group_chat gc
+            JOIN groups g ON gc.group_id = g.group_id
+            WHERE gc.message_id = $1 AND gc.group_id = $2;
+        `;
+        const userResult = await pgPool.query(checkUserQuery, [messageId, groupId]);
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ message: 'Message not found' });
+        }
+
+        const isSender = userResult.rows[0].username === username;
+        const isOwner = userResult.rows[0].creator_username === username;
+
+        if (!isSender && !isOwner) {
+            return res.status(403).json({ message: 'Unauthorized to delete this message' });
+        }
+
+        // Delete the message
+        const deleteQuery = 'DELETE FROM group_chat WHERE message_id = $1;';
+        await pgPool.query(deleteQuery, [messageId]);
+
+        res.status(200).json({ message: 'Message deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting message:', error);
+        res.status(500).json({ message: 'Error deleting message' });
+    }
+}
 
 
 
@@ -382,4 +444,5 @@ module.exports = {
     assignNewOwner,
     postGroupMessage,
     getGroupMessages,
+    deleteGroupMessage,
 };
