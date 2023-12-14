@@ -377,3 +377,6 @@ const port = process.env.PORT || 3001;
 app.listen(port, function() {
     console.log('Server is running on port:' + port);
 });
+
+// Export the app object so that it can be used in automated tests
+module.exports = app;
