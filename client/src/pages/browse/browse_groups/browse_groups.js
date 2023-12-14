@@ -1,8 +1,5 @@
-// BrowseGroups.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import './browse_groups.css';
 
 function BrowseGroups() {
@@ -35,7 +32,6 @@ function BrowseGroups() {
     <div className="browse-groups">
       <h2>Browse Groups</h2>
 
-      {/* Search Bar */}
       <div className="search-bar">
         <input
           type="text"
@@ -51,17 +47,15 @@ function BrowseGroups() {
           .filter((group) => group.groupname.toLowerCase().includes(searchQuery.toLowerCase()))
           .slice(0, displayedGroups)
           .map(group => (
-            <Link to={`/groups/${group.group_id}`} key={group.group_id} className="group-link">
-              <div className="group-item">
-                <h3>
-                  <span className="group-name-label">Group Name: </span>
-                  <span style={{ color: '#007bff' }}>{group.groupname}</span>
-                </h3>
-                <p>
-                  <strong>Description:</strong> {group.groupdescription}
-                </p>
-              </div>
-            </Link>
+            <div key={group.group_id} className="group-item">
+              <h3>
+                <span className="group-name-label">Group Name: </span>
+                <span style={{ color: '#007bff' }}>{group.groupname}</span>
+              </h3>
+              <p>
+                <strong>Description:</strong> {group.groupdescription}
+              </p>
+            </div>
           ))}
       </div>
 
