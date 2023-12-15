@@ -24,7 +24,7 @@ Omaan profiiliin pääsee siirtymään yläpalkin ”Profile” kohdasta. Profii
 
 ## Sovelluksen ER-Kaavio
 
-![Kuva 3. Sovelluksen ER-kaavio](diagrams/er-kaavio.png)
+![Kuva 3. Sovelluksen ER-kaavio](diagrams/most-recent-er-kaavio.png)
 
 ## Millä teknologioilla tehty?
 
