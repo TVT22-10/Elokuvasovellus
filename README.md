@@ -1,48 +1,49 @@
-# Elokuvasovellus
+# ELOKUVAKERHO-WEBSOVELLUS
 
-### Arvosanatavoite: 4
+## Johdanto
 
-## Ropsu01: Roope Nahkala
+Elokuvakerho on Oulun Ammattikorkeakoulun tieto- ja viestintätekniikan 2. vuoden opiskelijoiden toteuttama websovellusprojekti. Se on laaja elokuvien ja sarjojen tietopankki, joka on suunniteltu sekä elokuvaharrastajille että satunnaiskatsojille. Sovelluksessa voi luoda oman käyttäjäprofiilin, jonka kautta on mahdollista arvostella elokuvia sekä osallistua keskusteluihin muiden käyttäjien kanssa ryhmissä.
 
-## tompih: Tomi Pihlajamaa
+## Miten sovellus toimii?
 
-## valtterivimpari: Valtteri Vimpari
+Elokuvakerho-sovelluksessa voi selata erilaisia elokuvia ja sarjoja sekä lukea muiden käyttäjien arvosteluita ilman rekisteröitymistä. Mikäli haluaa hyödyntää kaikki sovelluksen ominaisuudet, voi sovellukseen rekisteröityä ja luoda oman käyttäjäprofiilin. Rekisteröitynyt käyttäjä voi lisätä elokuvia suosikkeihin ja kirjoittaa omia arvosteluja. Kaikki omat suosikit ja arvostelut tallentuvat profiiliin, josta ne ovat helposti uudelleen löydettävissä. Sovelluksessa on mahdollista myös perustaa uusia ryhmiä sekä lähettää liittymispyyntöjä jo olemassa oleviin ryhmiin. Ryhmissä jäsenet voivat jakaa keskenään kiinnostavia uutisia ja käydä keskusteluja.
 
-## nooruuw: Noora Ylitalo
+#### ![Kuva 1. Sovelluksen etusivu](diagrams/homepage.png)
 
-## JuliusPohjanen: Julius Pohjanen
+Alla (kuva 2) ryhmän alkuperäinen käyttöliittymäsuunnitelma. Sivun ulkoasua on muutettu alkuperäisestä suunnitelmasta, mutta sivujen navigointi on pysynyt lähes samanlaisena. Olemme kuitenkin lisänneet muutamia lisätoimintoja ja lisäsivuja, joita tässä suunnitelmassa ei ole näkyvillä.  
 
-## ER-Kaavio
-![ER-Kaavio](https://github.com/TVT22-10/Elokuvasovellus/blob/main/diagrams/most-recent-er-kaavio.png)
+#### Navigointi sovelluksessa: 
 
-## UI suunnitelma
-![UI-suunnitelma](https://github.com/TVT22-10/Elokuvasovellus/blob/main/diagrams/UI-suunnitelma.png)
+Sovelluksen etusivulla käyttäjä voi selata suosittuja-, parhaiten arvosteltuja- ja tulossa olevia elokuvia. Yläpalkista käsin voi navigoida ”Kirjaudu sisään” -osioon ja sieltä jatkaa ”Rekisteröidy uutena käyttäjänä” -osioon jos omaa käyttäjää ei vielä ole. Lisäksi yläpalkista voi hakea ja selata elokuvia ja tv-sarjoja. Sieltä pääsee myös tarkastelemaan tilastoja sekä lukemaan käyttäjien arvosteluita ja uutisia.  
 
-### Muistilista 
-- npm install express
-- npm install pg
-- npm install dotenv 
-- npm install bcrypt
-- npm install jsonwebtoken
-- npm install cors
-- npm install react-router-dom
-- npm install react-icons
-- npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
-- npm i xml2js
-- npm install emoji-picker-react   
-- npm install moment
+Omaan profiiliin pääsee siirtymään yläpalkin ”Profile” kohdasta. Profiilista pääsee ”Muokkaa profiilia” -sivulle, jossa voi esimerkiksi vaihtaa profiilikuvaketta ja biotekstiä tai poistaa koko käyttäjätilin. ”Ryhmät”-sivulle pääsee yläpalkin ”Groups” kohdasta, josta pääsee ryhmien sivuille sekä luomaan myös uuden ryhmän.  
 
+## Alkuperäinen UI-suunnitelma
 
+![Kuva 2. Alkuperäinen UI-suunnitelma](diagrams/UI-suunnitelma.png)
 
-"start": "react-scripts --openssl-legacy-provider start"
+## Sovelluksen ER-Kaavio
 
+![Kuva 3. Sovelluksen ER-kaavio](diagrams/er-kaavio.png)
 
-CREATE TABLE customer (
-    username VARCHAR(50) PRIMARY KEY,
-    fname VARCHAR(100),
-    lname VARCHAR(100),
-    pw VARCHAR(100),
-    creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+## Millä teknologioilla tehty?
 
-API documentation: https://documenter.getpostman.com/view/27009159/2s9YkjANet
+Projektimme on rakennettu React-sovelluksena, jota kehitämme Visual Studio Coden avulla. Palvelinpuolen olemme toteuttaneet Node.js-alustalla ja tietokantana käytämme PostgreSQL:ää, jonka loimme Renderin kautta.
+
+Käyttämämme koodikielet ovat JavaScript, HTML ja CSS. Sovelluksen käyttöliittymän suunnitteluun olemme käyttäneet Figmaa ja tietokannan ER-kaavion luontiin MySQL Workbenchiä.
+
+## Ketkä tekivät?
+
+Ryhmämme jäsenet ovat Roope Nahkala, Tomi Pihlajamaa, Valtteri Vimpari, Julius Pohjanen ja Noora Ylitalo.
+
+## Esittelyvideo
+
+[Linkki esittelyvideoon](https://youtu.be/w75aTxZCO9o?si=xgC3pi3o-LhbaYj2)
+
+## Linkki sovellukseen
+
+[Elokuvakerho Websovellus](https://elokuvakerho.onrender.com/)
+
+## API dokumentti
+
+[API documentation](https://documenter.getpostman.com/view/27009159/2s9YkjANet)
