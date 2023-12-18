@@ -12,6 +12,8 @@ Elokuvakerho-sovelluksessa voi selata erilaisia elokuvia ja sarjoja sekä lukea 
 
 #### ![Kuva 1. Sovelluksen etusivu](diagrams/homepage.png)
 
+## Alkuperäinen UI-suunnitelma
+
 Alla (kuva 2) ryhmän alkuperäinen käyttöliittymäsuunnitelma. Sivun ulkoasua on muutettu alkuperäisestä suunnitelmasta, mutta sivujen navigointi on pysynyt lähes samanlaisena. Olemme kuitenkin lisänneet muutamia lisätoimintoja ja lisäsivuja, joita tässä suunnitelmassa ei ole näkyvillä.  
 
 #### Navigointi sovelluksessa: 
@@ -19,8 +21,6 @@ Alla (kuva 2) ryhmän alkuperäinen käyttöliittymäsuunnitelma. Sivun ulkoasua
 Sovelluksen etusivulla käyttäjä voi selata suosittuja-, parhaiten arvosteltuja- ja tulossa olevia elokuvia. Yläpalkista käsin voi navigoida ”Kirjaudu sisään” -osioon ja sieltä jatkaa ”Rekisteröidy uutena käyttäjänä” -osioon jos omaa käyttäjää ei vielä ole. Lisäksi yläpalkista voi hakea ja selata elokuvia ja tv-sarjoja. Sieltä pääsee myös tarkastelemaan tilastoja sekä lukemaan käyttäjien arvosteluita ja uutisia.  
 
 Omaan profiiliin pääsee siirtymään yläpalkin ”Profile” kohdasta. Profiilista pääsee ”Muokkaa profiilia” -sivulle, jossa voi esimerkiksi vaihtaa profiilikuvaketta ja biotekstiä tai poistaa koko käyttäjätilin. ”Ryhmät”-sivulle pääsee yläpalkin ”Groups” kohdasta, josta pääsee ryhmien sivuille sekä luomaan myös uuden ryhmän.  
-
-## Alkuperäinen UI-suunnitelma
 
 ![Kuva 2. Alkuperäinen UI-suunnitelma](diagrams/UI-suunnitelma.png)
 
