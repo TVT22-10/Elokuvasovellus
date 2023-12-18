@@ -38,6 +38,18 @@ Käyttämämme koodikielet ovat JavaScript, HTML ja CSS. Sovelluksen käyttölii
 
 Ryhmämme jäsenet ovat Roope Nahkala, Tomi Pihlajamaa, Valtteri Vimpari, Julius Pohjanen ja Noora Ylitalo.
 
+## Vastuualueemme: 
+
+Roope Nahkala: Fullstack/mm. TMDB API, Elokuvien ja näyttelijöiden sivut. Suodatettu haku. 
+
+Tomi Pihlajamaa: Fullstack/mm. Finnkino XML, API-dokumentaatio 
+
+Valtteri Vimpari: Frontend/mm. Oman näkymän jakaminen  
+
+Julius Pohjanen: Fullstack/mm. Arvostelut, backend testit 
+
+Noora Ylitalo: Fullstack / mm. Käyttäjätilin poisto, ryhmänjäsenten poistaminen/omistajuuden siirto 
+
 ## Esittelyvideo
 
 [Linkki esittelyvideoon](https://youtu.be/w75aTxZCO9o?si=xgC3pi3o-LhbaYj2)
